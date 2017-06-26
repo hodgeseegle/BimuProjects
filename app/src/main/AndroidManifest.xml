@@ -1,0 +1,215 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.can.bimuprojects"
+    android:versionCode="@integer/version_code"
+
+    android:versionName="@string/version_name">
+
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+
+    <application
+        android:name="com.can.bimuprojects.application.BimuApplication"
+        android:icon="@drawable/ic_launcher"
+        android:label="@string/app_name"
+        android:theme="@style/AppTheme">
+
+        <!--友盟appkey-->
+        <meta-data
+            android:name="UMENG_APPKEY"
+            android:value="594c87f2c62dca0eda001b12" />
+
+        <!--友盟secret-->
+        <meta-data
+            android:name="UMENG_MESSAGE_SECRET"
+            android:value="4e445cec0667f3fc864023f26070097e">
+        </meta-data>
+
+        <!--友盟推广渠道 -->
+        <meta-data
+            android:name="UMENG_CHANNEL"
+            android:value="${UMENG_CHANNEL_VALUE}" />
+
+        <!--启动页-->
+        <activity
+            android:name="com.can.bimuprojects.activity.SplashActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/SplashTheme">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+            <intent-filter>
+                <action android:name="android.intent.action.CREATE_SHORTCUT" />
+            </intent-filter>
+        </activity>
+        <!--主界面-->
+        <activity
+            android:theme="@style/AppTheme"
+            android:name="com.can.bimuprojects.activity.MainActivity"
+            android:launchMode="singleTask"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="adjustPan"
+            />
+        <!--登录-->
+        <activity
+            android:name="com.can.bimuprojects.activity.LoginActivity"
+            android:windowSoftInputMode="adjustPan"
+            android:screenOrientation="portrait" />
+        <!--图片裁剪-->
+        <activity android:name="com.can.bimuprojects.activity.ClipImageActivity" />
+        <!--注册-->
+        <activity
+            android:windowSoftInputMode="adjustPan"
+            android:name="com.can.bimuprojects.activity.RegisterActivity"
+            android:screenOrientation="portrait" />
+        <!--找回密码-->
+        <activity
+            android:windowSoftInputMode="stateAlwaysHidden|adjustResize"
+            android:name="com.can.bimuprojects.activity.FindPwdActivity"
+            android:screenOrientation="portrait" />
+        <!--文章详情-->
+        <activity
+            android:name="com.can.bimuprojects.activity.ArticleDetailActivity"
+            android:screenOrientation="portrait" />
+        <!--个人主页-->
+        <activity
+            android:name="com.can.bimuprojects.activity.PersonalPageActivity"
+            android:screenOrientation="portrait" />
+        <!--通知-->
+        <activity
+            android:name="com.can.bimuprojects.activity.ListActivity"
+            android:screenOrientation="portrait" />
+        <!--搜索页-->
+        <activity
+            android:name="com.can.bimuprojects.activity.SearchActivity"
+            android:screenOrientation="portrait"
+            />
+        <!--用户协议-->
+        <activity
+            android:name="com.can.bimuprojects.activity.ProtocalActivity"
+            android:screenOrientation="portrait" />
+        <!--写点评-->
+        <activity
+            android:name="com.can.bimuprojects.activity.SendArticleActivity"
+            android:screenOrientation="portrait" />
+        <!--设置-->
+        <activity
+            android:name="com.can.bimuprojects.activity.SettingActivity"
+            android:screenOrientation="portrait" />
+        <!--搜索结果-->
+        <activity
+            android:name="com.can.bimuprojects.activity.SearchResultActivity"
+            android:screenOrientation="portrait" />
+        <!--兴趣行业选择-->
+        <activity android:name="com.can.bimuprojects.activity.ActivityInterest"
+            android:screenOrientation="portrait"
+            />
+        <!--地址选择-->
+        <activity android:name="com.can.bimuprojects.activity.AreaActivity"
+            android:theme="@style/MyDialogStyleBottom"
+            android:screenOrientation="portrait"
+
+            />
+        <!--找项目返回结果页-->
+        <activity android:name="com.can.bimuprojects.activity.FindProjectResultActivity"
+            android:screenOrientation="portrait"/>
+        <!--专题页-->
+        <activity android:name="com.can.bimuprojects.activity.SpecialActivity"
+            android:screenOrientation="portrait"
+            />
+        <!--品牌详情页-->
+        <activity android:name="com.can.bimuprojects.activity.BrandActivity"
+            android:screenOrientation="portrait"/>
+        <!--加盟流程-->
+        <activity android:name="com.can.bimuprojects.activity.JoinProcessActivity"
+            android:screenOrientation="portrait"/>
+        <!--获取开店方案结果-->
+        <activity android:name="com.can.bimuprojects.activity.OpenShopResultActivity"
+            android:screenOrientation="portrait"/>
+        <!--图库-->
+        <activity android:name="com.can.bimuprojects.view.gallery.ImagePagerActivity"
+            android:theme="@style/SplashTheme"
+            android:screenOrientation="portrait"/>
+        <!--用户反馈-->
+        <activity
+            android:name="com.can.bimuprojects.activity.UserFeedbackActivity"
+            android:screenOrientation="portrait" />
+        <!--考察淘汰-->
+        <activity android:name="com.can.bimuprojects.activity.InspectOrKillActivity"
+            android:screenOrientation="portrait"/>
+        <!--必读加盟攻略-->
+        <activity android:name="com.can.bimuprojects.activity.JoinRaidersActivity"
+            android:screenOrientation="portrait"/>
+        <!--查看全部攻略-->
+        <activity android:name="com.can.bimuprojects.activity.LookAllRaidersActivity"
+            android:screenOrientation="portrait"/>
+        <!--专题文章列表-->
+        <activity android:name="com.can.bimuprojects.activity.SpecialArticleActivity"
+            android:screenOrientation="portrait"/>
+        <!--选择类型(如：街头小吃)-->
+        <activity android:name="com.can.bimuprojects.activity.ChooseTypeActivity"
+            android:screenOrientation="portrait"/>
+        <!--收藏的文章-->
+        <activity android:name="com.can.bimuprojects.activity.CollectionArticleActivity"
+            android:screenOrientation="portrait"/>
+        <!--活动详情页-->
+        <activity android:name="com.can.bimuprojects.activity.ExerciseActivity"
+            android:screenOrientation="portrait"/>
+        <!--活动说明-->
+        <activity android:name="com.can.bimuprojects.activity.ExerciseExplainActivity"
+            android:screenOrientation="portrait"/>
+        <!--我的约惠-->
+        <activity android:name="com.can.bimuprojects.activity.DiscountActivity"
+            android:screenOrientation="portrait"/>
+
+        <!--个人信息保护声明-->
+        <activity android:name="com.can.bimuprojects.activity.PersonalInformationProtectActivity"
+            android:screenOrientation="portrait"/>
+
+        <!--应用推荐-->
+        <activity android:name="com.can.bimuprojects.activity.AppRecommendActivity"
+            android:screenOrientation="portrait"/>
+
+        <!--引导页-->
+        <activity android:name="com.can.bimuprojects.activity.GuideActivity"
+            android:screenOrientation="portrait"/>
+
+        <!--登录或注册页面-->
+        <activity android:name="com.can.bimuprojects.activity.LoginOrRegisterActivity"
+            android:theme="@style/SplashTheme"
+            android:screenOrientation="portrait"/>
+
+        <!--评论详情页-->
+        <activity android:name="com.can.bimuprojects.activity.CommentDetailActivity"
+            android:screenOrientation="portrait"/>
+
+        <!--图库类型选择浏览-->
+        <activity android:name="com.can.bimuprojects.activity.PhotosActivity"
+            android:screenOrientation="portrait"/>
+
+        <!--搜索品牌结果-->
+        <activity android:name="com.can.bimuprojects.activity.SearchBrandResultActivity"
+            android:screenOrientation="portrait"/>
+
+        <!--友盟分享-->
+        <activity
+            android:name="com.umeng.socialize.editorpage.ShareActivity"
+            android:excludeFromRecents="true"
+            android:theme="@style/Theme.UMDefault" />
+        <!--微信分享-->
+        <activity
+            android:name="com.can.bimuprojects.activity.WXEntryActivity"
+            android:configChanges="keyboardHidden|orientation|screenSize"
+            android:exported="true"
+            android:screenOrientation="portrait"
+            android:theme="@android:style/Theme.Translucent.NoTitleBar" />
+
+
+    </application>
+
+</manifest>

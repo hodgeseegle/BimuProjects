@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:id="@+id/fl_image_detail"
+    android:layout_height="match_parent" >
+
+    <com.can.bimuprojects.view.gallery.HackyViewPager
+        android:id="@+id/hvp_imagepager_activity"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="#000000" />
+
+    <TextView
+        android:id="@+id/tv_indicator_imagepager"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="top"
+        android:gravity="center"
+        android:textSize="18sp"
+        android:padding="6dp"
+        android:textColor="#ffffff"
+        android:text="@string/viewpager_indicator"
+        android:background="@android:color/transparent" />
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_alignParentBottom="true"
+        android:id="@id/ll_brand_detail_bottom"
+        android:layout_width="match_parent"
+        android:layout_gravity="bottom"
+        android:layout_height="50dp">
+
+        <TextView
+            android:id="@+id/tv_image_detail_openshop_process"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/color_red"
+            android:textColor="@color/color_white"
+            android:text="@string/get_openshop_plan"
+            android:textSize="18sp"
+            android:gravity="center"
+            />
+
+    </LinearLayout>
+
+
+</FrameLayout>

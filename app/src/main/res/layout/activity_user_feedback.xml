@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:background="@color/color_white"
+              android:fitsSystemWindows="true"
+              android:orientation="vertical">
+
+
+
+    <include layout="@layout/item_app_title"/>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        >
+
+        <EditText
+            android:id="@+id/user_feedback_et_content"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_margin="10dp"
+            android:textColorHint="@color/color_middle_text"
+            android:textSize="16sp"
+            android:textColor="@color/color_big_text"
+            android:background="@drawable/shape_btn_rounded_rectangle_deep_gray"
+            android:gravity="start"
+            android:hint="在这里写下您的宝贵意见吧..."
+            android:layout_above="@+id/user_feedback_btn_commit"
+            android:padding="10dp"/>
+
+        <Button
+            android:id="@id/user_feedback_btn_commit"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="10dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:background="@drawable/shape_find_project_btn"
+            android:text="提交"
+            android:layout_alignParentBottom="true"
+            android:textColor="@color/colorWhite"/>
+
+    </RelativeLayout>
+
+
+
+</LinearLayout>

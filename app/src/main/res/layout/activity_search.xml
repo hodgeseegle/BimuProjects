@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/color_white"
+    android:fitsSystemWindows="true"
+    android:orientation="vertical">
+
+    <include
+        android:id="@+id/rl"
+        layout="@layout/item_app_title"/>
+
+
+    <com.can.bimuprojects.view.SearchView
+        android:layout_marginTop="1dp"
+        android:id="@+id/custom_search_view"
+        android:layout_below="@+id/rl"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="0.3dp"
+        android:layout_below="@id/custom_search_view"
+        android:background="@color/colorBlack"/>
+
+
+    <LinearLayout
+        android:layout_marginTop="1dp"
+        android:id="@+id/ll"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/custom_search_view"
+        android:background="@color/color_low"
+        android:paddingBottom="15dp"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/tv_search_everyone_search"
+            android:visibility="gone"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="10dp"
+            android:text="@string/everyone_searching"
+            android:textColor="@color/color_small_text"
+            android:textSize="14sp" />
+
+        <LinearLayout
+            android:visibility="gone"
+            android:id="@+id/ll_hot_search"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:paddingLeft="10dp"
+            android:paddingRight="10dp"
+            ></LinearLayout>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingLeft="20px"
+            android:layout_marginTop="10dp"
+            android:text="@string/search_history"
+            android:textColor="@color/color_small_text"
+            android:textSize="14sp" />
+
+    </LinearLayout>
+
+        <RelativeLayout
+            android:layout_below="@+id/ll"
+            android:layout_width="match_parent"
+            android:background="@color/color_white"
+            android:layout_height="match_parent">
+
+            <ListView
+                android:id="@+id/lv_search_history"
+                android:layout_width="match_parent"
+                android:background="@color/color_white"
+                android:layout_height="match_parent"
+                android:dividerHeight="0.3dp"
+                android:divider="@color/color_divi_line"
+                android:layout_above="@+id/btn_clear"/>
+
+            <Button
+                android:id="@id/btn_clear"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentBottom="true"
+                android:background="@drawable/selector_shape"
+                android:textColor="@color/color_small_text"
+                android:text="清除搜索历史" />
+        </RelativeLayout>
+
+
+</RelativeLayout>

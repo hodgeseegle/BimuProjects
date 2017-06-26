@@ -1,0 +1,139 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:fitsSystemWindows="true"
+    android:background="@color/color_white"
+    tools:context=".activity.MainActivity">
+
+    <LinearLayout
+        android:id="@+id/main_ll_content"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:orientation="vertical"/>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="2px"
+        android:background="@color/color_divi_line"/>
+
+    <LinearLayout
+        android:paddingTop="4dp"
+        android:paddingBottom="4dp"
+        android:id="@+id/main_ll_tabs"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:background="#f9f9f9"
+        android:orientation="horizontal"
+        android:tag="底部Tab">
+        <LinearLayout
+            android:id="@+id/main_ll_home"
+            android:orientation="vertical"
+            android:gravity="center"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content">
+            <ImageView
+                android:id="@+id/main_iv_home"
+                android:layout_width="25dp"
+                android:layout_height="25dp"
+                />
+            <TextView
+                android:id="@+id/main_tv_home"
+                android:text="@string/home_page"
+                android:textColor="#676057"
+                android:textSize="10sp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/main_ll_discovery"
+            android:orientation="vertical"
+            android:gravity="center"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:visibility="gone"
+            android:layout_height="wrap_content">
+            <ImageView
+                android:id="@+id/main_iv_discovery"
+                android:layout_width="26dp"
+                android:layout_height="26dp"
+                />
+            <TextView
+                android:id="@+id/main_tv_discovery"
+                android:text="@string/discovery"
+                android:textSize="10sp"
+                android:textColor="#676057"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+        </LinearLayout>
+
+
+        <LinearLayout
+            android:id="@+id/main_ll_bargin"
+            android:orientation="vertical"
+            android:gravity="center"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content">
+            <ImageView
+                android:id="@+id/main_iv_bargin"
+                android:layout_width="26dp"
+                android:layout_height="26dp"
+               />
+            <TextView
+                android:id="@+id/main_tv_bargin"
+                android:text="@string/bargin"
+                android:textSize="10sp"
+                android:textColor="#676057"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/main_ll_mine"
+            android:orientation="vertical"
+            android:gravity="center"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content">
+
+            <RelativeLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+
+                <ImageView
+                    android:id="@+id/main_iv_mine"
+                    android:layout_width="25dp"
+                    android:layout_height="25dp"
+                    />
+                <View
+                    android:visibility="invisible"
+                    android:id="@+id/red_pot"
+                    android:layout_alignRight="@id/main_iv_mine"
+                    android:layout_width="10dp"
+                    android:layout_height="10dp"
+                    android:background="@drawable/dot_new_message"/>
+            </RelativeLayout>
+
+            <TextView
+                android:id="@+id/main_tv_mine"
+                android:text="@string/mine"
+                android:textSize="10sp"
+                android:textColor="#676057"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+
+
+        </LinearLayout>
+
+
+    </LinearLayout>
+
+
+</LinearLayout>

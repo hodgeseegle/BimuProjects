@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string-array name="array_article_type">
+        <item>考察日记</item>
+        <item>开店日记</item>
+        <item>心得感悟</item>
+    </string-array>
+
+    <!--搜索品牌结果-->
+    <string-array name="search_brand_result">
+        <item>文章</item>
+        <item>品牌</item>
+        <item>行业</item>
+    </string-array>
+
+    <!--品牌颜色集合-->
+    <string-array name="brand_colors">
+        <item>@color/color1</item>
+        <item>@color/color2</item>
+        <item>@color/color3</item>
+        <item>@color/color4</item>
+    </string-array>
+
+    <!--金额集合-->
+    <string-array name="money_lists">
+        <item>不限</item>
+        <item>¥ 10万以下</item>
+        <item>¥ 10-20万</item>
+        <item>¥ 20-30万</item>
+        <item>¥ 30-40万</item>
+        <item>¥ 40-50万</item>
+        <item>¥ 50-80万</item>
+        <item>¥ 80-100万</item>
+        <item>¥100万以上</item>
+
+    </string-array>
+
+
+
+</resources>

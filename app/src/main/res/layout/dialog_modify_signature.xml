@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:padding="10dp"
+    android:background="@drawable/shape_find_project_bg"
+    android:layout_height="match_parent">
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textSize="18sp"
+        android:textColor="@color/color_big_text"
+        android:text="@string/modify_signature"
+        android:gravity="left"
+        android:layout_marginTop="10dp"
+        android:id="@+id/textView" />
+
+    <com.can.bimuprojects.view.ClearEditText
+        android:layout_marginTop="10dp"
+        android:layout_marginBottom="10dp"
+        android:id="@+id/et_modify_signature"
+        android:maxLines="3"
+        android:textColorHint="@color/color_small_text"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="right"
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/tv_cancle_modify_signature"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="16sp"
+            android:padding="10dp"
+            android:text="@string/cancle"
+            android:textColor="@color/color_big_text"/>
+
+        <TextView
+            android:id="@+id/tv_sure_modify_signature"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="16sp"
+        android:text="@string/sure"
+            android:padding="10dp"
+        android:textColor="@color/color_big_text"/>
+
+
+    </LinearLayout>
+
+</LinearLayout>

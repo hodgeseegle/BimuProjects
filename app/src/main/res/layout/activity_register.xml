@@ -1,0 +1,233 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:background="@color/color_white"
+    android:layout_height="match_parent"
+    android:fitsSystemWindows="true"
+    android:orientation="vertical">
+
+    <include layout="@layout/item_app_title"/>
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        >
+
+        <TextView
+            android:id="@+id/tv_protocal"
+            android:layout_width="match_parent"
+            android:layout_height="35dp"
+            android:layout_gravity="bottom"
+            android:background="@color/color_gray"
+            android:gravity="center"
+            android:textSize="12sp" />
+    </FrameLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:paddingLeft="20dp"
+        android:paddingRight="20dp"
+        android:layout_marginTop="100dp"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true">
+
+        <TextView
+            android:gravity="center"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:text="@string/register_phone"
+            android:textColor="@color/color_big_text"
+            android:textSize="22sp"/>
+
+        <TextView
+            android:layout_marginTop="15dp"
+            android:gravity="center"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:text="@string/register_protect"
+            android:textColor="@color/color_middle_text"
+            android:textSize="16sp"/>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            >
+
+            <TextView
+                android:visibility="gone"
+                android:layout_marginTop="30dp"
+                android:id="@+id/tv_login_phone"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="14sp"
+                android:padding="10dp"
+                android:textColor="@color/color_red"
+                android:text="@string/phone_num"/>
+
+            <TextView
+                android:visibility="gone"
+                android:layout_marginTop="30dp"
+                android:id="@+id/tv_login_phone2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="16sp"
+                android:padding="10dp"
+                android:textColor="@color/color_small_text"
+                android:text="@string/please_input_phone_num"/>
+
+            <com.can.bimuprojects.view.ClearEditText
+                android:layout_marginTop="50dp"
+                android:id="@+id/et_tel"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="@string/please_input_phone_num"
+                android:inputType="phone"
+                android:theme="@style/Et_style"
+                android:maxLength="11"
+                android:imeOptions="actionNext"
+                android:drawablePadding="2dp"
+                android:background="@null"
+                android:drawableBottom="@drawable/shape_et_line2"
+                android:textSize="16sp"
+                android:padding="10dp"
+                android:textColorHint="@color/color_small_text"
+                android:singleLine="true"/>
+
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            >
+
+            <TextView
+                android:visibility="gone"
+                android:id="@+id/tv_login_number1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="14sp"
+                android:paddingLeft="10dp"
+                android:paddingRight="10dp"
+                android:textColor="@color/color_red"
+                android:text="@string/please_input_pwd"/>
+
+            <TextView
+                android:visibility="gone"
+                android:id="@+id/tv_login_number2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="16sp"
+                android:paddingLeft="10dp"
+                android:paddingTop="6dp"
+                android:paddingRight="10dp"
+                android:textColor="@color/color_small_text"
+                android:text="@string/pwd"/>
+
+            <EditText
+                android:layout_marginTop="20dp"
+                android:id="@+id/et_pwd"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="@string/pwd"
+                android:theme="@style/Et_style"
+                android:maxLength="11"
+                android:inputType="textPassword"
+                android:imeOptions="actionNext"
+                android:drawablePadding="2dp"
+                android:background="@null"
+                android:drawableBottom="@drawable/shape_et_line2"
+                android:textSize="16sp"
+                android:paddingLeft="10dp"
+                android:paddingRight="10dp"
+                android:paddingBottom="10dp"
+                android:textColorHint="@color/color_small_text"
+                android:singleLine="true"/>
+
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            >
+
+            <TextView
+                android:visibility="gone"
+                android:id="@+id/tv_register_code1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="14sp"
+                android:paddingLeft="10dp"
+                android:paddingRight="10dp"
+                android:paddingBottom="10dp"
+                android:textColor="@color/color_red"
+                android:text="@string/verify_code"/>
+
+            <TextView
+                android:visibility="gone"
+                android:id="@+id/tv_register_code2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="16sp"
+                android:paddingLeft="10dp"
+                android:paddingRight="10dp"
+                android:paddingBottom="10dp"
+                android:paddingTop="3dp"
+                android:textColor="@color/color_small_text"
+                android:text="@string/please_input_erify_code"/>
+
+            <EditText
+                android:layout_marginTop="10dp"
+                android:id="@+id/et_msg_check"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="@string/please_input_erify_code"
+                android:inputType="phone"
+                android:theme="@style/Et_style"
+                android:maxLength="11"
+                android:imeOptions="actionDone"
+                android:drawablePadding="2dp"
+                android:background="@null"
+                android:drawableBottom="@drawable/shape_et_line2"
+                android:textSize="16sp"
+                android:padding="10dp"
+                android:textColorHint="@color/color_small_text"
+                android:singleLine="true"/>
+
+            <Button
+                android:id="@+id/btn_ac_msg_check"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:background="@null"
+                android:gravity="center"
+                android:layout_marginTop="5dp"
+                android:text="@string/acquire_erify"
+                android:textSize="14sp"
+                android:textColor="@color/color_small_text"/>
+
+        </RelativeLayout>
+
+
+
+        <TextView
+            android:gravity="center"
+            android:padding="10dp"
+            android:id="@+id/btn_register"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="30dp"
+            android:background="@drawable/shape_login"
+            android:text="@string/registered"
+            android:textColor="@color/colorWhite"
+            android:textSize="16sp" />
+
+
+    </LinearLayout>
+
+
+</RelativeLayout>

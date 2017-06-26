@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    >
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:orientation="horizontal"
+        android:id="@+id/ll_home_head_search"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentLeft="true"
+        android:background="@color/color_app_bg"
+        android:layout_alignParentStart="true">
+
+        <LinearLayout
+            android:id="@+id/ll_home_head_search_click"
+            android:layout_width="match_parent"
+            android:background="@drawable/shape_home_search"
+            android:layout_marginTop="10dp"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"
+            android:orientation="horizontal"
+            android:layout_marginBottom="10dp"
+            android:gravity="center"
+            android:layout_height="wrap_content">
+
+            <ImageView
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:src="@drawable/img_search_home"/>
+
+            <!--搜索栏-->
+            <TextView
+                android:id="@+id/tv_home_search"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:layout_marginTop="5dp"
+                android:textColor="@color/color_middle_text"
+                android:layout_marginBottom="5dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/search_interest"
+                android:textSize="@dimen/text_size_12"
+                android:background="@color/transparent"
+                android:gravity="center"
+                />
+
+        </LinearLayout>
+    </LinearLayout>
+
+
+    <LinearLayout
+        android:layout_below="@id/ll_home_head_search"
+        android:layout_width="match_parent"
+        android:orientation="vertical"
+        android:layout_height="match_parent">
+
+    <com.can.bimuprojects.view.RefreshListView
+        android:id="@+id/rlv_home_pager"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:dividerHeight="0dp"
+        android:scrollbars="none"
+        android:divider="@null"/>
+    </LinearLayout>
+    <LinearLayout
+        android:layout_below="@id/ll_home_head_search"
+        android:layout_width="match_parent"
+        android:background="@color/color_white"
+        android:clickable="true"
+        android:layout_height="wrap_content">
+    <TextView
+        android:visibility="gone"
+        android:id="@+id/tv_home_select_raiders"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/hot_brand"
+        android:textSize="@dimen/text_size_14"
+        android:textColor="@color/color_big_text"
+        android:layout_marginTop="10dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginBottom="10dp"
+        android:background="@color/color_white"
+        />
+    </LinearLayout>
+
+</RelativeLayout>

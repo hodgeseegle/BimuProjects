@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:background="@color/color_white"
+    android:layout_width="match_parent"
+    android:fitsSystemWindows="true"
+    android:layout_height="match_parent">
+
+
+    <include  layout="@layout/item_app_title"/>
+
+    <com.can.bimuprojects.view.LoadMoreListView
+        android:id="@+id/lv_look_all_raiders"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:dividerHeight="0dp"
+        android:divider="#ffffff"
+        android:layout_weight="1"/>
+
+    <LinearLayout
+        android:id="@+id/ll_look_all_raiders_write_comment"
+        android:layout_width="match_parent"
+        android:layout_gravity="bottom"
+        android:gravity="center"
+        android:layout_height="wrap_content">
+
+        <ImageView
+            android:id="@+id/iv_write_comment"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            />
+
+        <TextView
+            android:layout_marginLeft="10dp"
+            android:textColor="@color/color_big_text"
+            android:textSize="16sp"
+            android:text="@string/write_comment"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+    </LinearLayout>
+
+</LinearLayout>

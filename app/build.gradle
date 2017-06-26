@@ -1,0 +1,133 @@
+apply plugin: 'com.android.application'
+
+android {
+    compileSdkVersion 23
+    buildToolsVersion '23.0.1'
+    defaultConfig {
+        applicationId "com.can.bimuprojects"
+        minSdkVersion 15
+        targetSdkVersion 22
+        versionCode 1
+        versionName "1.0"
+        multiDexEnabled true
+    }
+
+    android {
+        productFlavors {
+            Baidu {}
+            c360 {}
+            Yingyongbao {}
+            Huawei {}
+            vivo {}
+            xiaomi {}
+            oppo {}
+            Wandoujia {}
+            Anzhi {}
+            Meizu {}
+            Pp {}
+            SamSung {}
+            c91 {}
+            讯点科技{}
+            檬想移动{}
+            掌承网络{}
+            最美天气{}
+            亚笔数娱{}
+            点传科技{}
+            致力{}
+            悠盟{}
+            绿豆科技{}
+            白菜优惠券{}
+            前海柒智{}
+            港湾无限{}
+            梅赛互动{}
+        }
+
+        productFlavors.all {
+            flavor -> flavor.manifestPlaceholders = [UMENG_CHANNEL_VALUE: name]
+        }
+    }
+
+    //某些输入文件使用或覆盖了已过时的 api的解决方案
+    allprojects {
+        gradle.projectsEvaluated {
+            tasks.withType(JavaCompile) {
+                options.compilerArgs << "-Xlint:unchecked" << "-Xlint:deprecation"
+            }
+        }
+    }
+
+    lintOptions {
+        abortOnError false
+    }
+
+    sourceSets {
+        main {
+            jniLibs.srcDirs = ['libs']
+        }
+    }
+
+    task nativeLibsToJar(type: Zip, description: "create a jar archive of the native libs") {
+        destinationDir file("$projectDir/libs")
+        baseName "Native_Libs2"
+        extension "jar"
+        from fileTree(dir: "src/main/jniLibs", include: "**/*.so")
+        into "lib"
+    }
+
+    tasks.withType(JavaCompile) {
+        compileTask -> compileTask.dependsOn(nativeLibsToJar)
+    }
+
+
+
+    signingConfigs {
+        release {
+            keyAlias 'bimu'
+            keyPassword 'bimu87030509'
+            storeFile file('C:/can/bimu/Bimu/bimu.jks')
+            storePassword 'bimu87030509'
+        }
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            debuggable false
+            zipAlignEnabled true
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            buildConfigField "boolean","LOG_DEBUG","true"
+        }
+        debug {
+            signingConfig signingConfigs.release
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+
+    }
+
+    packagingOptions {
+        exclude 'META-INF/NOTICE' // will not include NOTICE file
+        exclude 'META-INF/LICENSE' // will not include LICENSE file
+        exclude 'META-INF/ASL2.0' //will not include ALS2.0 file
+    }
+
+}
+
+
+dependencies {
+    compile fileTree(include: ['*.jar'], dir: 'libs')
+    testCompile 'junit:junit:4.12'
+    compile files('libs/volley.jar')
+    compile 'com.android.support:appcompat-v7:23.4.0'
+    compile 'com.github.bumptech.glide:glide:3.5.2'
+    compile 'com.android.support:support-v4:23.4.0'
+    compile 'com.android.support:design:23.4.0'
+    compile 'com.jakewharton:butterknife:7.0.1'
+    compile 'com.umeng.analytics:analytics:latest.integration'
+    compile 'com.solidfire.code.gson:gson:2.6.2'
+    compile files('libs/jackson-annotations-2.1.0.jar')
+    compile files('libs/SocialSDK_WeiXin_1.jar')
+    compile files('libs/SocialSDK_WeiXin_2.jar')
+    compile files('libs/umeng_social_sdk.jar')
+    compile project(':PushSDK')
+    compile 'com.android.support:multidex:1.0.0'
+}

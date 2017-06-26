@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#EC7063</color>
+    <color name="colorPrimaryDark">#EC7063</color>
+    <color name="lightPrimary">#FFCDD2</color>
+    <color name="colorAccent">#F44336</color>
+    <color name="lightRed">#f9958b</color>
+    <color name="divider">#ede7d9</color>
+    <color name="colorWhite">#fff</color>
+    <color name="colorGray">#888888</color>
+    <color name="exitButton">#d3d3c6</color>
+    <color name="colorBlack">#000000</color>
+    <color name="transpantPrimary">#66EC7063</color>
+    <!-- 文本颜色相关-->
+    <color name="textGray">#505050</color>
+    <color name="textLightGray">#ACABAC</color>
+    <color name="messageTime">#d1c7ae</color>
+    <color name="textRed">#EA6857</color>
+    <color name="textBlue">#328AD0</color>
+    <color name="textBlcak">#000000</color>
+    <color name="color_gray">#F2F4F5</color>
+    <color name="color_white">#ffffff</color>
+    <color name="hot_search_text">#a4998e</color>
+    <color name="article_detail_text">#736659</color>
+    <color name="transparent_background">#50000000</color>
+    <color name="split_line">#daccba</color>
+    <!--首页推荐和关注的文字颜色-->
+    <color name="home_red">#fe262b</color>
+    <color name="home_black">#3f3328</color>
+    <!--评论-->
+    <color name="comment_text">#a4998e</color>
+    <color name="selected">#66EC7063</color>
+    <drawable name="guide_normal">#EC7063</drawable>
+    <drawable name="guide_pressed">#ffffff</drawable>
+    <!--首页分割线-->
+    <color name="fp_divider_line">#ecf0f1</color>
+
+    <!--搜索栏背景-->
+    <color name="color_search_bg">#e8e6e6</color>
+
+
+    <!--新版本。。。。。-->
+    <!--大字体颜色-->
+    <color name="color_big_text">#222222</color>
+    <!--小字体颜色-->
+    <color name="color_small_text">#999999</color>
+    <!--中间字体颜色-->
+    <color name="color_middle_text">#666666</color>
+    <!--红色透明-->
+    <color name="red_transparent">#ccff6a01</color>
+    <!--红色-->
+    <color name="color_red">#f44336</color>
+    <!--未选中的颜色-->
+    <color name="color_no_select">#e0e0e0</color>
+    <!--黑色-->
+    <color name="color_black">#000000</color>
+    <!--分割线-->
+    <color name="color_divi_line">#e6e6e6</color>
+    <!--透明-->
+    <color name="transparent">#00000000</color>
+    <!--半透明-->
+    <color name="translucent">#77555555</color>
+    <!--透明更深-->
+    <color name="low_transl">#77111111</color>
+    <!--浅颜色-->
+    <color name="color_low">#eeeeeeee</color>
+    <!--橙色-->
+    <color name="orange">#FF6100</color>
+    <!--粉色-->
+    <color name="low_red">#FE3824</color>
+    <!--浅色背景-->
+    <color name="low_bg">#dddddddd</color>
+    <!--品牌字体颜色-->
+    <color name="brand_text">#666666</color>
+    <!--蓝色-->
+    <color name="color_blue">#03A9F4</color>
+    <!--绿色-->
+    <color name="color_green">#2ecc71</color>
+    <!--深红-->
+    <color name="dep_red">#B71C1C</color>
+
+    <!--color1-->
+    <color name="color1">#E74C3C</color>
+    <!--color2-->
+    <color name="color2">#E67E22</color>
+    <!--color3-->
+    <color name="color3">#D35400</color>
+    <!--color4-->
+    <color name="color4">#F1C40F</color>
+
+    <!--文字选中颜色-->
+    <color name="color_app_text_yes">#ff6a01</color>
+    <!--文字未选中颜色-->
+    <color name="color_app_text_no">#666666</color>
+    <!--背景样式颜色-->
+    <color name="color_app_bg">#2980b9</color>
+    <!--咨询品牌后的颜色-->
+    <color name="color_zixun_brand">#2ecc71</color>
+    
+</resources>

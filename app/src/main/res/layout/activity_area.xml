@@ -1,0 +1,80 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/color_white"
+    android:orientation="vertical"
+    >
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:background="@color/color_white">
+
+        <ImageView
+            android:id="@+id/iv_exit_area"
+            android:layout_width="45dp"
+            android:layout_height="25dp"
+            android:layout_centerVertical="true"
+            android:src="@drawable/back_black"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:text="@string/city_select"
+            android:textColor="@color/color_big_text"
+            android:textSize="18sp"/>
+
+        <TextView
+            android:id="@+id/tv_sure_area"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/sure"
+            android:textSize="16sp"
+            android:textColor="@color/color_big_text"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="20dp"
+            />
+
+        <TextView
+            android:layout_alignParentBottom="true"
+            android:layout_width="match_parent"
+            android:layout_height="0.3dp"
+            android:background="@color/color_black"/>
+
+    </RelativeLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/color_low"
+        android:orientation="horizontal" >
+
+        <com.can.bimuprojects.adapter.AreaSelect.WheelView
+            android:id="@+id/id_province"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1" >
+        </com.can.bimuprojects.adapter.AreaSelect.WheelView>
+
+        <com.can.bimuprojects.adapter.AreaSelect.WheelView
+            android:id="@+id/id_city"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1" >
+        </com.can.bimuprojects.adapter.AreaSelect.WheelView>
+
+        <com.can.bimuprojects.adapter.AreaSelect.WheelView
+            android:id="@+id/id_district"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1" >
+        </com.can.bimuprojects.adapter.AreaSelect.WheelView>
+    </LinearLayout>
+
+
+
+
+
+</LinearLayout>

@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:background="@color/color_search_bg"
+    android:layout_height="wrap_content">
+
+
+    <TextView
+        android:paddingTop="20dp"
+        android:paddingLeft="10dp"
+        android:paddingBottom="10dp"
+        android:text="@string/money_touzi"
+        android:layout_width="wrap_content"
+        android:textSize="16sp"
+        android:textColor="@color/color_small_text"
+        android:layout_height="wrap_content" />
+
+
+    <LinearLayout
+        android:id="@+id/ll_home_moneys"
+        android:layout_width="match_parent"
+        android:orientation="vertical"
+        android:paddingLeft="10dp"
+        android:paddingRight="10dp"
+        android:layout_height="wrap_content">
+
+    </LinearLayout>
+
+
+    <Button
+        android:id="@+id/btn_choose_money"
+        android:layout_width="match_parent"
+        android:background="@drawable/shape_login"
+        android:text="@string/sure"
+        android:textSize="18sp"
+        android:layout_marginLeft="50dp"
+        android:layout_marginRight="50dp"
+        android:layout_marginTop="20dp"
+        android:layout_marginBottom="20dp"
+        android:textColor="@color/color_white"
+        android:layout_height="wrap_content" />
+
+
+</LinearLayout>

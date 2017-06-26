@@ -1,0 +1,147 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/color_white"
+    android:fitsSystemWindows="true"
+    android:orientation="vertical">
+
+
+    <include
+        android:id="@+id/rl_head_article_detail"
+        layout="@layout/item_app_title"/>
+
+    <LinearLayout
+        android:id="@+id/rl_bottm_article_detail"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:orientation="vertical"
+        >
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/colorGray"
+            />
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:background="@color/color_white"
+            android:layout_height="match_parent">
+
+            <LinearLayout
+                android:id="@+id/ll_article_detail"
+                android:layout_marginBottom="10dp"
+                android:layout_marginTop="10dp"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+               android:focusable="true"
+                android:focusableInTouchMode="true"
+                android:layout_marginLeft="10dp"
+                android:background="@drawable/shape_article_detail_edittext"
+                android:layout_height="wrap_content">
+
+        <EditText
+            android:id="@+id/et_article_detail"
+            android:imeOptions="actionSend"
+            android:background="@null"
+            android:layout_gravity="center_vertical"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_marginTop="5dp"
+            android:layout_marginBottom="5dp"
+            android:layout_marginLeft="10dp"
+            android:hint="@string/say_something"
+            android:textColor="@color/color_big_text"
+            android:textSize="16sp"
+            android:inputType="text"
+            android:textColorHint="@color/color_small_text"
+            android:layout_height="match_parent" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:orientation="horizontal"
+                android:layout_height="match_parent"
+                android:gravity="center"
+                android:background="@color/color_white"
+                android:layout_weight="1">
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:layout_height="wrap_content">
+
+
+                    <com.can.bimuprojects.view.NumImageView
+                        android:id="@+id/niv_article_detail"
+                        android:layout_width="30dp"
+                        android:layout_height="30dp"
+                        />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:layout_height="wrap_content">
+
+                <ImageView
+                    android:id="@+id/iv_article_detail_parised"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:layout_height="wrap_content">
+
+                <ImageView
+                    android:id="@+id/iv_article_detail_share"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    />
+                </LinearLayout>
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+
+    <com.can.bimuprojects.view.LoadMoreListView
+        android:id="@+id/lv_article_detail"
+        android:layout_width="match_parent"
+        android:divider="#ffffff"
+        android:dividerHeight="0dp"
+        android:layout_below="@id/rl_head_article_detail"
+        android:layout_above="@id/rl_bottm_article_detail"
+        android:layout_height="wrap_content">
+
+    </com.can.bimuprojects.view.LoadMoreListView>
+
+    <TextView
+        android:id="@+id/tv_article_detail_related_brand"
+        android:layout_width="120dp"
+        android:layout_height="40dp"
+        android:gravity="center"
+        android:visibility="gone"
+        android:background="@drawable/shape_related_brand"
+        android:text="@string/related_brand"
+        android:textColor="@color/color_white"
+        android:textSize="18sp"
+        android:layout_alignParentRight="true"
+        android:layout_above="@id/rl_bottm_article_detail"
+        android:layout_marginBottom="10dp"
+        />
+
+
+</RelativeLayout>

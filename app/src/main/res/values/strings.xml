@@ -1,0 +1,234 @@
+<resources>
+    <!-- 底部标签-->
+    <string name="app_name">创业项目大全</string>
+    <string name="home_page">首页</string>
+    <string name="bargin">心愿单</string>
+    <string name="mine">我的</string>
+    <string name="discovery">行业</string>
+
+    <string name="register">手机快速注册</string>
+    <string name="registe">注册</string>
+    <string name="login">登录</string>
+    <string name="login_account">账号登录</string>
+    <string name="customize_your_home_page">定制您的主页</string>
+    <string name="recommand_focus">推荐关注</string>
+    <string name="article">文章</string>
+    <string name="item_mentioned">提到的项目</string>
+    <string name="see_more">查看更多</string>
+    <string name="help_you_to_study">帮你考察</string>
+    <string name="similar_items_recommended">同类项目推荐</string>
+    <string name="item_category">项目类别</string>
+    <string name="number_of_shops">店铺数量</string>
+    <string name="initial_investment_amount">初始投资金额</string>
+    <string name="add_attention">添加关注</string>
+    <string name="connect_me_immediately">立刻联系我</string>
+    <string name="title_activity_login">Sign in</string>
+    <string name="user_protocal">用户协议</string>
+
+    <string name="serect">密码</string>
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="please_input_pwd">请输入密码</string>
+    <string name="please_input_phone_num">请输入手机号</string>
+    <string name="find_pwd"><u>忘记密码?</u></string>
+    <string name="hot_activity">热门活动</string>
+    <string name="already_signed">已报名:0</string>
+    <string name="sign_up_immediately">立即报名</string>
+    <string name="phone_num">手机号</string>
+    <string name="verify_code">验证码</string>
+    <string name="please_input_erify_code">请输入验证码</string>
+    <string name="pwd">请输入密码，长度不小于6位</string>
+    <string name="acquire_erify">| 获取验证码</string>
+    <string name="my_message">消息通知</string>
+    <string name="feedback">意见反馈</string>
+    <string name="service_rules">服务条款</string>
+    <string name="about_us">关于我们</string>
+    <string name="brand_page">品牌</string>
+    <string name="personal_page">个人主页</string>
+    <string name="edit_article">写文章</string>
+    <string name="publish_article">发布文章</string>
+    <string name="leaveMessage">留言</string>
+    <string name="title_activity_category">CategoryActivity</string>
+    <string name="send">发表</string>
+    <string name="edittext_notice_0">说点什么吧</string>
+    <string name="registered">完成注册</string>
+    <string name="title_activity_search_result">SearchResultActivity</string>
+    <string name="title_activity_guide">GuideActivity</string>
+
+    <!--注册-->
+    <string name="register_phone">注册</string>
+    <string name="register_protect">手机号仅用于登录和保护账户安全</string>
+
+    <!--更新提示-->
+    <string name="update_noti">立即更新</string>
+
+
+    <!--找项目-->
+    <string name="money">投资金额</string>
+    <string name="area">面积大小</string>
+    <string name="interest">兴趣行业</string>
+    <string name="shop_address">开店地址</string>
+    <string name="please_choose">请选择</string>
+    <string name="find_project">搜索</string>
+    <string name="please_choose_area">请选择铺面大小</string>
+    <string name="money_touzi">投资金额</string>
+    <string name="i_am_much_money">我是土豪，投资一百万以上</string>
+    <string name="no_shop">暂无铺面</string>
+    <string name="price">价格</string>
+
+    <!--搜索-->
+    <string name="search_interest">搜索感兴趣的品牌</string>
+    <string name="search">搜索</string>
+    <string name="everyone_searching">大家都在搜</string>
+    <string name="search_history">搜索历史</string>
+    <string name="search_result">搜索结果</string>
+    <string name="search_notifition">攻略 | 推荐 | 问答 | 贴士</string>
+
+    <!--兴趣行业-->
+    <string name="sure">确定</string>
+
+    <!--城市选择-->
+    <string name="city_select">城市选择</string>
+    <string name="prompt">提示</string>
+    
+    <!--比目推荐-->
+    <string name="bimu_recommend">比目推荐</string>
+    <string name="no_brand">没有符合您条件的品牌，请重新输入条件</string>
+
+    <!--专题-->
+    <string name="special">专题</string>
+    <string name="look_all">查看全部</string>
+    <string name="reducible_brands">可约品牌</string>
+    <string name="guess_interest">猜你感兴趣</string>
+    <string name="selectedRaiders">精选考察攻略</string>
+    <!--热门品牌-->
+    <string name="hot_brand">热门品牌</string>
+    <string name="brand_list">品牌列表</string>
+
+    <!--品牌详情-->
+    <string name="brand_detail">品牌详情</string>
+    <string name="brand_introduce">品牌介绍</string>
+    <string name="detail">详情</string>
+    <string name="fee">费用</string>
+    <string name="assess">评价</string>
+    <string name="shop_and_product">店面和产品</string>
+    <string name="look_full_introduce">查看完整介绍</string>
+    <string name="raiders">攻略</string>
+    <string name="look_full_raiders">查看全部攻略</string>
+    <string name="recommend_project">推荐项目</string>
+    <string name="cost">费用</string>
+    <string name="join_fee">加盟费</string>
+    <string name="bond">保证金</string>
+    <string name="device">设备</string>
+    <string name="first_materiel">首批物料</string>
+    <string name="renovation">装修</string>
+    <string name="manager_fee">管理费</string>
+    <string name="design_fee">设计费</string>
+    <string name="shiyong_fee">使用费</string>
+    <string name="shangbao_fee">商标费</string>
+    <string name="qita_fee">其它费用</string>
+    <string name="fee_remarks">以上费用为预估，不含房租、转让费</string>
+    <string name="recommend">推荐</string>
+    <string name="join_process">加盟流程</string>
+    <string name="get_openshop_plan">获取开店方案</string>
+    <string name="fee_get_open_shop">确定下令接驾</string>
+    <string name="brand_connect_you">品牌官方将及时回复你！</string>
+    <string name="this_brand_you">发现更多合适品牌！</string>
+    <string name="can_select_zixun">同步获取最新报价</string>
+    <string name="had_notified_brand">已通知品牌接驾</string>
+    <string name="notified_brand_content">已将您的咨询需求传达给品牌方，届时品牌方将安排专员为您解答疑问和指定开店计划，请保持电话畅通，谢谢。</string>
+    <string name="over_this_you_can">在此之前，您可以</string>
+    <string name="look_love_list">查看心愿单</string>
+    <string name="look_brand">查看品牌页</string>
+    <string name="xiansheng">先生</string>
+    <string name="nvshi">女士</string>
+    <string name="your_name">请输入您的姓氏</string>
+    <string name="entre_love_list">前往心愿单</string>
+    <string name="viewpager_indicator">%1$d/%2$d</string>
+    <string name="look_all_radiers">查看全部攻略</string>
+    <string name="rob_sofa">抢沙发</string>
+    <string name="no_raiders">暂无攻略,点击下方按钮,发第一个!</string>
+    
+    <!--文章详情-->
+    <string name="related_brand">相关品牌</string>
+    <string name="publish">发表</string>
+    <string name="collection">收藏</string>
+    <string name="comment">评论</string>
+    <string name="share">分享</string>
+    <string name="say_something">说点什么呢</string>
+    <string name="reply">回复</string>
+    <string name="aritcle_list">文章列表</string>
+
+    <!--心愿单-->
+    <string name="your_love">我的心愿单</string>
+    <string name="no_review">待考察</string>
+    <string name="no_comm">待沟通</string>
+    <string name="go_review">前往考察/淘汰</string>
+    <string name="reservation_service">预约服务</string>
+    <string name="intention_to_join">意向加盟品牌</string>
+    <string name="please_choose_next">请选择下一步</string>
+    <string name="reservation_go_review">预约前往总部考察</string>
+    <string name="bimu_kefu_fee">客服免费预约考察时间</string>
+    <string name="brand_zhuanyuan_jiedai">品牌专员接待</string>
+    <string name="detail_say">详细说明</string>
+    <string name="kill_brand">淘汰品牌</string>
+    <string name="kill_brand_say">该品牌将从您的心愿单移除,请选择淘汰品牌的原因</string>
+    <string name="remove_brand_reason">移除该品牌的原因</string>
+    <string name="write_comment">写点评</string>
+    <string name="sure_commit">确认提交</string>
+    <string name="commit">提交</string>
+    <string name="click_commit_agree">点击提交视为同意</string>
+    <string name="personal_protect"><u>《个人信息保护声明》</u></string>
+    <string name="persopnal_infor_protect">个人信息保护声明</string>
+
+    <!--发帖-->
+    <string name="post">发布</string>
+    <string name="post_article">发帖</string>
+    <string name="cancle">取消</string>
+    <string name="say_sometings">说点什么吧...</string>
+    
+    <!--发现页-->
+    <string name="change_professing">更换行业</string>
+    <string name="find_interest_total">个比友感兴趣</string>
+    <string name="read_bi">必读</string>
+    <string name="join_raiders">加盟攻略</string>
+    <string name="bimu">比目</string>
+    <string name="recommend_brand">推荐品牌</string>
+    <string name="look_bimu_jingxuan">浏览精选</string>
+
+    <!--我的-->
+    <string name="notice">通知</string>
+    <string name="person_data">个人资料</string>
+    <string name="modify_signature">修改个性签名</string>
+    <string name="modify_user_name">修改用户名</string>
+    <string name="collection_article">收藏的文章</string>
+    
+    <!--活动-->
+    <string name="discount_exercie">优惠活动</string>
+    <string name="get_discount">获取优惠</string>
+    <string name="look_brand_introduce">查看品牌介绍</string>
+    <string name="exercise_say">活动说明</string>
+    <string name="exercise_content1">您将参加优惠活动</string>
+    <string name="exercise_content2">点击提交,获取加盟优惠</string>
+    <string name="submit">提交</string>
+    <string name="my_discount">我的约惠</string>
+
+    <!--分享-->
+    <string name="share_exercise_title">我发现一个靠谱的项目,不要加盟费,快给点意见!</string>
+    <string name="share_article_title">一般人我不告诉他真实开店分享,我收藏了~</string>
+
+    <!--应用推荐-->
+    <string name="app_recommend">应用推荐</string>
+    <string name="want_down">我要下载</string>
+
+    <!--版本号和版本名称-->
+    <integer name="version_code">1</integer>
+    <string name="version_name">1.0</string>
+    <string name="version">v-3.4</string>
+
+    <!--登录比目app-->
+    <string name="login_bimu">登录创业项目大全</string>
+    <!--退出当前账号-->
+    <string name="exit_current_uid">退出当前账号</string>
+    <!--手机账号登录-->
+    <string name="login_phone">手机账号登录</string>
+</resources>

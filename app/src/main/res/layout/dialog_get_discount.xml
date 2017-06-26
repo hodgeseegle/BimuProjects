@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+
+    <ImageView
+        android:layout_marginTop="20dp"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_gravity="center_horizontal"
+        android:id="@+id/iv_gift" />
+
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/exercise_content1"
+        android:gravity="center_horizontal"
+        android:layout_marginTop="20dp"
+        android:textSize="15sp"
+        android:textColor="@color/color_big_text"
+        />
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/exercise_content2"
+        android:gravity="center_horizontal"
+        android:textSize="15sp"
+        android:textColor="@color/color_big_text"
+        android:layout_marginBottom="20dp"
+        />
+
+
+    <LinearLayout
+        android:visibility="gone"
+        android:id="@+id/ll_dialog_exercise"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_marginRight="20dp"
+        android:layout_marginLeft="20dp"
+        android:layout_marginBottom="20dp"
+        >
+
+        <EditText
+            android:id="@+id/et_dialog_exercise"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:maxLines="1"
+            android:maxEms="10"
+            android:textSize="15sp"
+            android:hint="@string/your_name"/>
+
+        <RadioGroup
+            android:id="@+id/rg_dialog_exercise"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            >
+
+            <RadioButton
+                android:checked="true"
+                android:id="@+id/rb_dialog_exercise_xiansheng"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/xiansheng"
+                android:button="@null"
+                android:drawableLeft="@drawable/select_boy_girl"
+                android:layout_marginRight="10dp"
+                />
+
+            <RadioButton
+                android:id="@+id/rb_dialog_exercise_nvshi"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:button="@null"
+                android:drawableLeft="@drawable/select_boy_girl"
+                android:text="@string/nvshi"
+                />
+
+
+        </RadioGroup>
+
+    </LinearLayout>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/color_divi_line"/>
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <TextView
+            android:id="@+id/tv_exercise_dialog_cancle"
+            android:layout_width="0dp"
+            android:layout_height="40dp"
+            android:text="@string/cancle"
+            android:gravity="center"
+            android:textColor="@color/color_middle_text"
+            android:textSize="16sp"
+            android:layout_weight="1"/>
+
+        <TextView
+            android:id="@+id/tv_exercise_dialog_sure"
+            android:layout_width="0dp"
+            android:layout_height="40dp"
+            android:text="@string/submit"
+            android:gravity="center"
+            android:background="@color/color_red"
+            android:textColor="@color/color_white"
+            android:textSize="16sp"
+            android:layout_weight="1"/>
+
+    </LinearLayout>
+
+</LinearLayout>

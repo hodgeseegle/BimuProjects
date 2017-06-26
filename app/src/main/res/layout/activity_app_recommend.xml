@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:background="@color/color_white"
+    android:fitsSystemWindows="true"
+    android:layout_height="match_parent">
+
+
+    <include layout="@layout/item_app_title"/>
+
+    <com.can.bimuprojects.view.LoadMoreListView
+        android:id="@+id/lv_app_recommend"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:dividerHeight="1dp"
+        android:divider="@color/color_divi_line"
+        android:scrollbars="none"/>
+
+</LinearLayout>

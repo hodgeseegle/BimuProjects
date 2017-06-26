@@ -1,0 +1,199 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:background="@color/color_white"
+    android:fitsSystemWindows="true"
+    android:layout_height="match_parent">
+
+    <ImageView
+        android:id="@+id/iv_dialog_open_shop_plan"
+        android:layout_gravity="center_horizontal"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        android:layout_marginTop="30dp"
+        />
+
+    <TextView
+        android:layout_marginTop="15dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/fee_get_open_shop"
+        android:textSize="@dimen/text_size_14"
+        android:textColor="@color/color_big_text"
+        android:layout_gravity="center_horizontal"
+        />
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/brand_connect_you"
+        android:textSize="@dimen/text_size_14"
+        android:layout_marginTop="5dp"
+        android:textColor="@color/color_big_text"
+        android:layout_gravity="center_horizontal"
+        />
+
+    <LinearLayout
+        android:id="@+id/ll_dialog_open_shop_plan"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_marginTop="15dp"
+        android:layout_marginRight="20dp"
+        android:layout_marginLeft="20dp"
+        android:visibility="gone"
+        >
+
+        <EditText
+            android:id="@+id/et_dialog_open_shop_plan"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:maxLines="1"
+            android:maxEms="10"
+            android:singleLine="true"
+            android:layout_marginBottom="5dp"
+            android:textSize="15sp"
+            android:theme="@style/Et_style"
+            android:hint="@string/your_name"/>
+
+        <RadioGroup
+            android:id="@+id/rg_dialog_open_shop_plan"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginBottom="5dp"
+            >
+
+            <RadioButton
+                android:checked="true"
+                android:id="@+id/rb_dialog_open_shop_plan_xiansheng"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/xiansheng"
+                android:button="@null"
+                android:drawableLeft="@drawable/select_boy_girl"
+                android:layout_marginRight="10dp"
+                android:textColor="@color/color_big_text"
+                />
+
+            <RadioButton
+                android:id="@+id/rb_dialog_open_shop_plan_nvshi"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/nvshi"
+                android:button="@null"
+                android:drawableLeft="@drawable/select_boy_girl"
+                android:textColor="@color/color_big_text"
+                />
+
+
+        </RadioGroup>
+
+    </LinearLayout>
+
+    <TextView
+        android:layout_marginTop="30dp"
+        android:layout_width="match_parent"
+        android:layout_marginRight="10dp"
+        android:layout_marginLeft="10dp"
+        android:layout_height="1dp"
+        android:background="@color/color_divi_line"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="@dimen/text_size_14"
+        android:textColor="@color/color_big_text"
+        android:text="@string/this_brand_you"
+        android:textStyle="bold"
+        android:layout_marginLeft="20dp"
+        android:layout_marginTop="20dp"
+        />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/can_select_zixun"
+        android:layout_marginLeft="20dp"
+        android:textColor="@color/color_middle_text"
+        android:textSize="@dimen/text_size_14"
+        android:id="@+id/textView3" />
+
+    <ListView
+        android:id="@+id/lv_brand_dialog"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:scrollbars="none"
+        android:dividerHeight="1dp"
+        android:divider="@color/color_divi_line"
+        />
+
+    <LinearLayout
+        android:gravity="right"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:layout_marginLeft="10dp"
+        android:layout_marginTop="20dp"
+        android:layout_marginRight="10dp"
+        android:orientation="horizontal">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/click_commit_agree"
+            android:textColor="@color/color_middle_text"
+            android:textSize="@dimen/text_size_12"
+            />
+
+        <TextView
+            android:id="@+id/tv_dialog_open_shop_agree"
+            android:textStyle="normal"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/personal_protect"
+            android:autoLink="all"
+            android:textSize="@dimen/text_size_12"
+            android:textColor="@color/color_middle_text"
+            />
+
+    </LinearLayout>
+
+
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_marginTop="10dp"
+        android:background="@color/color_divi_line"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:orientation="horizontal"
+        >
+        <TextView
+            android:id="@+id/tv_brand_dialog_cancle"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:text="@string/umeng_socialize_cancel_btn_str"
+            android:visibility="gone"
+            android:textSize="16sp"
+            android:textColor="@color/color_small_text"
+            android:gravity="center"
+            />
+        <TextView
+            android:id="@+id/tv_brand_dialog_sure"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:text="@string/commit"
+            android:textSize="16sp"
+            android:textColor="@color/color_white"
+            android:background="@color/color_app_text_yes"
+            android:gravity="center"
+            />
+    </LinearLayout>
+
+</LinearLayout>

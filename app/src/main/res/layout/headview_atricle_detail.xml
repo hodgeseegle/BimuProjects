@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <TextView
+        android:id="@+id/tv_title_article_detail"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="30dp"
+        android:layout_marginTop="20dp"
+        android:textColor="@color/color_big_text"
+        android:textSize="22sp"/>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_marginTop="20dp"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:gravity="center_vertical"
+        android:layout_height="wrap_content">
+
+        <ImageView
+            android:id="@+id/iv_person_atricle_detail"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toRightOf="@id/iv_person_atricle_detail"
+            android:layout_alignTop="@id/iv_person_atricle_detail"
+            android:layout_alignBottom="@id/iv_person_atricle_detail"
+            android:gravity="center_vertical"
+            android:layout_marginLeft="5dp"
+            android:textColor="@color/color_small_text"
+            android:textSize="15sp"
+            android:id="@+id/tv_article_detail_person"
+            />
+
+        <TextView
+            android:id="@+id/tv_article_detail_date"
+            android:layout_alignParentRight="true"
+            android:layout_width="wrap_content"
+            android:layout_alignTop="@id/iv_person_atricle_detail"
+            android:layout_alignBottom="@id/iv_person_atricle_detail"
+            android:gravity="center_vertical"
+            android:textSize="15sp"
+            android:textColor="@color/color_small_text"
+            android:layout_height="wrap_content" />
+
+    </RelativeLayout>
+
+    <WebView
+        android:layout_marginTop="10dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/wv_article_detail"
+        />
+
+
+</LinearLayout>

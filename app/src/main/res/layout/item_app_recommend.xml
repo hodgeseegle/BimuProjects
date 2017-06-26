@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/color_white"
+    android:padding="10dp">
+
+    <ImageView
+        android:id="@+id/iv_item_app_recommend_logo"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        android:layout_centerVertical="true"/>
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_centerVertical="true"
+        android:layout_toRightOf="@id/iv_item_app_recommend_logo"
+        android:layout_toLeftOf="@+id/btn_item_app_recommend_down"
+        android:layout_marginRight="10dp"
+        android:layout_marginLeft="5dp">
+
+        <TextView
+            android:id="@+id/tv_item_app_recommend_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:maxLines="1"
+            android:text="比目app"
+        android:singleLine="true"
+        android:ellipsize="end"
+        android:textSize="16sp"
+        android:textColor="@color/color_big_text" />
+
+        <TextView
+            android:id="@+id/tv_item_app_recommend_content"
+            android:layout_marginTop="5dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:ellipsize="end"
+            android:text="在应用市场中找到app，就可以加盟店铺了"
+            android:textSize="14sp"
+            android:textColor="@color/color_middle_text"/>
+
+    </LinearLayout>
+    
+    <Button
+        android:id="@id/btn_item_app_recommend_down"
+        android:layout_width="wrap_content"
+        android:text="@string/want_down"
+        android:layout_alignParentRight="true"
+        android:layout_centerVertical="true"
+        android:textSize="@dimen/text_size_14"
+        android:textColor="@color/color_white"
+        android:background="@drawable/shape_app_recommend"
+        android:layout_height="35dp" />
+
+
+</RelativeLayout>

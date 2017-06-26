@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:fitsSystemWindows="true"
+    android:background="@color/color_white"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <include layout="@layout/item_app_title"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="@color/color_big_text"
+        android:textSize="@dimen/text_size_14"
+        android:background="@color/color_white"
+        android:layout_marginTop="10dp"
+        android:layout_marginLeft="10dp"
+        android:text="@string/intention_to_join"/>
+
+    <TextView
+        android:id="@+id/tv_inspect_brand"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="@dimen/text_size_16"
+        android:textColor="@color/color_big_text"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:layout_marginTop="15dp"/>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/color_divi_line"
+        android:layout_marginTop="10dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="10dp"
+        android:layout_marginTop="10dp"
+        android:textColor="@color/color_big_text"
+        android:textSize="@dimen/text_size_14"
+        android:text="@string/please_choose_next"
+        />
+
+    <com.can.bimuprojects.view.NoScrollListView
+        android:layout_marginTop="10dp"
+        android:id="@+id/lv_inspect"
+        android:padding="10dp"
+        android:dividerHeight="0dp"
+        android:divider="#ffffff"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"/>
+
+    <RelativeLayout
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:background="@color/color_white"
+        android:layout_weight="1">
+
+        <ImageView
+            android:layout_width="30dp"
+            android:layout_height="50dp"
+            android:src="@drawable/kill"
+            android:id="@+id/iv_inspect_iv2"
+            />
+
+        <TextView
+            android:id="@+id/tv_inspect_tv3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="@dimen/text_size_16"
+            android:text="@string/kill_brand"
+            android:textColor="@color/color_big_text"
+            android:layout_marginTop="10dp"
+            android:layout_marginLeft="10dp"
+            android:layout_alignTop="@id/iv_inspect_iv2"
+            android:layout_toRightOf="@id/iv_inspect_iv2"/>
+
+        <TextView
+            android:id="@+id/tv_inspect_reason"
+            android:layout_below="@id/tv_inspect_tv3"
+            android:layout_alignLeft="@id/tv_inspect_tv3"
+            android:layout_marginTop="20dp"
+            android:layout_marginRight="40dp"
+            android:text="@string/kill_brand_say"
+            android:layout_width="wrap_content"                     
+            android:layout_height="wrap_content"
+            android:textSize="@dimen/text_size_12"
+            />
+
+        <ImageView
+            android:layout_width="25dp"
+            android:layout_height="25dp"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="30dp"
+            android:layout_marginTop="10dp"
+            android:src="@drawable/radio_button_off"
+            android:id="@+id/ws_inspect2" />
+
+    </RelativeLayout>
+
+    <TextView
+        android:id="@+id/tv_inspect_sure"
+        android:layout_marginBottom="10dp"
+        android:padding="10dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:layout_marginTop="10dp"
+        android:gravity="center"
+        android:layout_width="match_parent"
+        android:text="@string/sure_commit"
+        android:textColor="@color/color_white"
+        android:textSize="16sp"
+        android:background="@drawable/shape_find_project_btn"
+        android:layout_height="wrap_content" />
+
+</LinearLayout>
