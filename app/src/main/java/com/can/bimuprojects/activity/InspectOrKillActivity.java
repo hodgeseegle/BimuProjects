@@ -1,5 +1,6 @@
 package com.can.bimuprojects.activity;
 
+
 import android.app.Dialog;
 import android.content.Context;
 import android.os.Bundle;
@@ -16,6 +17,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.volley.VolleyError;
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.util.Util;
 import com.can.bimuprojects.Constant.MethodConstant;
 import com.can.bimuprojects.Module.Request.AddLoveListRequest;
 import com.can.bimuprojects.Module.Request.BookServiceRequest;
@@ -44,7 +47,6 @@ import com.can.bimuprojects.view.NoScrollListView;
 import java.util.ArrayList;
 import java.util.List;
 
-
 /**
  * Created by can on 2017/4/19.
  * 考察或淘汰
@@ -70,6 +72,9 @@ public class InspectOrKillActivity extends BaseActivity implements View.OnClickL
     private NoScrollListView lv;//集合控件
     private TextView tv_reason ; //淘汰原因
     private TextView tv_tit ; //标题
+
+
+
     /**
      * 初始化view
      */
@@ -200,13 +205,19 @@ public class InspectOrKillActivity extends BaseActivity implements View.OnClickL
                 if(str_reason!=null&&str_reason.equals("")){
                     openBrand();
                 }else{
-                    go_kill = false;
-                    str_reason = "";
-                    tv_reason.setText(getString(R.string.kill_brand_say));
-                    ws2.setImageResource(R.drawable.radio_button_off);
+                    setKillFalse();
                 }
                 break;
         }
+    }
+
+    //取消淘汰品牌
+    private void setKillFalse() {
+        go_kill = false;
+        str_reason = "";
+        tv_reason.setText(getString(R.string.kill_brand_say));
+        if(Util.isOnMainThread())
+            Glide.with(this).load(R.drawable.radio_button_off).into(ws2);
     }
 
     //确认
@@ -219,7 +230,7 @@ public class InspectOrKillActivity extends BaseActivity implements View.OnClickL
         }
         if(!go_kill&&!go_review){
             if(!this.isFinishing())
-            showDialog("请选择条件");
+                showDialog("请选择条件");
         }else{
             if(go_review){
                 for(int i=0;i<list_boolean.size();i++){
@@ -258,6 +269,8 @@ public class InspectOrKillActivity extends BaseActivity implements View.OnClickL
                         }
                     },AddLoveListResponse.class);
                 }
+                PrefUtils.putBoolean("love_update",true);
+                finish();
             }
             if(go_kill){
                 FocusRequest request = new FocusRequest();
@@ -276,18 +289,20 @@ public class InspectOrKillActivity extends BaseActivity implements View.OnClickL
                     }
                 }, FocusResponse.class);
             }
-             if(!str_reason.equals("")){
+            if(!str_reason.equals("")){
                 Focus2Request request = new Focus2Request();
                 request.setUid(LoginUtils.getUid());
                 request.setBid(bid);
                 request.setSid(sid);
                 request.setRefuse(str_reason);
-                HttpUtils.postWithoutUid(MethodConstant.FOCUS, request, new ResponseHook() {
+                HttpUtils.postWithoutUid(MethodConstant.DATA_SERVICE, request, new ResponseHook() {
                     @Override
                     public void deal(Context context, JsonReceive receive) {
                         Focus2Response response = (Focus2Response) receive.getResponse();
-                        if(response!=null){
-                            ToastUtils.show(context,"淘汰成功",Toast.LENGTH_SHORT);
+                        if(response!=null&&response.getExe_success()==1){
+                            ToastUtils.show(context,"淘汰成功", Toast.LENGTH_SHORT);
+                            PrefUtils.putBoolean("love_update",true);
+                            finish();
                         }
                     }
                 }, new ErrorHook() {
@@ -297,8 +312,6 @@ public class InspectOrKillActivity extends BaseActivity implements View.OnClickL
                     }
                 }, Focus2Response.class);
             }
-            PrefUtils.putBoolean("love_update",true);
-            this.finish();
         }
     }
 
@@ -310,17 +323,30 @@ public class InspectOrKillActivity extends BaseActivity implements View.OnClickL
     @Override
     public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
         str_reason = list.get(i)+"";
-        ws2.setImageResource(R.drawable.radio_button_on);
+        if(Util.isOnMainThread())
+            Glide.with(this).load(R.drawable.radio_button_on).into(ws2);
         dialog.dismiss();
         sid = i+"";
         if(str_reason!=null){
             go_kill = true;
             tv_reason.setText(str_reason);
+
+            go_review = false;
+            for(int j =0;j<data.size();j++){
+                BookServiceResponse.ServiceBean bean = data.get(j);
+                bean.setChoose("false");
+                list_boolean.set(j,false);
+                list_inspect.set(j, bean);
+            }
+
+            adapter_inspect.notifyDataSetChanged();
         }
     }
 
     @Override
     public void onChangeState(int i, boolean flag) {
         list_boolean.set(i,flag);
+        if(flag)
+            setKillFalse();
     }
 }

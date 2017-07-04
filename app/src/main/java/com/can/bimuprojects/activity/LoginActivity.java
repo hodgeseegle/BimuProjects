@@ -18,6 +18,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.android.volley.VolleyError;
+import com.can.bimuprojects.Constant.AppConstant;
 import com.can.bimuprojects.Module.Request.LoginRequest;
 import com.can.bimuprojects.Module.Response.LoginResponse;
 import com.can.bimuprojects.R;
@@ -110,6 +111,7 @@ public class LoginActivity extends BaseActivity implements View.OnFocusChangeLis
                     if (response.getExe_success().equals("1")) {
                         //code 1 代表登录成功 ， 2代表为未注册
                         if (response.getCode().equals("1")) {
+                            setResult(AppConstant.LOGIN_REQUEST);
                             if(flag){
                                 LoginUtils.setLoginUid(response.getUid());
                                 LoginUtils.setLoginStatus(false);

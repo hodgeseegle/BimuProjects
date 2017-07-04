@@ -168,11 +168,8 @@ public class ExerciseActivity extends BaseActivity implements View.OnClickListen
                         hasFollow = false;
                     }
                     String str = response.getTrue_name();
-                    if(str!=null){
-                        ll_dialog.setVisibility(View.GONE);
-                    }else{
-                        ll_dialog.setVisibility(View.VISIBLE);
-                    }
+                    if(str!=null)
+                        LoginUtils.setUserName(str);
                 }
             }
         }, new ErrorHook() {
@@ -205,10 +202,16 @@ public class ExerciseActivity extends BaseActivity implements View.OnClickListen
             case R.id.tv_exercise_get: //获取优惠
                 if(showLoginDialog())
                     break;
+
+                if(!LoginUtils.getUserName().equals("")){
+                    ll_dialog.setVisibility(View.GONE);
+                }else{
+                    ll_dialog.setVisibility(View.VISIBLE);
+                }
                 if(bid!=null){
                     if(hasFollow){ //报名活动过
                         if(!this.isFinishing())
-                        showDialog("您已经预约过该活动了！");
+                            showDialog("您已经预约过该活动了！");
                     }else if(!dialog.isShowing()){
                         dialog.show();
                     }
@@ -236,7 +239,7 @@ public class ExerciseActivity extends BaseActivity implements View.OnClickListen
 
             case R.id.iv_right: //分享
                 if(bid!=null)
-                share();
+                    share();
                 break;
 
             case R.id.tv_exercise_dialog_sure: //提交
@@ -289,48 +292,51 @@ public class ExerciseActivity extends BaseActivity implements View.OnClickListen
      * 点击提交
      */
     private void sure() {
-            if (ll_dialog.getVisibility() == View.VISIBLE) {
-                if (et_dialog.getText().toString().equals("")) {
-                    if(!this.isFinishing())
+        if (ll_dialog.getVisibility() == View.VISIBLE) {
+            if (et_dialog.getText().toString()==null||et_dialog.getText().toString().equals("")||et_dialog.getText().toString().trim().equals("")) {
+                if(!this.isFinishing())
                     showDialog("请输入您的姓氏");
-                    return;
-                }else {
-                    SetUserNameRequest request = new SetUserNameRequest();
-                    request.setUid(LoginUtils.getUid());
-                    request.setUser_name(et_dialog.getText().toString());
-                    request.setUser_sex(sex + "");
-                    HttpUtils.postWithoutUid(MethodConstant.SET_USER_NAME, request, new ResponseHook() {
-                        @Override
-                        public void deal(Context context, JsonReceive receive) {
-
+                return;
+            }else {
+                SetUserNameRequest request = new SetUserNameRequest();
+                request.setUid(LoginUtils.getUid());
+                request.setUser_name(et_dialog.getText().toString().trim());
+                request.setUser_sex(sex + "");
+                HttpUtils.postWithoutUid(MethodConstant.SET_USER_NAME, request, new ResponseHook() {
+                    @Override
+                    public void deal(Context context, JsonReceive receive) {
+                        SetUserNameResponse response = (SetUserNameResponse) receive.getResponse();
+                        if(response!=null){
+                            LoginUtils.setUserName(et_dialog.getText().toString().trim());
                         }
-                    }, new ErrorHook() {
-                        @Override
-                        public void deal(Context context, VolleyError error) {
-
-                        }
-                    }, SetUserNameResponse.class);
-                }
-            }
-            dialog.dismiss();
-            AddLoveListRequest re = new AddLoveListRequest();
-            re.setId(id);
-            re.setType("5");
-            re.setUid(LoginUtils.getUid());
-            HttpUtils.postWithoutUid(MethodConstant.SET_LOVE_LIST, re, new ResponseHook() {
-                @Override
-                public void deal(Context context, JsonReceive receive) {
-                    AddLoveListResponse response = (AddLoveListResponse) receive.getResponse();
-                    if(response!=null){
+                    }
+                }, new ErrorHook() {
+                    @Override
+                    public void deal(Context context, VolleyError error) {
 
                     }
-                }
-            }, new ErrorHook() {
-                @Override
-                public void deal(Context context, VolleyError error) {
+                }, SetUserNameResponse.class);
+            }
+        }
+        dialog.dismiss();
+        AddLoveListRequest re = new AddLoveListRequest();
+        re.setId(id);
+        re.setType("5");
+        re.setUid(LoginUtils.getUid());
+        HttpUtils.postWithoutUid(MethodConstant.SET_LOVE_LIST, re, new ResponseHook() {
+            @Override
+            public void deal(Context context, JsonReceive receive) {
+                AddLoveListResponse response = (AddLoveListResponse) receive.getResponse();
+                if(response!=null){
 
                 }
-            },AddLoveListResponse.class);
+            }
+        }, new ErrorHook() {
+            @Override
+            public void deal(Context context, VolleyError error) {
+
+            }
+        },AddLoveListResponse.class);
         Dialog dl = ToastUtils.showDialog(ExerciseActivity.this,"提示","您已经报名成功！",View.inflate(this, R.layout.dialog_circle,null),R.style.circle_dialog);
         dl.setOnCancelListener(new DialogInterface.OnCancelListener() {
             @Override

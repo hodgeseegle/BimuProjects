@@ -26,6 +26,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.android.volley.VolleyError;
+import com.can.bimuprojects.Constant.AppConstant;
 import com.can.bimuprojects.Constant.MethodConstant;
 import com.can.bimuprojects.Module.Request.GetVerifyCodeRequest;
 import com.can.bimuprojects.Module.Request.RegisterRequest;
@@ -132,6 +133,7 @@ public class RegisterActivity extends BaseActivity implements View.OnFocusChange
                         RegisterResponse response = (RegisterResponse) receive.getResponse();
                         if (response.getCode().equals("1") && response.getExe_success().equals("1")) {
                             if(flag) {
+                                setResult(AppConstant.LOGIN_REQUEST);
                                 LoginUtils.setLoginUid(response.getUid());
                                 LoginUtils.setLoginStatus(false);
                                 PrefUtils.putBoolean("update_home",true);

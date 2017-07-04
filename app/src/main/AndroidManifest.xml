@@ -140,8 +140,6 @@
             android:name="com.can.bimuprojects.activity.UserFeedbackActivity"
             android:screenOrientation="portrait" />
         <!--考察淘汰-->
-        <activity android:name="com.can.bimuprojects.activity.InspectOrKillActivity"
-            android:screenOrientation="portrait"/>
         <!--必读加盟攻略-->
         <activity android:name="com.can.bimuprojects.activity.JoinRaidersActivity"
             android:screenOrientation="portrait"/>
@@ -194,6 +192,10 @@
 
         <!--搜索品牌结果-->
         <activity android:name="com.can.bimuprojects.activity.SearchBrandResultActivity"
+            android:screenOrientation="portrait"/>
+
+        <!--考察和淘汰-->
+        <activity android:name=".activity.InspectOrKillActivity"
             android:screenOrientation="portrait"/>
 
         <!--友盟分享-->

@@ -4,7 +4,6 @@ import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.BitmapFactory;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -107,6 +106,8 @@ public class BrandActivity extends BaseActivity implements View.OnClickListener,
     private ImageView iv_add_comment ; //添加评论
     private String brand ; //品牌名称
 
+    private int view_id = 0; //view ID
+
     @Override
     protected void onCreate( Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -120,23 +121,10 @@ public class BrandActivity extends BaseActivity implements View.OnClickListener,
         super.onResume();
         boolean isUpdateConsult = PrefUtils.getBoolean("update_consult",false);
         if(isUpdateConsult) {
-            isConsult = true;
-            tv_brand_get_openshop_process.setText(getString(R.string.entre_love_list));
-            tv_brand_get_openshop_process.setBackgroundColor(ContextCompat.getColor(this,R.color.color_zixun_brand));
-            if (!isLove) {
-                if(!this.isFinishing()&&Util.isOnMainThread())
-                    Glide.with(this).load(R.drawable.remove_love_list).into(iv_love);
-                isLove = !isLove;
-            }
+            requestITData();
         }
     }
 
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        if(requestCode== AppConstant.LOGIN_REQUEST)
-            requestITData();
-    }
 
     /**
      * 初始化view
@@ -316,6 +304,8 @@ public class BrandActivity extends BaseActivity implements View.OnClickListener,
 
     @Override
     public void onClick(View view) {
+        view_id = view.getId();
+
         switch (view.getId()) {
             case R.id.iv_exit_brand: //退出
                 this.finish();
@@ -355,27 +345,15 @@ public class BrandActivity extends BaseActivity implements View.OnClickListener,
             case R.id.tv_brand_get_openshop_process: //开店方案或前往心愿单
                 if(showLoginDialog())
                     break;
-
-                MobclickAgent.onEvent(this,"tv_brand_get_openshop_process");
-                if(isConsult){ //前往心愿单
-                    Intent intent = new Intent(this,MainActivity.class);
-                    intent.putExtra("love",true);
-                    startActivity(intent);
-                }else { //获取开店方案
-                    if (!isHasOpenshopData)
-                        requestOpenShopData();
-                    else if (!dialog.isShowing())
-                        dialog.show();
-                }
+                openShop();
                 break;
 
             case R.id.ll_brand_detail_head_imgs: //全看全部照片
-                if(img_total!=0) {
+                if(img_total!=null) {
                     MobclickAgent.onEvent(this,"ll_brand_detail_head_imgs");
-                    Intent intent = new Intent(getApplicationContext(), ImagePagerActivity.class);
+                    Intent intent = new Intent(getApplicationContext(), PhotosActivity.class);
                     intent.putExtra(ImagePagerActivity.EXTRA_IMAGE_INDEX, 0);
                     intent.putExtra("bid",bid);
-                    intent.putStringArrayListExtra("list",list_img);
                     intent.putExtra("consult",isConsult);
                     intent.putExtra("brand",brand);
                     startActivity(intent);
@@ -413,6 +391,37 @@ public class BrandActivity extends BaseActivity implements View.OnClickListener,
                 share();
                 break;
         }
+    }
+
+    //开店方案或前往心愿单
+    private void openShop() {
+        if(LoginUtils.getUserName().equals("")){
+            ll_dialog.setVisibility(View.VISIBLE);
+            iv_dialog.setVisibility(View.GONE);
+        }else{
+            ll_dialog.setVisibility(View.GONE);
+            iv_dialog.setVisibility(View.VISIBLE);
+        }
+
+        MobclickAgent.onEvent(this,"tv_brand_get_openshop_process");
+        if(isConsult){ //前往心愿单
+                    Intent intent = new Intent(this,MainActivity.class);
+                    intent.putExtra("love",true);
+                    startActivity(intent);
+        }else { //获取开店方案
+            if (!isHasOpenshopData)
+                requestOpenShopData();
+            else if (!dialog.isShowing())
+                dialog.show();
+        }
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if(resultCode== AppConstant.LOGIN_REQUEST)
+            requestITData();
+
     }
 
     /**
@@ -458,7 +467,7 @@ public class BrandActivity extends BaseActivity implements View.OnClickListener,
     }
 
     /**
-     * 加入移除心愿单
+     * 加入 移除心愿单
      */
     private void addLoveList() {
         isConsult = false;
@@ -520,7 +529,9 @@ public class BrandActivity extends BaseActivity implements View.OnClickListener,
                 HttpUtils.postWithoutUid(MethodConstant.SET_USER_NAME, request, new ResponseHook() {
                     @Override
                     public void deal(Context context, JsonReceive receive) {
-
+                        SetUserNameResponse response = (SetUserNameResponse) receive.getResponse();
+                        if(response!=null)
+                            LoginUtils.setUserName(et_dialog.getText().toString().trim());
                     }
                 }, new ErrorHook() {
                     @Override
@@ -716,7 +727,6 @@ public class BrandActivity extends BaseActivity implements View.OnClickListener,
                 BrandResponse response = (BrandResponse) receive.getResponse();
                 if (response != null) {//请求数据成功
                     setITData(response);
-
                 }
             }
         }, new ErrorHook() {
@@ -733,19 +743,17 @@ public class BrandActivity extends BaseActivity implements View.OnClickListener,
      * @param response
      */
     private void setITData(BrandResponse response) {
-        getImgData();
         String str = response.getTrue_name();
-        if(str==null||str.equals("")){
-            ll_dialog.setVisibility(View.VISIBLE);
-            iv_dialog.setVisibility(View.GONE);
-        }else{
-            ll_dialog.setVisibility(View.GONE);
-            iv_dialog.setVisibility(View.VISIBLE);
-        }
+        if(str!=null)
+            LoginUtils.setUserName(str);
         setHeadData(response.getData());
         setDetailData();
         setAssessData(response.getArticledata());
         setRecommendData(response.getBrandlist());
+        if(view_id==R.id.tv_brand_get_openshop_process){
+            openShop();
+            view_id = 0;
+        }
     }
 
     /**
@@ -800,6 +808,11 @@ public class BrandActivity extends BaseActivity implements View.OnClickListener,
      * 设置头部的数据
      */
     private void setHeadData(BrandResponse.DataBean data) {
+        if(data.getPhoto_num()!=null){
+            img_total = data.getPhoto_num();
+            tv_head_imgs.setText("查看"+img_total+"张图片");
+        }
+
         List<String> list_str = data.getAuth();
         for(int i =0;i<list_str.size();i++){
             ll_head_flags.addView(getTV(list_str.get(i),i));
@@ -827,7 +840,9 @@ public class BrandActivity extends BaseActivity implements View.OnClickListener,
         }
         if(data.getBrand_name()!=null){
             brand = data.getBrand_name();
-            tv_title.setText(data.getBrand_name());
+            tv_title.setText(brand);
+            PrefUtils.put("recent_brand_id",bid);
+            PrefUtils.put("recent_brand_name",brand);
         }
         if(Util.isOnMainThread()){
             Glide.with(getApplicationContext()).load(data.getBrand_background()).into(iv_head_bg);
@@ -871,33 +886,7 @@ public class BrandActivity extends BaseActivity implements View.OnClickListener,
         return tv;
     }
 
-    private int img_total = 0;
-    private ArrayList<String> list_img = new ArrayList<>();
-    /**
-     * 获取图库数据
-     */
-    private void getImgData() {
-        BrandRequest request = new BrandRequest();
-        request.setBid(bid);
-        request.setUid(LoginUtils.getUid());
-        HttpUtils.postWithoutUid(MethodConstant.GET_BRAND_IMGS, request, new ResponseHook() {
-            @Override
-            public void deal(Context context, JsonReceive receive) {
-                BrandImgResponse response = (BrandImgResponse) receive.getResponse();
-                if(response!=null){
-                    img_total = response.getTotal();
-                    tv_head_imgs.setText("查看"+response.getTotal()+"张照片");
-                    list_img.addAll(response.getData());
-                }
-            }
-        }, new ErrorHook() {
-            @Override
-            public void deal(Context context, VolleyError error) {
-
-            }
-        }, BrandImgResponse.class);
-
-    }
+    private String img_total;
 
     /**
      * 设置某一项的值
@@ -986,7 +975,6 @@ public class BrandActivity extends BaseActivity implements View.OnClickListener,
                     return;
                 }
                 lastVisibleItemPosition = firstVisibleItem;
-
             }
         }
     }

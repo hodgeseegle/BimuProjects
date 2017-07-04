@@ -7,6 +7,7 @@ import com.can.bimuprojects.Constant.AppConstant;
 import com.can.bimuprojects.Constant.MethodConstant;
 import com.can.bimuprojects.Module.Request.LoginRequest;
 import com.can.bimuprojects.Module.Response.LoginResponse;
+import com.can.bimuprojects.application.BimuApplication;
 import com.can.bimuprojects.network.beans.ErrorHook;
 import com.can.bimuprojects.network.beans.JsonReceive;
 import com.can.bimuprojects.network.beans.ResponseHook;
@@ -49,6 +50,29 @@ public class LoginUtils {
     //获取登录的UID
     public static String getLoginUid(){
         return PrefUtils.get(AppConstant.UID,"");
+    }
+
+
+    //设置登录的用户名
+    public static void setUserName(String user_name){
+        PrefUtils.put(AppConstant.USER_NAME,user_name);
+    }
+
+    //获取登录的用户名
+    public static String getUserName(){
+        return PrefUtils.get(AppConstant.USER_NAME,"");
+    }
+
+    /**
+     * 退出登录
+     */
+    public static void exitLogin(){
+        LoginUtils.setLoginStatus(true);
+        if(PrefUtils.get("uid","").equals(""))
+            AppUtils.setSNWithoutLogin(BimuApplication.getContext());
+        else
+            LoginUtils.setLoginUid(PrefUtils.get("uid",""));
+        LoginUtils.setUserName("");
     }
 
     /**

@@ -18,7 +18,7 @@ public class Constants {
 	 * 网络请求的url
 	 */
 	// 这里根据比目的具体数据修改
-	public static String URL = "http://30.bimuwang.com/version3/ports/api.php";
+	public static String URL = "http://v30.bimuwang.com/version3/ports/api.php";
 	public static String APPKEY = "888";
 	public static final int RTIMES = 1;
 	public static String SECRET = "567745674567544";

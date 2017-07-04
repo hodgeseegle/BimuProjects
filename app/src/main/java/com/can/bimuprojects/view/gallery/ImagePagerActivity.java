@@ -45,6 +45,7 @@ import com.can.bimuprojects.adapter.BrandOpenShopAdapter;
 import com.can.bimuprojects.network.beans.ErrorHook;
 import com.can.bimuprojects.network.beans.JsonReceive;
 import com.can.bimuprojects.network.beans.ResponseHook;
+import com.can.bimuprojects.utils.AppUtils;
 import com.can.bimuprojects.utils.HttpUtils;
 import com.can.bimuprojects.utils.LoginUtils;
 import com.can.bimuprojects.utils.PrefUtils;
@@ -84,12 +85,14 @@ public class ImagePagerActivity extends FragmentActivity implements View.OnClick
 		}
 	}
 
+	private Dialog dialog_login ; //登录弹窗
 	//初始化view
 	private void initView() {
 		setContentView(R.layout.item_image_detail_pager);
 		pagerPosition = getIntent().getIntExtra(EXTRA_IMAGE_INDEX, 0);
 		mPager = (HackyViewPager) findViewById(R.id.hvp_imagepager_activity);
 		tv_open = (TextView) findViewById(R.id.tv_image_detail_openshop_process);
+		dialog_login = AppUtils.showLoginDialog(this);
 	}
 
 	private Dialog dialog; //获取开店方案的dialog
@@ -124,14 +127,7 @@ public class ImagePagerActivity extends FragmentActivity implements View.OnClick
 		iv_dialog = (ImageView) view_dialog.findViewById(R.id.iv_dialog_open_shop_plan);
 		if(Util.isOnMainThread())
 			Glide.with(this).load(R.drawable.get_open_shop_plan).dontAnimate().into(iv_dialog);
-		boolean has_name = PrefUtils.getBoolean("love_user_name",false);
-		if(!has_name){
-			ll_dialog.setVisibility(View.VISIBLE);
-			iv_dialog.setVisibility(View.GONE);
-		}else{
-			ll_dialog.setVisibility(View.GONE);
-			iv_dialog.setVisibility(View.VISIBLE);
-		}
+
 		rg_dialog.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
 			@Override
 			public void onCheckedChanged(RadioGroup radioGroup, int i) {
@@ -171,6 +167,18 @@ public class ImagePagerActivity extends FragmentActivity implements View.OnClick
 	public void onClick(View view) {
 		switch (view.getId()){
 			case R.id.tv_image_detail_openshop_process: //获取开店方案或前往心愿单
+				if(AppUtils.isNeedShowLoginDialog()){
+					if(!dialog_login.isShowing()&&!this.isFinishing())
+						dialog_login.show();
+					break;
+				}
+				if(LoginUtils.getUserName().equals("")){
+					ll_dialog.setVisibility(View.VISIBLE);
+					iv_dialog.setVisibility(View.GONE);
+				}else{
+					ll_dialog.setVisibility(View.GONE);
+					iv_dialog.setVisibility(View.VISIBLE);
+				}
 				if(isConsult){ //前往心愿单
 					Intent intent = new Intent(this,MainActivity.class);
 					intent.putExtra("love",true);
@@ -253,7 +261,10 @@ public class ImagePagerActivity extends FragmentActivity implements View.OnClick
 				HttpUtils.postWithoutUid(MethodConstant.SET_USER_NAME, request, new ResponseHook() {
 					@Override
 					public void deal(Context context, JsonReceive receive) {
-						PrefUtils.putBoolean("love_user_name",true);
+						SetUserNameResponse response = (SetUserNameResponse) receive.getResponse();
+						if(response!=null){
+							LoginUtils.setUserName(et_dialog.getText().toString().trim());
+						}
 					}
 				}, new ErrorHook() {
 					@Override

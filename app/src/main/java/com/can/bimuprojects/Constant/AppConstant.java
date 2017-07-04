@@ -6,8 +6,22 @@ package com.can.bimuprojects.Constant;
  */
 public class AppConstant {
 
+    //游客模式进行登录的请求值
+    public static final String VISITOR_REQUEST = "visitor_request";
+
+    //游客模式进行登录的请求值
+    public static final String VISITOR_RESULT = "visitor_result";
+
+    //返回值
+    public static final int RESUTL = 0x11111;
+
+
+
     //保存用户id
     public static final String UID = "user_id";
+
+    //保存用户名
+    public static final String USER_NAME = "user_name";
 
     public static final String TMP_PATH = "clip_temp.jpg";
 

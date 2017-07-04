@@ -213,11 +213,7 @@ public class SettingActivity extends BaseActivity implements View.OnClickListene
                 intent.putExtra(AppConstant.QUIT_LOGIN,true);
                 intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 startActivity(intent);
-                LoginUtils.setLoginStatus(true);
-                if(PrefUtils.get("uid","").equals(""))
-                    AppUtils.setSNWithoutLogin(BimuApplication.getContext());
-                else
-                    LoginUtils.setLoginUid(PrefUtils.get("uid",""));
+                LoginUtils.exitLogin();
                 finish();
                 break;
             case R.id.iv_exit:

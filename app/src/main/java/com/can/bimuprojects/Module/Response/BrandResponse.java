@@ -24,6 +24,7 @@ public class BrandResponse {
     private List<ArticledataBean> articledata;
     private List<BrandlistBean> brandlist;
 
+
     public int getExe_success() {
         return exe_success;
     }
@@ -128,6 +129,15 @@ public class BrandResponse {
         private String consult;
         private String brand_photo;
         private List<String> auth;
+        private String photo_num ;
+
+        public String getPhoto_num() {
+            return photo_num;
+        }
+
+        public void setPhoto_num(String photo_num) {
+            this.photo_num = photo_num;
+        }
 
         public String getBrand_id() {
             return brand_id;

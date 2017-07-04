@@ -7,7 +7,7 @@
 
     <include layout="@layout/item_app_title"/>
 
-    <com.wiipu.bimu.view.RefreshListView
+    <com.can.bimuprojects.view.RefreshListView
         android:id="@+id/rlv_special"
         android:dividerHeight="0dp"
         android:divider="@color/color_white"

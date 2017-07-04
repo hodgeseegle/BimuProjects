@@ -1,5 +1,6 @@
 package com.can.bimuprojects.activity;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
@@ -11,9 +12,18 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.android.volley.VolleyError;
+import com.can.bimuprojects.Constant.MethodConstant;
 import com.can.bimuprojects.Fragment.PhotosFragment;
+import com.can.bimuprojects.Module.Request.BrandRequest;
+import com.can.bimuprojects.Module.Response.BrandImgResponse;
 import com.can.bimuprojects.R;
+import com.can.bimuprojects.network.beans.ErrorHook;
+import com.can.bimuprojects.network.beans.JsonReceive;
+import com.can.bimuprojects.network.beans.ResponseHook;
 import com.can.bimuprojects.utils.AppUtils;
+import com.can.bimuprojects.utils.HttpUtils;
+import com.can.bimuprojects.utils.LoginUtils;
 import com.can.bimuprojects.utils.UiUtils;
 
 import java.util.ArrayList;
@@ -75,7 +85,6 @@ public class PhotosActivity extends BaseActivity implements View.OnClickListener
 
     private List<PhotosFragment> fragmentLists; //fragment集合
     private List<String> titleLists; //标题集合
-    private ArrayList<String> list_img ; //图片集合
     private String bid; //品牌id
     private boolean isConsult;//是否咨询过
     private ArrayList<ArrayList<String>> lists ;//数据集合
@@ -85,8 +94,6 @@ public class PhotosActivity extends BaseActivity implements View.OnClickListener
         lists = new ArrayList<>();
         fragmentLists = new ArrayList<>();
         titleLists = new ArrayList<>();
-        list_img =  new ArrayList<>();
-        list_img = getIntent().getStringArrayListExtra("list");
         bid = getIntent().getStringExtra("bid");
         isConsult = getIntent().getBooleanExtra("consult",false);
         brand = getIntent().getStringExtra("brand");
@@ -96,31 +103,59 @@ public class PhotosActivity extends BaseActivity implements View.OnClickListener
 
         setTabLayout();
 
-        String []strings = getResources().getStringArray(R.array.array_article_type);
 
-        for(int i=0;i<strings.length;i++){
-            titleLists.add(strings[i]);
-        }
-        for(int i =0;i<strings.length;i++){
-            ArrayList<String> arrayList = new ArrayList<>();
-            for(int j=0;j<list_img.size();j++){
-                arrayList.add(list_img.get(j));
-                if(i==1||i==2)
-                    arrayList.add(list_img.get(j));
-                if(i==2)
-                    arrayList.add(list_img.get(j));
+        getImgData();
+    }
+
+    /**
+     * 获取图库数据
+     */
+    private void getImgData() {
+        BrandRequest request = new BrandRequest();
+        request.setBid(bid);
+        request.setUid(LoginUtils.getUid());
+        HttpUtils.postWithoutUid(MethodConstant.GET_BRAND_IMGS, request, new ResponseHook() {
+            @Override
+            public void deal(Context context, JsonReceive receive) {
+                BrandImgResponse response = (BrandImgResponse) receive.getResponse();
+                if(response!=null){
+                    setData(response);
+                }
             }
-            lists.add(arrayList);
+        }, new ErrorHook() {
+            @Override
+            public void deal(Context context, VolleyError error) {
+
+            }
+        }, BrandImgResponse.class);
+
+    }
+
+    //设置网络数据
+    private void setData(BrandImgResponse response) {
+        List<BrandImgResponse.DataBean> bean = response.getData();
+        if(bean!=null){
+            for(int i =0;i<bean.size();i++){
+                BrandImgResponse.DataBean data = bean.get(i);
+                String tag = data.getTag();
+                ArrayList<String> datalist = data.getList();
+                if(tag!=null)
+                    titleLists.add(tag);
+                if(datalist!=null)
+                    lists.add(datalist);
+            }
+            PhotosAdapter adapter = new PhotosAdapter(getSupportFragmentManager(),titleLists);
+            vp.setAdapter(adapter);
+            tl.setupWithViewPager(vp);
         }
-        PhotosAdapter adapter = new PhotosAdapter(getSupportFragmentManager(),titleLists);
-        vp.setAdapter(adapter);
-        tl.setupWithViewPager(vp);
+
     }
 
     //设置滚动标题样式
     private void setTabLayout() {
-        tl.setSelectedTabIndicatorColor(ContextCompat.getColor(this,R.color.color_red));
+        tl.setSelectedTabIndicatorColor(ContextCompat.getColor(this,R.color.color_app_text_yes));
         tl.setSelectedTabIndicatorHeight(UiUtils.dip2px(1));
+        tl.setTabMode(TabLayout.MODE_SCROLLABLE); //滚动模式
     }
 
     /**
@@ -151,7 +186,7 @@ public class PhotosActivity extends BaseActivity implements View.OnClickListener
 
         @Override
         public Fragment getItem(int position) {
-                return fragmentLists.get(position);
+            return fragmentLists.get(position);
         }
 
         @Override

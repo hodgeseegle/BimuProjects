@@ -223,7 +223,7 @@
     <!--版本号和版本名称-->
     <integer name="version_code">1</integer>
     <string name="version_name">1.0</string>
-    <string name="version">v-3.4</string>
+    <string name="version">v-3.5</string>
 
     <!--登录比目app-->
     <string name="login_bimu">登录创业项目大全</string>

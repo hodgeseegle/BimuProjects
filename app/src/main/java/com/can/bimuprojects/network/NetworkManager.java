@@ -95,11 +95,7 @@ public class NetworkManager {
                                             json, responses).getStatus() == 333) {
                                         BimuApplication.removeALLActivity();
                                         ToastUtils.showShort(BimuApplication.getContext(), "您的帐户已在其他设备登录");
-                                        LoginUtils.setLoginStatus(true);
-                                        if(PrefUtils.get("uid","").equals(""))
-                                            AppUtils.setSNWithoutLogin(BimuApplication.getContext());
-                                        else
-                                            LoginUtils.setLoginUid(PrefUtils.get("uid",""));
+                                       LoginUtils.exitLogin();
                                         Intent intent = new Intent(BimuApplication.getContext(), LoginOrRegisterActivity.class);
                                         intent.putExtra(AppConstant.QUIT_LOGIN,true);
                                         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);

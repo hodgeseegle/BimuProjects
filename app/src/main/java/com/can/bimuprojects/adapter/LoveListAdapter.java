@@ -3,7 +3,6 @@ package com.can.bimuprojects.adapter;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Color;
 import android.support.v4.content.ContextCompat;
 import android.util.DisplayMetrics;
 import android.view.Gravity;
@@ -25,6 +24,7 @@ import android.widget.TextView;
 import com.android.volley.VolleyError;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.util.Util;
+import com.can.bimuprojects.activity.InspectOrKillActivity;
 import com.umeng.analytics.MobclickAgent;
 import com.can.bimuprojects.Constant.MethodConstant;
 import com.can.bimuprojects.Module.Request.AddLoveListRequest;
@@ -37,7 +37,6 @@ import com.can.bimuprojects.Module.Response.SetUserNameResponse;
 import com.can.bimuprojects.R;
 import com.can.bimuprojects.activity.BrandActivity;
 import com.can.bimuprojects.activity.SendArticleActivity;
-import com.can.bimuprojects.activity.InspectOrKillActivity;
 import com.can.bimuprojects.activity.OpenShopResultActivity;
 import com.can.bimuprojects.activity.PersonalInformationProtectActivity;
 import com.can.bimuprojects.network.beans.ErrorHook;
@@ -185,8 +184,7 @@ public class LoveListAdapter extends BaseAdapter {
         tv_dialog_open_shop_agree = (TextView) view_dialog.findViewById(R.id.tv_dialog_open_shop_agree);
         if(Util.isOnMainThread())
             Glide.with(context).load(R.drawable.get_open_shop_plan).dontAnimate().into(iv_dialog);
-        boolean has_name = PrefUtils.getBoolean("love_user_name",false);
-        if(!has_name){
+        if(LoginUtils.getUserName().equals("")){
             ll_dialog.setVisibility(View.VISIBLE);
             iv_dialog.setVisibility(View.GONE);
         }else{
@@ -292,7 +290,9 @@ public class LoveListAdapter extends BaseAdapter {
                 HttpUtils.postWithoutUid(MethodConstant.SET_USER_NAME, request, new ResponseHook() {
                     @Override
                     public void deal(Context context, JsonReceive receive) {
-
+                        SetUserNameResponse response = (SetUserNameResponse) receive.getResponse();
+                        if(response!=null)
+                            LoginUtils.setUserName(et_dialog.getText().toString().trim());
                     }
                 }, new ErrorHook() {
                     @Override
