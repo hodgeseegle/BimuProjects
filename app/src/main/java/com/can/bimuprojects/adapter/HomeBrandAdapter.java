@@ -24,9 +24,9 @@ import java.util.List;
 public class HomeBrandAdapter extends BaseAdapter {
 
     private Context context;
-    private List<HomePagerResponse.BrandlistBean> list;
+    private List<HomePagerResponse.BrandlistBean.DataBean> list;
 
-    public HomeBrandAdapter(Context context,List<HomePagerResponse.BrandlistBean> list){
+    public HomeBrandAdapter(Context context,List<HomePagerResponse.BrandlistBean.DataBean> list){
         this.context = context;
         this.list = list;
     }
@@ -61,14 +61,14 @@ public class HomeBrandAdapter extends BaseAdapter {
         } else {
             viewHolder = (ViewHolder) convertView.getTag();
         }
-        final HomePagerResponse.BrandlistBean bean = list.get(i);
+        final HomePagerResponse.BrandlistBean.DataBean bean = list.get(0);
         if(Util.isOnMainThread())
             Glide.with(context).load(bean.getBrand_background()).asBitmap().fitCenter().placeholder(R.drawable.loading).into(viewHolder.iv);
         if(Util.isOnMainThread())
             Glide.with(context).load(bean.getBrand_logo()).transform(new GlideRoundTransform(context)).into(viewHolder.iv2);
         String string = bean.getBrand_name()+" · 投资 "+bean.getInvest_amount()+" 万 · 总部"+bean.getBrand_location()+" · 适合面积 "+bean.getShop_area();
         viewHolder.tv.setText(string);
-        int total = bean.getScribe();
+        String total = bean.getScribe();
         viewHolder.tv_people.setText(total+"人已免费获得官方开店方案");
         return convertView;
     }

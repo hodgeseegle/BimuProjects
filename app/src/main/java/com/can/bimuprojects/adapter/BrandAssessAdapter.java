@@ -17,6 +17,7 @@ import com.can.bimuprojects.Module.Response.BrandResponse;
 import com.can.bimuprojects.R;
 import com.can.bimuprojects.utils.DateUtils;
 import com.can.bimuprojects.utils.GlideRoundTransform;
+import com.can.bimuprojects.utils.GlideUtil;
 import com.can.bimuprojects.view.gallery.ImagePagerActivity;
 
 import java.util.ArrayList;
@@ -57,8 +58,8 @@ public class BrandAssessAdapter extends BaseAdapter {
         String type  = list.get(position).getType();
         if(type.equals("2"))
             return 1;
-            else
-        return 0;
+        else
+            return 0;
     }
 
     @Override
@@ -91,11 +92,12 @@ public class BrandAssessAdapter extends BaseAdapter {
                     view = LayoutInflater.from(context).inflate(R.layout.item_brand_comment,viewGroup,false);
                     vh2 = new VH2();
                     vh2.tv_name = (TextView) view.findViewById(R.id.tv_item_brand_assess_name);
-                    vh2.tv_date = (TextView) view.findViewById(R.id.tv_item_brand_assess_date);
                     vh2.tv_content = (TextView) view.findViewById(R.id.tv_item_brand_assess_content);
                     vh2.iv_logo = (ImageView) view.findViewById(R.id.iv_item_brand_assess_logo);
                     vh2.iv1 = (ImageView) view.findViewById(R.id.iv_find_iv1);
                     vh2.iv2 = (ImageView) view.findViewById(R.id.iv_find_iv2);
+                    vh2.tv_look = (TextView) view.findViewById(R.id.tv_item_inspection_look);
+                    vh2.tv_comment = (TextView) view.findViewById(R.id.tv_item_inspection_comment);
                     vh2.iv3 = (ImageView) view.findViewById(R.id.iv_find_iv3);
                     view.setTag(vh2);
                     break;
@@ -114,11 +116,11 @@ public class BrandAssessAdapter extends BaseAdapter {
         switch (type){
             case 0:
                 if(list.get(i).getArticle_summary()!=null)
-                vh.tv_title.setText(list.get(i).getArticle_summary());
+                    vh.tv_title.setText(list.get(i).getArticle_summary());
                 if(list.get(i).getArticle_html()!=null)
-                vh.tv_content.setText(list.get(i).getArticle_html());
+                    vh.tv_content.setText(list.get(i).getArticle_html());
                 if(list.get(i).getArticle_html()!=null)
-                vh.tv_content2.setText(list.get(i).getArticle_html());
+                    vh.tv_content2.setText(list.get(i).getArticle_html());
                 if(list.get(i).getArticle_logo()==null||list.get(i).getArticle_logo().size()==0){
                     vh.tv_content2.setVisibility(View.VISIBLE);
                     vh.ll.setVisibility(View.GONE);
@@ -126,14 +128,13 @@ public class BrandAssessAdapter extends BaseAdapter {
                     vh.tv_content2.setVisibility(View.GONE);
                     vh.ll.setVisibility(View.VISIBLE);
                     if(Util.isOnMainThread())
-                        Glide.with(context).load(list.get(i).getArticle_logo().get(0)).centerCrop().into(vh.iv_img);
+                        Glide.with(context).load(list.get(i).getArticle_logo().get(0)).placeholder(R.drawable.loading).centerCrop().dontAnimate().into(vh.iv_img);
                 }
                 vh.tv_look.setText(list.get(i).getLook_time()+"");
                 vh.tv_comment.setText(list.get(i).getArticle_comment_number()+"");
                 vh.tv_reducible_brands.setText(list.get(i).getUserName()+"");
                 if(Util.isOnMainThread()&&list.get(i).getUserImage()!=null)
                     Glide.with(context).load(list.get(i).getUserImage()).transform(new GlideRoundTransform(context)).placeholder(R.drawable.default_logo).dontAnimate().into(vh.iv_content);
-
                 break;
 
             case 1:
@@ -142,28 +143,26 @@ public class BrandAssessAdapter extends BaseAdapter {
                     vh2.tv_name.setText(list.get(i).getUserName());
                 if(list.get(i).getArticle_html()!=null)
                     vh2.tv_content.setText(list.get(i).getArticle_html());
-                if(list.get(i).getShowtime()!=null){
-                    String date =  list.get(i).getShowtime();
-                    vh2.tv_date.setText(DateUtils.timestampToString(date));
-                }
+                vh2.tv_look.setText(list.get(i).getLook_time()+"");
+                vh2.tv_comment.setText(list.get(i).getArticle_comment_number()+"");
                 if(Util.isOnMainThread()&&list.get(i).getUserImage()!=null)
                     Glide.with(context).load(list.get(i).getUserImage()).transform(new GlideRoundTransform(context)).placeholder(R.drawable.default_logo).dontAnimate().into(vh2.iv_logo);
                 if(logo_list!=null)
                     if(logo_list.size()>=3&&(Util.isOnMainThread())){
-                        Glide.with(context).load(logo_list.get(0)).dontAnimate().into(vh2.iv1);
-                        Glide.with(context).load(logo_list.get(1)).dontAnimate().into(vh2.iv2);
-                        Glide.with(context).load(logo_list.get(2)).dontAnimate().into(vh2.iv3);
+                        Glide.with(context).load(logo_list.get(0)).placeholder(R.drawable.loading).dontAnimate().into(vh2.iv1);
+                        Glide.with(context).load(logo_list.get(1)).placeholder(R.drawable.loading).dontAnimate().into(vh2.iv2);
+                        Glide.with(context).load(logo_list.get(2)).placeholder(R.drawable.loading).dontAnimate().into(vh2.iv3);
                         vh2.iv1.setVisibility(View.VISIBLE);
                         vh2.iv2.setVisibility(View.VISIBLE);
                         vh2.iv3.setVisibility(View.VISIBLE);
                     }else if(logo_list.size()==2&&(Util.isOnMainThread())){
-                        Glide.with(context).load(logo_list.get(0)).dontAnimate().into(vh2.iv1);
-                        Glide.with(context).load(logo_list.get(1)).dontAnimate().into(vh2.iv2);
+                        Glide.with(context).load(logo_list.get(0)).placeholder(R.drawable.loading).dontAnimate().into(vh2.iv1);
+                        Glide.with(context).load(logo_list.get(1)).placeholder(R.drawable.loading).dontAnimate().into(vh2.iv2);
                         vh2.iv1.setVisibility(View.VISIBLE);
                         vh2.iv2.setVisibility(View.VISIBLE);
                         vh2.iv3.setVisibility(View.INVISIBLE);
                     }else if(logo_list.size()==1&&(Util.isOnMainThread())){
-                        Glide.with(context).load(logo_list.get(0)).dontAnimate().into(vh2.iv1);
+                        Glide.with(context).load(logo_list.get(0)).placeholder(R.drawable.loading).dontAnimate().into(vh2.iv1);
                         vh2.iv1.setVisibility(View.VISIBLE);
                         vh2.iv2.setVisibility(View.INVISIBLE);
                         vh2.iv3.setVisibility(View.INVISIBLE);
@@ -220,9 +219,11 @@ public class BrandAssessAdapter extends BaseAdapter {
     }
 
     class VH2{
-        TextView tv_name,tv_date,tv_content;
+        TextView tv_name,tv_content;
         ImageView iv_logo;
         ImageView iv1,iv2,iv3;
+        TextView tv_look;
+        TextView tv_comment;
     }
 
 

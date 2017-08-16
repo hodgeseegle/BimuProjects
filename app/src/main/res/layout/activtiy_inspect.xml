@@ -67,7 +67,6 @@
         <ImageView
             android:layout_width="30dp"
             android:layout_height="50dp"
-            android:src="@drawable/kill"
             android:id="@+id/iv_inspect_iv2"
             />
 
@@ -90,7 +89,7 @@
             android:layout_marginTop="20dp"
             android:layout_marginRight="40dp"
             android:text="@string/kill_brand_say"
-            android:layout_width="wrap_content"                     
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textSize="@dimen/text_size_12"
             />
@@ -101,7 +100,6 @@
             android:layout_alignParentRight="true"
             android:layout_marginRight="30dp"
             android:layout_marginTop="10dp"
-            android:src="@drawable/radio_button_off"
             android:id="@+id/ws_inspect2" />
 
     </RelativeLayout>

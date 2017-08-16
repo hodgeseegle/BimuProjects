@@ -198,6 +198,18 @@
         <activity android:name=".activity.InspectOrKillActivity"
             android:screenOrientation="portrait"/>
 
+        <!--实时热度排行-->
+        <activity android:name=".activity.RankingActivity"
+            android:screenOrientation="portrait"/>
+
+        <!--精选推荐-->
+        <activity android:name=".activity.ChoiceRecommendActivity"
+            android:screenOrientation="portrait"/>
+        <!--品牌列表-->
+        <activity android:name=".activity.BrandListActivity"
+            android:screenOrientation="portrait"/>
+
+
         <!--友盟分享-->
         <activity
             android:name="com.umeng.socialize.editorpage.ShareActivity"

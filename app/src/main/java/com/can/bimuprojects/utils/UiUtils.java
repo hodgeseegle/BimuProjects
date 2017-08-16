@@ -7,7 +7,15 @@ import android.graphics.Canvas;
 import android.graphics.ColorMatrix;
 import android.graphics.ColorMatrixColorFilter;
 import android.graphics.Paint;
+import android.text.TextUtils;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.LinearLayout;
+import android.widget.ListView;
+import android.widget.TextView;
 
+import com.can.bimuprojects.R;
 import com.can.bimuprojects.application.BimuApplication;
 
 /**
@@ -62,4 +70,39 @@ public class UiUtils {
         return faceIconGreyBitmap;
     }
 
+
+    /**
+     * 设置数据为空时显示内容
+     */
+    public static void setEmptyView(Context context,ListView lv){
+        View view = LayoutInflater.from(context).inflate(R.layout.item_empty_listview,null);
+        ViewGroup.LayoutParams params = new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
+        view.setLayoutParams(params);
+        view.setVisibility(View.GONE);
+        if(view!=null&&lv!=null){
+            if(lv.getParent()!=null)
+                ((ViewGroup)lv.getParent()).addView(view);
+            lv.setEmptyView(view);
+        }
+    }
+
+    private static int [] bgs = new int[]{R.drawable.shape_brand_color1, R.drawable.shape_brand_color2,R.drawable.shape_brand_color3,R.drawable.shape_brand_color4};
+    /**
+     * 添加textview
+     */
+    public static TextView getTV(Context context, String content, int index){
+        TextView tv = new TextView(context);
+        LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT,LinearLayout.LayoutParams.WRAP_CONTENT);
+        params.setMargins(0,0,20,0);
+        tv.setLayoutParams(params);
+        tv.setMaxLines(1);
+        tv.setTextSize(10);
+        tv.setEllipsize(TextUtils.TruncateAt.END);
+        tv.setPadding(10,5,10,5);
+        tv.setText(content);
+        index = index%4;
+        tv.setBackgroundResource(bgs[index]);
+        tv.setTextColor(context.getResources().getIntArray(R.array.brand_colors)[index]);
+        return tv;
+    }
 }

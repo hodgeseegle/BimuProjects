@@ -3,7 +3,7 @@ package com.can.bimuprojects.adapter;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
-import android.support.v4.content.ContextCompat;
+import android.graphics.Color;
 import android.util.DisplayMetrics;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -24,10 +24,14 @@ import android.widget.TextView;
 import com.android.volley.VolleyError;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.util.Util;
+import com.can.bimuprojects.Module.Request.FocusRequest;
 import com.can.bimuprojects.activity.InspectOrKillActivity;
+import com.can.bimuprojects.utils.AppUtils;
+import com.can.bimuprojects.utils.NumberUtils;
+import com.can.bimuprojects.view.NoScrollListView;
+import com.can.bimuprojects.view.OpenShopNoticeDialog;
 import com.umeng.analytics.MobclickAgent;
 import com.can.bimuprojects.Constant.MethodConstant;
-import com.can.bimuprojects.Module.Request.AddLoveListRequest;
 import com.can.bimuprojects.Module.Request.BrandRequest;
 import com.can.bimuprojects.Module.Request.SetUserNameRequest;
 import com.can.bimuprojects.Module.Response.AddLoveListResponse;
@@ -66,6 +70,7 @@ public class LoveListAdapter extends BaseAdapter {
         this.list = list;
         this.context = context;
         this.wm = wm;
+        dialog_notice = new OpenShopNoticeDialog(context,LayoutInflater.from(context).inflate(R.layout.dialog_openshop_notice,null),R.style.dialog_nodata);
     }
 
     @Override
@@ -101,17 +106,17 @@ public class LoveListAdapter extends BaseAdapter {
         }
         final LoveListResponse.WishListBean data = list.get(i);
         if(Util.isOnMainThread())
-            Glide.with(context).load(data.getBrand_background()).into(vh.iv);
+            Glide.with(context).load(data.getBrand_background()).placeholder(R.drawable.loading).dontAnimate().into(vh.iv);
         if(Util.isOnMainThread())
             Glide.with(context).load(data.getBrand_logo()).transform(new GlideRoundTransform(context)).into(vh.iv_logo);
         vh.tv_title.setText(data.getBrand_name()+" · 投资 "+data.getInvest_amount()+" 万 · 总部"+data.getBrand_location()+" · 适合面积 "+data.getShop_area());
         if(data.getIs_consult().equals("1")) { //待考察:写点评
             vh.tv_review.setText(R.string.no_review);
-            vh.tv_review.setBackgroundColor(ContextCompat.getColor(context,R.color.color_app_text_yes));
+            vh.tv_review.setBackgroundColor(Color.parseColor("#FFA54F"));
             vh.tv_write_or_get.setText(R.string.write_comment);
         }else{ //待沟通:获取开店方案
             vh.tv_review.setText(R.string.no_comm);
-            vh.tv_review.setBackgroundColor(ContextCompat.getColor(context,R.color.color_app_text_yes));
+            vh.tv_review.setBackgroundColor(Color.RED);
             vh.tv_write_or_get.setText(R.string.get_openshop_plan);
         }
 
@@ -135,9 +140,7 @@ public class LoveListAdapter extends BaseAdapter {
                     intent.putExtra("brand",data.getBrand_name());
                     context.startActivity(intent);
                 }else{//获取开店方案
-                    MobclickAgent.onEvent(context,"tv_item_love_list_get");
-                    showDialogFromBottom(context, wm,data.getBrand_id());
-                    requestOpenShopData(data.getBrand_id());
+                    showDialogNotice(data);
                 }
             }
         });
@@ -166,13 +169,29 @@ public class LoveListAdapter extends BaseAdapter {
     private int sex = 0; //0：先生 1：女士
     private TextView tv_dialog_open_shop_agree ; //个人信息保护声明
 
+    private OpenShopNoticeDialog dialog_notice ; //
+
+    private void showDialogNotice(final LoveListResponse.WishListBean data){
+        dialog_notice.findViewById(R.id.tv_dialog_sure).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                dialog_notice.dismiss();
+                MobclickAgent.onEvent(context,"tv_item_love_list_get");
+                showDialogFromBottom(context, wm,data.getBrand_id(),data.getBrand_logo(),data.getBrand_name());
+                requestOpenShopData(data.getBrand_id());
+            }
+        });
+        if(!dialog_notice.isShowing())
+            dialog_notice.show();
+    }
+
     /**
      * 从底部弹出的dialog
      */
-    private void showDialogFromBottom(final Context context, WindowManager wm, final String bid) {
+    private void showDialogFromBottom(final Context context, WindowManager wm, final String bid, final String brand_logo,final String name) {
         dialog = new Dialog(context,R.style.style_dialog);
         View view_dialog = LayoutInflater.from(context).inflate(R.layout.dialog_open_shop_plan, null);
-        lv_dialog = (ListView) view_dialog.findViewById(R.id.lv_brand_dialog);
+        lv_dialog = (NoScrollListView) view_dialog.findViewById(R.id.lv_brand_dialog);
         tv_dialog_cancle = (TextView) view_dialog.findViewById(R.id.tv_brand_dialog_cancle);
         tv_dialog_sure = (TextView) view_dialog.findViewById(R.id.tv_brand_dialog_sure);
         ll_dialog = (LinearLayout) view_dialog.findViewById(R.id.ll_dialog_open_shop_plan);
@@ -211,7 +230,7 @@ public class LoveListAdapter extends BaseAdapter {
         tv_dialog_sure.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                dialog_sure(bid);
+                dialog_sure(bid,brand_logo,name);
             }
         });
         tv_dialog_cancle.setOnClickListener(new View.OnClickListener() {
@@ -277,7 +296,7 @@ public class LoveListAdapter extends BaseAdapter {
     /**
      * 确定
      */
-    private void dialog_sure(String bid) {
+    private void dialog_sure(String bid,String brand_logo,String name) {
         if (ll_dialog.getVisibility() == View.VISIBLE) {
             if (et_dialog.getText().toString()==null||et_dialog.getText().toString().equals("")||et_dialog.getText().toString().trim().equals("")) {
                 ToastUtils.showShort(context,"请输入您的姓氏");
@@ -304,15 +323,21 @@ public class LoveListAdapter extends BaseAdapter {
         }
         PrefUtils.putBoolean("love_update",true);
         consultShop(bid);
+        List<String> stringList = new ArrayList<>();
+        stringList.add(bid);
         list_boolean = adapter_dialog.getCheckState();
         for(int i =0;i<list_openshop.size();i++){
             if(list_boolean.get(i)) {
+                stringList.add(list_openshop.get(i).getBrand_id());
                 consultShop(list_openshop.get(i).getBrand_id());
             }
         }
         dialog.dismiss();
         Intent intent_open_shop = new Intent(context, OpenShopResultActivity.class);
         intent_open_shop.putExtra("brand",bid);
+        intent_open_shop.putExtra("logo",brand_logo);
+        intent_open_shop.putExtra("name",name);
+        intent_open_shop.putExtra(OpenShopResultActivity.STRING_LIST, NumberUtils.list2String(stringList));
         context.startActivity(intent_open_shop);
     }
 
@@ -321,11 +346,13 @@ public class LoveListAdapter extends BaseAdapter {
      * 咨询店铺
      */
     private void consultShop(String id){
-        AddLoveListRequest re = new AddLoveListRequest();
+        FocusRequest re = new FocusRequest();
         re.setId(id);
-        re.setType("3");
+        re.setType(3);
         re.setUid(LoginUtils.getUid());
-        HttpUtils.postWithoutUid(MethodConstant.SET_LOVE_LIST, re, new ResponseHook() {
+        re.setClient_type(AppUtils.getClientType(context));
+        re.setClient_version(AppUtils.getClientVersion(context));
+        HttpUtils.postWithoutUid(MethodConstant.FOCUS, re, new ResponseHook() {
             @Override
             public void deal(Context context, JsonReceive receive) {
 

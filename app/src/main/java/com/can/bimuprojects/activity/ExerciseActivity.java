@@ -26,12 +26,12 @@ import com.android.volley.VolleyError;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.util.Util;
 import com.can.bimuprojects.Constant.AppConstant;
+import com.can.bimuprojects.Module.Request.FocusRequest;
 import com.umeng.socialize.ShareAction;
 import com.umeng.socialize.UMShareListener;
 import com.umeng.socialize.bean.SHARE_MEDIA;
 import com.umeng.socialize.media.UMImage;
 import com.can.bimuprojects.Constant.MethodConstant;
-import com.can.bimuprojects.Module.Request.AddLoveListRequest;
 import com.can.bimuprojects.Module.Request.GetExerciseRequest;
 import com.can.bimuprojects.Module.Request.SetUserNameRequest;
 import com.can.bimuprojects.Module.Response.AddLoveListResponse;
@@ -319,11 +319,11 @@ public class ExerciseActivity extends BaseActivity implements View.OnClickListen
             }
         }
         dialog.dismiss();
-        AddLoveListRequest re = new AddLoveListRequest();
+        FocusRequest re = new FocusRequest();
         re.setId(id);
-        re.setType("5");
+        re.setType(5);
         re.setUid(LoginUtils.getUid());
-        HttpUtils.postWithoutUid(MethodConstant.SET_LOVE_LIST, re, new ResponseHook() {
+        HttpUtils.postWithoutUid(MethodConstant.FOCUS, re, new ResponseHook() {
             @Override
             public void deal(Context context, JsonReceive receive) {
                 AddLoveListResponse response = (AddLoveListResponse) receive.getResponse();

@@ -89,6 +89,7 @@ public class PhotosActivity extends BaseActivity implements View.OnClickListener
     private boolean isConsult;//是否咨询过
     private ArrayList<ArrayList<String>> lists ;//数据集合
     private String brand ; //品牌名称
+    private String str_logo ; //品牌logo
     //初始化数据
     private void initData() {
         lists = new ArrayList<>();
@@ -97,6 +98,7 @@ public class PhotosActivity extends BaseActivity implements View.OnClickListener
         bid = getIntent().getStringExtra("bid");
         isConsult = getIntent().getBooleanExtra("consult",false);
         brand = getIntent().getStringExtra("brand");
+        str_logo = getIntent().getStringExtra("logo");
 
         if(brand!=null)
             tv_title.setText(brand);
@@ -174,6 +176,8 @@ public class PhotosActivity extends BaseActivity implements View.OnClickListener
                 bundle.putStringArrayList("list",lists.get(i));
                 bundle.putString("bid",bid);
                 bundle.putBoolean("consult",isConsult);
+                bundle.putString("logo",str_logo);
+                bundle.putString("name",brand);
                 fragment.setArguments(bundle);
                 fragmentLists.add(fragment);
             }

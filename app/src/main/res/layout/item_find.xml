@@ -10,7 +10,7 @@
     <ImageView
         android:id="@+id/iv_find"
         android:layout_width="match_parent"
-        android:scaleType="fitXY"
+        android:scaleType="centerCrop"
         android:layout_height="200dp" />
     <TextView
         android:id="@+id/tv_title"

@@ -5,11 +5,29 @@
     <dimen name="fab_margin">16dp</dimen>
 
     <!--字体大小-->
+    <dimen name="text_size_10">10sp</dimen>
+    <dimen name="text_size_11">11sp</dimen>
     <dimen name="text_size_12">12sp</dimen>
+    <dimen name="text_size_13">13sp</dimen>
     <dimen name="text_size_14">14sp</dimen>
+    <dimen name="text_size_15">15sp</dimen>
     <dimen name="text_size_16">16sp</dimen>
+    <dimen name="text_size_17">17sp</dimen>
     <dimen name="text_size_18">18sp</dimen>
+    <dimen name="text_size_19">19sp</dimen>
     <dimen name="text_size_20">20sp</dimen>
+    <dimen name="text_size_21">21sp</dimen>
     <dimen name="text_size_22">22sp</dimen>
+    <dimen name="text_size_23">23sp</dimen>
+    <dimen name="app_title_height">40dp</dimen>
+    <dimen name="home_padding">10dp</dimen>
+    <dimen name="img_height" >100dp</dimen>
+
+    <!--首页头部菜单图标宽高-->
+    <dimen name="home_menu_width">35dp</dimen>
+    <dimen name="home_menu_height">35dp</dimen>
+
+    <!--头部搜索控件margin-->
+    <dimen name="home_head_margin">8dp</dimen>
 
 </resources>

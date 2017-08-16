@@ -1,9 +1,9 @@
 package com.can.bimuprojects.activity;
 
+import android.annotation.SuppressLint;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -17,8 +17,10 @@ import android.view.Window;
 import android.view.WindowManager;
 import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
+import android.webkit.JavascriptInterface;
 import android.webkit.WebChromeClient;
 import android.webkit.WebView;
+import android.webkit.WebViewClient;
 import android.widget.AdapterView;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -29,12 +31,9 @@ import android.widget.Toast;
 import com.android.volley.VolleyError;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.util.Util;
+import com.can.bimuprojects.utils.ShareUtils;
 import com.umeng.analytics.MobclickAgent;
-import com.umeng.socialize.ShareAction;
 import com.umeng.socialize.UMShareAPI;
-import com.umeng.socialize.UMShareListener;
-import com.umeng.socialize.bean.SHARE_MEDIA;
-import com.umeng.socialize.media.UMImage;
 import com.can.bimuprojects.Constant.AppConstant;
 import com.can.bimuprojects.Constant.MethodConstant;
 import com.can.bimuprojects.Module.Request.ArticleCommentRequest;
@@ -70,6 +69,7 @@ import java.util.regex.Pattern;
  * create by can on 2017.4.18
  * 文章详情页
  */
+@SuppressLint("JavascriptInterface")
 public class ArticleDetailActivity extends BaseActivity implements View.OnClickListener, AdapterView.OnItemClickListener, TextView.OnEditorActionListener, LoadMoreListView.OnRefreshListener {
 
     @Override
@@ -88,6 +88,7 @@ public class ArticleDetailActivity extends BaseActivity implements View.OnClickL
     private NumImageView niv ; //带数字的imageview
     private ImageView iv_parised ; //收藏
     private ImageView iv_share ; //分享按钮
+    private TextView tv_title ; //文章标题
     /**
      * 初始化view
      */
@@ -95,6 +96,7 @@ public class ArticleDetailActivity extends BaseActivity implements View.OnClickL
         setContentView(R.layout.activity_article_detail);
         lv = (LoadMoreListView) findViewById(R.id.lv_article_detail);
         iv_exit = (ImageView) findViewById(R.id.iv_exit);
+        tv_title = (TextView) findViewById(R.id.tv_title);
         iv_open_share = (ImageView) findViewById(R.id.iv_right);
         if(Util.isOnMainThread())
             Glide.with(this).load(R.drawable.dian).into(iv_open_share);
@@ -142,6 +144,8 @@ public class ArticleDetailActivity extends BaseActivity implements View.OnClickL
     private TextView tv_head_name ; //头部名字
     private TextView tv_head_date ; //头部时间
     private WebView wv ; //头部webview
+    private ArticleDetailResponse res;
+    private boolean load_data = true;
     //初始化头部view
     private void initHeadView() {
         view_head = LayoutInflater.from(this).inflate(R.layout.headview_atricle_detail,null);
@@ -150,18 +154,91 @@ public class ArticleDetailActivity extends BaseActivity implements View.OnClickL
         tv_head_date = (TextView) view_head.findViewById(R.id.tv_article_detail_date);
         iv_head_person = (ImageView) view_head.findViewById(R.id.iv_person_atricle_detail);
         wv = (WebView) view_head.findViewById(R.id.wv_article_detail);
+        wv.setWebChromeClient(new WebChromeClient());
+        wv.getSettings().setJavaScriptEnabled(true);
         wv.setWebChromeClient(new WebChromeClient(){
             @Override
             public void onProgressChanged(WebView view, int newProgress) {
                 super.onProgressChanged(view, newProgress);
+                handler.sendEmptyMessage(3);
                 if(newProgress>=100){
+                    if(load_data){
+                        list.addAll(res.getComments());
+                        adapter.notifyDataSetChanged();
+                        load_data = false;
+                    }
                     if(index!=0)
-                    handler.sendEmptyMessageDelayed(2,100);
+                        handler.sendEmptyMessageDelayed(2,100);
                 }
+            }
+        });
+
+        wv.addJavascriptInterface(new JsCallJavaObj() {
+            @JavascriptInterface
+            @Override
+            public void showBigImg(String url) {
+                click2Brand(url);
+            }
+        },"jsCallJavaObj");
+        wv.setWebViewClient(new WebViewClient(){
+            @Override
+            public void onPageFinished(WebView view, String url) {
+                super.onPageFinished(view, url);
+                // setWebImageClick(view);
             }
         });
     }
 
+    //点击图片跳转到品牌/文章/活动 页
+    private void click2Brand(String brand_class){
+        if(brand_class!=null&&brand_class.contains("bid")){
+            brand_class = brand_class.trim();
+            String back_id = brand_class.substring(brand_class.indexOf('-')+1,brand_class.lastIndexOf('-'));
+            String type = brand_class.substring(brand_class.length()-1);
+            if(back_id!=null&&!back_id.equals("")&&type!=null){
+                if(type.equals("1")){ //品牌类型
+                    Intent intent_brand = new Intent(ArticleDetailActivity.this,BrandActivity.class);
+                    intent_brand.putExtra("index",back_id);
+                    startActivity(intent_brand);
+                }else if(type.equals("2")){ //文章类型
+                    Intent intent_brand = new Intent(ArticleDetailActivity.this,ArticleDetailActivity.class);
+                    intent_brand.putExtra("id",back_id);
+                    startActivity(intent_brand);
+                }else if(type.equals("3")){ //活动类型
+                    Intent intent_brand = new Intent(ArticleDetailActivity.this,ExerciseActivity.class);
+                    intent_brand.putExtra("id",back_id);
+                    startActivity(intent_brand);
+                }else if(type.equals("4")){ //专题类型
+                    //     Intent intent_brand = new Intent(ArticleDetailActivity.this,BrandSpecial.class);
+                    //   intent_brand.putExtra("id",back_id);
+                    // startActivity(intent_brand);
+                }
+            }
+        }
+    }
+
+    /**
+     * 設置網頁中圖片的點擊事件
+     * @param view
+     */
+    // 下面的@SuppressLint("JavascriptInterface")最好加上。防止在某些版本中js和java的交互不支持。
+    @SuppressLint("JavascriptInterface")
+    private  void setWebImageClick(WebView view) {
+        String jsCode="javascript:(function(){" +
+                "var names=document.getElementsByTagName(\"div\");" +
+                "for(var i=0;i<names.length;i++){" +
+                "names[i].onclick=function(){" +
+                "window.jsCallJavaObj.showBigImg(this.className);" +
+                "}}})()";
+        view.loadUrl(jsCode);
+    }
+
+    /**
+     * Js調用Java接口
+     */
+    private interface JsCallJavaObj{
+        void showBigImg(String bid);
+    }
 
     private ArticleDetailAdapter adapter ; //适配器
     private List<ArticleDetailResponse.CommentsBean> list ; //数据集合
@@ -170,7 +247,7 @@ public class ArticleDetailActivity extends BaseActivity implements View.OnClickL
     private String author_id ; //作者id
     private String comment_pos ; //从消息列表进来 回复或评论的id
     private int index =0 ; //从消息列表进来，滚动到哪个位置
-
+    private String id ; //文章id
     /**
      * 初始化数据
      */
@@ -182,18 +259,16 @@ public class ArticleDetailActivity extends BaseActivity implements View.OnClickL
         list_dialog = new ArrayList<>();
         adapter_dialog = new RelatedBrandAdapter(this,list_dialog);
         lv_dialog.setAdapter(adapter_dialog);
-
+        id = getIntent().getStringExtra("id");
+        comment_pos = getIntent().getStringExtra("comment_pos");
+        LoadDialog.show(this,"数据加载中...");
         requestITData();
     }
 
-    private String id ; //文章id
     /**
      * 请求网络数据
      */
     private void requestITData() {
-        id = getIntent().getStringExtra("id");
-        comment_pos = getIntent().getStringExtra("comment_pos");
-        LoadDialog.show(this,"数据加载中...");
         ArticleDetailRequest request = new ArticleDetailRequest();
         request.setId(id);
         request.setUid(LoginUtils.getUid());
@@ -223,6 +298,7 @@ public class ArticleDetailActivity extends BaseActivity implements View.OnClickL
     private boolean scroll1or0; //滑动到评论或者头部
     //设置数据
     private void setData(ArticleDetailResponse response) {
+        res = response;
         List<ArticleDetailResponse.CommentsBean> bean = response.getComments();
         if(bean!=null){
             for(int i =0;i<bean.size();i++){
@@ -234,6 +310,10 @@ public class ArticleDetailActivity extends BaseActivity implements View.OnClickL
             }
         }
         str_share_content = response.getSummary();
+
+        if(str_share_content!=null){
+            tv_title.setText(str_share_content);
+        }
         author_id = response.getAuthor_id();
         String regex = "src=\"(.*?)\"";
         Pattern pa = Pattern.compile(regex, Pattern.DOTALL);
@@ -245,7 +325,6 @@ public class ArticleDetailActivity extends BaseActivity implements View.OnClickL
         if(str_img!=null){
             str_img = str_img.substring(5,str_img.length()-1);
         }
-       // wv.loadData(response.getArticle(), "text/html;charset=UTF-8", null);
         wv.loadDataWithBaseURL(null, getHtmlData(response.getArticle()), "text/html", "utf-8", null);
         if(response.getHas_praised()==1){
             hasParised = true;
@@ -268,15 +347,13 @@ public class ArticleDetailActivity extends BaseActivity implements View.OnClickL
         if(type!=null&&type.equals("1"))
             tv_head_title.setVisibility(View.GONE);
         if(response.getSummary()!=null)
-        tv_head_title.setText(response.getSummary());
+            tv_head_title.setText(response.getSummary());
         if(response.getAuthor_nickname()!=null)
-        tv_head_name.setText(response.getAuthor_nickname());
+            tv_head_name.setText(response.getAuthor_nickname());
         if(Util.isOnMainThread()&&!this.isFinishing())
-        Glide.with(this).load(response.getAuthor_image()).transform(new GlideRoundTransform(this)).into(iv_head_person);
+            Glide.with(this).load(response.getAuthor_image()).transform(new GlideRoundTransform(this)).into(iv_head_person);
         if(response.getPublish_time()!=null)
-        tv_head_date.setText(DateUtils.timestampToString(response.getPublish_time()));
-        list.addAll(response.getComments());
-        adapter.notifyDataSetChanged();
+            tv_head_date.setText(DateUtils.timestampToString(response.getPublish_time()));
         requestDialogData();
     }
 
@@ -355,7 +432,8 @@ public class ArticleDetailActivity extends BaseActivity implements View.OnClickL
     public void onClick(View view) {
         switch (view.getId()){
             case R.id.iv_right: //打开分享
-                share();
+            case R.id.iv_article_detail_share: //右下角分享
+                ShareUtils.shareArticle(this,id,str_img,str_share_content);
                 break;
 
             case R.id.iv_exit : //退出
@@ -373,14 +451,9 @@ public class ArticleDetailActivity extends BaseActivity implements View.OnClickL
                 if(!dialog.isShowing()&&brands!=0){
                     MobclickAgent.onEvent(this,"tv_article_detail_related_brand");
                     if(!this.isFinishing())
-                    dialog.show();
+                        dialog.show();
                 }
                 break;
-
-            case R.id.iv_article_detail_share: //右下角分享
-                share();
-                break;
-
             case R.id.iv_article_detail_parised: //收藏
                 if(showLoginDialog())
                     break;
@@ -410,47 +483,15 @@ public class ArticleDetailActivity extends BaseActivity implements View.OnClickL
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         UMShareAPI.get(this).onActivityResult(requestCode, resultCode, data);
-        if(requestCode==AppConstant.LOGIN_REQUEST) {
-            requestITData();
+        if(resultCode==AppConstant.LOGIN_REQUEST) {
+            //requestITData();
         }
     }
 
     private String str_share_content;//分享标题
     private String str_img ; //图片集合
 
-    /**
-     * 分享
-     */
-    private void share() {
-        UMImage umImage = new UMImage(this, BitmapFactory.decodeResource(getResources(), R.drawable.ic_launcher));
-        if(str_img!=null){
-            umImage = new UMImage(this,str_img);
-        }
-        new ShareAction(this)
-                .setDisplayList(SHARE_MEDIA.WEIXIN, SHARE_MEDIA.WEIXIN_CIRCLE)
-                .withMedia(umImage)
-                .withText(getString(R.string.share_article_title))
-                .setCallback(new UMShareListener() {
-                    @Override
-                    public void onResult(SHARE_MEDIA share_media) {
-                        ToastUtils.showShort(ArticleDetailActivity.this,"分享成功");
-                    }
 
-                    @Override
-                    public void onError(SHARE_MEDIA share_media, Throwable throwable) {
-                        ToastUtils.showShort(ArticleDetailActivity.this,"分享失败");
-                    }
-
-                    @Override
-                    public void onCancel(SHARE_MEDIA share_media) {
-                        ToastUtils.showShort(ArticleDetailActivity.this,"分享已取消");
-                    }
-                })
-                .withTitle(str_share_content)
-                .withTargetUrl("http://app.bimuwang.com/bimu/interface/" +
-                        "share_article.php?article_id=" + id+"&from=singlemessage&isappinstalled=1")
-                .open();
-    }
 
     /**
      * 设置收藏
@@ -510,7 +551,7 @@ public class ArticleDetailActivity extends BaseActivity implements View.OnClickL
     private void sendComment(int type,int reply_id){
         ArticleCommentRequest request = new ArticleCommentRequest();
         request.setUid(LoginUtils.getUid());
-        request.setText(et.getText().toString());
+        request.setText(et.getText().toString().trim());
         request.setArticle_id(id);
         request.setIs_replay(type);
         request.setRe_comment_id(reply_id);
@@ -561,7 +602,7 @@ public class ArticleDetailActivity extends BaseActivity implements View.OnClickL
     private boolean hasMore = true;
     @Override
     public boolean onEditorAction(TextView textView, int i, KeyEvent keyEvent) {
-        content = et.getText().toString();
+        content = et.getText().toString().trim();
         if(!content.equals("")) {
             InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
             imm.hideSoftInputFromWindow(et.getWindowToken(), 0);
@@ -571,9 +612,11 @@ public class ArticleDetailActivity extends BaseActivity implements View.OnClickL
                 et.clearFocus();
                 return true;
             }
+            type_type=0;
+            replay_id = 0;
+        }else{
+            return  false;
         }
-        type_type=0;
-        replay_id = 0;
         return false;
     }
 
@@ -624,6 +667,9 @@ public class ArticleDetailActivity extends BaseActivity implements View.OnClickL
 
                     }
                     break;
+                case 3:
+                    setWebImageClick(wv);
+                    break;
             }
             return false;
         }
@@ -632,8 +678,9 @@ public class ArticleDetailActivity extends BaseActivity implements View.OnClickL
     @Override
     public void onLoadingMore() {
         if(hasMore)
-        handler.sendEmptyMessageDelayed(1,500);
+            handler.sendEmptyMessageDelayed(1,500);
         else
             lv.completeRefresh();
     }
 }
+

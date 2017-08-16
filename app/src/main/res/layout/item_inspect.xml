@@ -22,7 +22,6 @@
 
     <ImageView
         android:id="@+id/ws_item_inspect"
-        android:src="@drawable/radio_button_off"
         android:layout_width="25dp"
         android:layout_alignParentRight="true"
         android:layout_marginRight="30dp"

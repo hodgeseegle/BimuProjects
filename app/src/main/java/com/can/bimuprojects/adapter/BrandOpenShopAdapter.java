@@ -6,6 +6,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
@@ -13,6 +14,7 @@ import com.bumptech.glide.util.Util;
 import com.can.bimuprojects.Module.Response.OpenShopResponse;
 import com.can.bimuprojects.R;
 import com.can.bimuprojects.utils.GlideRoundTransform;
+import com.can.bimuprojects.utils.UiUtils;
 
 import java.util.List;
 
@@ -58,14 +60,31 @@ public class BrandOpenShopAdapter extends BaseAdapter{
             vh.tv_title = (TextView) view.findViewById(R.id.tv_brand_open_shop_title);
             vh.tv_content = (TextView) view.findViewById(R.id.tv_brand_open_shop_content);
             vh.cb = (ImageView) view.findViewById(R.id.cb_brand_open_shop);
+            vh.ll = (LinearLayout) view.findViewById(R.id.ll_item_open_shop);
             view.setTag(vh);
         }else{
             vh = (VH) view.getTag();
         }
-        if(Util.isOnMainThread())
-        Glide.with(context).load(list.get(i).getBrand_logo()).transform(new GlideRoundTransform(context)).into(vh.iv);
-        vh.tv_title.setText(list.get(i).getBrand_name());
-        vh.tv_content.setText("投资 "+list.get(i).getInvest_amount()+" 万 · 总部"+list.get(i).getBrand_location()+" · 适合面积 "+list.get(i).getShop_area());
+        OpenShopResponse.DataBean bean = list.get(i);
+        String background = bean.getBrand_background();
+        String str_autof = bean.getAutof();
+        String str_autos = bean.getAutos();
+        String name = bean.getBrand_name();
+        String money = bean.getInvest_amount();
+
+        if(Util.isOnMainThread()&&background!=null)
+        Glide.with(context).load(background).placeholder(R.drawable.loading).dontAnimate().into(vh.iv);
+        if(name!=null)
+        vh.tv_title.setText(name);
+        vh.ll.removeAllViews();
+        if(str_autof!=null&&!str_autof.equals("")){
+            vh.ll.addView(UiUtils.getTV(context,str_autof,0));
+        }
+        if(str_autos!=null&&!str_autos.equals("")){
+            vh.ll.addView(UiUtils.getTV(context,str_autos,1));
+        }
+        if(money!=null)
+            vh.tv_content.setText("投资 "+money+" 万");
         vh.cb.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
             public void onFocusChange(View view, boolean b) {
@@ -97,6 +116,7 @@ public class BrandOpenShopAdapter extends BaseAdapter{
         TextView tv_title;
         TextView tv_content;
         ImageView cb ;
+        LinearLayout ll;
 
     }
 

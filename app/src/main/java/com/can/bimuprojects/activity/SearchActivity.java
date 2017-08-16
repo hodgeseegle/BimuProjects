@@ -227,7 +227,7 @@ public class SearchActivity extends BaseActivity implements SearchView.SearchVie
                 historyAdapter.notifyDataSetChanged();
             }
 //            Toast.makeText(this, "完成搜索", Toast.LENGTH_SHORT).show();
-            Intent intent = new Intent(this, SearchResultActivity.class);
+            Intent intent = new Intent(this, SearchBrandResultActivity.class);
             intent.putExtra("content", text);
             startActivity(intent);
         }

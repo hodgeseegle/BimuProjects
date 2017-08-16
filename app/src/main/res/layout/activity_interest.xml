@@ -7,28 +7,7 @@
     android:background="@color/color_white">
 
     <!--头部显示栏-->
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="50dp"
-        android:background="@color/color_app_bg">
-        <ImageView
-            android:id="@+id/iv_exit_interest"
-            android:layout_width="45dp"
-            android:layout_height="25dp"
-            android:layout_centerVertical="true"
-            android:src="@drawable/back_white"/>
-        <TextView
-            android:id="@+id/tv_sure_interest"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
-            android:layout_centerVertical="true"
-            android:layout_marginRight="20dp"
-            android:text="@string/sure"
-            android:visibility="gone"
-            android:textColor="@color/color_white"
-            android:textSize="16sp"/>
-    </RelativeLayout>
+    <include layout="@layout/item_app_title2"/>
 
     <!--选择项栏-->
     <LinearLayout

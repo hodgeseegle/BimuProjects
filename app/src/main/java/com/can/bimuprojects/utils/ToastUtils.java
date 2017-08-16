@@ -5,6 +5,7 @@ import android.view.View;
 import android.widget.Toast;
 
 import com.can.bimuprojects.view.NoDataDialog;
+import com.can.bimuprojects.view.OpenShopNoticeDialog;
 
 /**
  * Created by can on 2017/4/14.
@@ -65,6 +66,7 @@ public class ToastUtils
         builder.show();
         return builder;
     }
+
 
     /**
      * 长时间显示Toast

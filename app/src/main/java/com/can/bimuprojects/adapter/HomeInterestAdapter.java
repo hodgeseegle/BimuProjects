@@ -40,9 +40,9 @@ public class HomeInterestAdapter extends RecyclerView.Adapter<HomeInterestAdapte
     }
 
     private Context context;
-    private List<HomePagerResponse.BrandlistBean> list;
+    private List<HomePagerResponse.BrandlistBean.DataBean> list;
 
-    public HomeInterestAdapter(Context context, List<HomePagerResponse.BrandlistBean> list){
+    public HomeInterestAdapter(Context context, List<HomePagerResponse.BrandlistBean.DataBean> list){
         this.context = context;
         this.list = list;
     }

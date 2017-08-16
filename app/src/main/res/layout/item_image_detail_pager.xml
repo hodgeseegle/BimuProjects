@@ -30,16 +30,7 @@
         android:layout_gravity="bottom"
         android:layout_height="50dp">
 
-        <TextView
-            android:id="@+id/tv_image_detail_openshop_process"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:background="@color/color_red"
-            android:textColor="@color/color_white"
-            android:text="@string/get_openshop_plan"
-            android:textSize="18sp"
-            android:gravity="center"
-            />
+        <include layout="@layout/item_open_shop_btn"/>
 
     </LinearLayout>
 

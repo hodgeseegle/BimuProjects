@@ -73,7 +73,7 @@ public class SettingActivity extends BaseActivity implements View.OnClickListene
     private static final int REQUEST_PIC_CODE = 99;
     private final int CROP_RESULT_CODE = 77;
     @Bind(R.id.setting_btn_exit)
-    Button btnExit;
+    TextView btnExit;
     @Bind(R.id.iv_exit)
     ImageView ivBack;
     @Bind(R.id.setting_tv_check_update)

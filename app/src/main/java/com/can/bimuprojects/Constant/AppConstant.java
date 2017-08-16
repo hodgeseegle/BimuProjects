@@ -15,7 +15,8 @@ public class AppConstant {
     //返回值
     public static final int RESUTL = 0x11111;
 
-
+    //品牌点击咨询返回弹出咨询框
+    public static  final  String BRAND_ZIXUN = "brand_zixun";
 
     //保存用户id
     public static final String UID = "user_id";

@@ -17,6 +17,7 @@ import com.can.bimuprojects.R;
 import com.can.bimuprojects.activity.PersonalPageActivity;
 import com.can.bimuprojects.utils.DateUtils;
 import com.can.bimuprojects.utils.GlideRoundTransform;
+import com.can.bimuprojects.utils.GlideUtil;
 
 import java.util.List;
 
@@ -52,7 +53,7 @@ public class ArticleDetailAdapter extends BaseAdapter {
 
     @Override
     public View getView(final int i, View view, ViewGroup viewGroup) {
-         VH vh;
+        VH vh;
         if(view==null){
             view = LayoutInflater.from(context).inflate(R.layout.item_article_detail_comment,null);
             vh = new VH();
@@ -62,13 +63,15 @@ public class ArticleDetailAdapter extends BaseAdapter {
             vh.tv_rep = (TextView) view.findViewById(R.id.tv_item_article_detail_comment_rep);
             vh.tv_content = (TextView) view.findViewById(R.id.tv_item_article_detail_comment_content);
             vh.tv_date = (TextView) view.findViewById(R.id.tv_item_article_detail_comment_date);
+            vh.iv_comment = (ImageView) view.findViewById(R.id.iv_comment);
             view.setTag(vh);
         }else{
             vh = (VH) view.getTag();
         }
         ArticleDetailResponse.CommentsBean data = list.get(i);
+        GlideUtil.loadDrawableImg(context,R.drawable.comment2,vh.iv_comment);
         if(Util.isOnMainThread())
-        Glide.with(context).load(data.getAuthor_image()).transform(new GlideRoundTransform(context)).placeholder(R.drawable.default_logo).dontAnimate().into(vh.iv);
+            Glide.with(context).load(data.getAuthor_image()).transform(new GlideRoundTransform(context)).placeholder(R.drawable.default_logo).dontAnimate().into(vh.iv);
         if(data.getIs_reply()==1){ //回复
             vh.tv_rep.setVisibility(View.VISIBLE);
             vh.tv_name2.setVisibility(View.VISIBLE);
@@ -89,8 +92,8 @@ public class ArticleDetailAdapter extends BaseAdapter {
         vh.tv_content.setText(data.getComment_text().trim());
         if(data.getTimestamp().equals("刚刚"))
             vh.tv_date.setText("刚刚");
-            else
-        vh.tv_date.setText(DateUtils.timestampToString(data.getTimestamp()));
+        else
+            vh.tv_date.setText(DateUtils.timestampToString(data.getTimestamp()));
 
         return view;
     }
@@ -99,6 +102,7 @@ public class ArticleDetailAdapter extends BaseAdapter {
     class VH{
         TextView tv_name1,tv_name2,tv_rep,tv_content,tv_date;
         ImageView iv;
+        ImageView iv_comment;
     }
 
 }

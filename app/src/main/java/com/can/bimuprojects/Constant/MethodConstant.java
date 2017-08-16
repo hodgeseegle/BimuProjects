@@ -21,12 +21,14 @@ public class MethodConstant {
     public static final String REGISTER = "register";
     //更新头像
     public static final String UPLOAD_PIC = "upload_pic";
-    //加入心愿单
+    //加入心愿单//放入或移除心愿单
     public static final String FOCUS = "focus";
     //发帖
     public static final String SEND_ARTICLE = "android_keep_article";
     //其它搜索
     public static final String OTHER_SEARCH = "other_search";
+    //验证码登录
+    public static final String VERIFY_LOGIN = "login_verify";
     //用户信息
     public static final String USER_INFO = "user_info";
     //修改用户名
@@ -75,8 +77,6 @@ public class MethodConstant {
     public static final String GET_OPEN_SHOP = "data_brand";
     //设置用户名
     public static final String SET_USER_NAME = "user_change_msg";
-    //放入或移除心愿单
-    public static final String SET_LOVE_LIST = "focus";
     //图库
     public static final String GET_BRAND_IMGS = "brand_img";
     //心愿单列表
@@ -107,4 +107,14 @@ public class MethodConstant {
     public static final String GET_USER_PERSONAL_PROTECT = "secrecy_agreement";
     //应用推荐
     public static final String GET_APP_RECOMMEND = "brand_league";
+    //咨询后的品牌推荐
+    public static final String  BRAND_AFTERCONSULT= "brand_afterconsult";
+    //比目推荐
+    public static final String CLASS_BRAND = "class_brand";
+    //实时热门排行
+    public static final String RANKING = "industry_ranking";
+    //项目库
+    public static final String PROJECT = "all_brand";
+    //精选推荐
+    public static final String CHOICE_RECOMMEND = "brand_label";
 }

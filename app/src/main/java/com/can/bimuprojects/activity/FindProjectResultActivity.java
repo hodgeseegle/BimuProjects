@@ -1,6 +1,8 @@
 package com.can.bimuprojects.activity;
 
+import android.app.Dialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
@@ -49,14 +51,13 @@ public class FindProjectResultActivity extends BaseActivity implements View.OnCl
     private List<FindProject2Reponse.DataBean> list; //数据集合
 
     private ImageView iv_exit; //推出按钮
-    private TextView tv_title; //标题
     private RefreshListView lv ; //集合控件
     private FindProjectAdapter adapter ; //适配器
     private TextView tv1,tv2,tv3 ; //隐藏控件子view
     private TextView tv1_item,tv2_item,tv3_item;//listview头部子view
     private LinearLayout ll_hide ; //隐藏控件父view
 
-    private boolean isFind  =false; //是否从发现进来的
+    private boolean isFind  =false; //是否从查看全部进来的
 
     private Handler handler = new Handler(new Handler.Callback() {//主线程处理
         @Override
@@ -100,41 +101,49 @@ public class FindProjectResultActivity extends BaseActivity implements View.OnCl
     private String area ; //面积大小
     private String interest ; //兴趣行业内容
     private int page = 0;
-    private boolean flag; //是否为查看全部品牌
     /**
      * 数据初始化
      */
     private void initData() {
-        if(flag)
-            tv_title.setText(R.string.brand_list);
-            else
-            tv_title.setText(R.string.recommend);
+        tv_title.setText(R.string.bimu_recommend);
 
-        if(!flag){
-            if(amount.equals("")){
-                if(area.equals("")){
-                    tv1.setText(interest);
-                    tv1_item.setText(interest);
-                }else{
-                    tv1.setText(area);
-                    tv2.setText(interest);
-                    tv1_item.setText(area);
-                    tv2_item.setText(interest);
-                }
-            }else {
-                tv1.setText(amount);
-                tv1_item.setText(amount);
-                if(area.equals("")){
-                    tv2.setText(interest);
-                    tv2_item.setText(interest);
-                }else{
-                    tv2.setText(area);
-                    tv3.setText(interest);
-                    tv2_item.setText(area);
-                    tv3_item.setText(interest);
-                }
+        Intent intent = getIntent();
+        amount = intent.getStringExtra("amount");
+        cid = intent.getStringExtra("cid");
+        area = intent.getStringExtra("area");
+        interest = intent.getStringExtra("interest");
+        isFind = intent.getBooleanExtra("isFind",false);
+
+        if(isFind){
+            //lv.addHeaderView(new TextView(this));
+        }else{
+            lv.addHeaderView(headview);
+        }
+
+        if(amount.equals("")){
+            if(area.equals("")){
+                tv1.setText(interest);
+                tv1_item.setText(interest);
+            }else{
+                tv1.setText(area);
+                tv2.setText(interest);
+                tv1_item.setText(area);
+                tv2_item.setText(interest);
+            }
+        }else {
+            tv1.setText(amount);
+            tv1_item.setText(amount);
+            if(area.equals("")){
+                tv2.setText(interest);
+                tv2_item.setText(interest);
+            }else{
+                tv2.setText(area);
+                tv3.setText(interest);
+                tv2_item.setText(area);
+                tv3_item.setText(interest);
             }
         }
+
         list = new ArrayList<>();
         adapter = new FindProjectAdapter(this,list);
         lv.setAdapter(adapter);
@@ -150,6 +159,9 @@ public class FindProjectResultActivity extends BaseActivity implements View.OnCl
             }
             if(amount.equals("不限")) {
                 amount = "0-1000";
+            }
+            if(amount.equals("100")){
+                amount = "100-10000";
             }
         }
         GetFindProjectRecode recode = new GetFindProjectRecode();
@@ -186,7 +198,6 @@ public class FindProjectResultActivity extends BaseActivity implements View.OnCl
         request.setCid(cid);
         request.setType("1");
         request.setPage(page+"");
-
         HttpUtils.postWithoutUid(MethodConstant.GET_FIND_PROJECT, request, new ResponseHook() {
             @Override
             public void deal(Context context, JsonReceive receive) {
@@ -208,13 +219,13 @@ public class FindProjectResultActivity extends BaseActivity implements View.OnCl
                         adapter.notifyDataSetChanged();
                     }
                 }else if(response!=null&&response.getData().size()==0&&page==0){
-//                    Dialog dialog = ToastUtils.showDialog(FindProjectResultActivity.this,"提示",getString(R.string.no_brand),View.inflate(context, R.layout.dialog_circle,null),R.style.circle_dialog);
-//                    dialog.setOnCancelListener(new DialogInterface.OnCancelListener() {
-//                        @Override
-//                        public void onCancel(DialogInterface dialogInterface) {
-//                            FindProjectResultActivity.this.finish();
-//                        }
-//                    });
+                    Dialog dialog = ToastUtils.showDialog(FindProjectResultActivity.this,"提示",getString(R.string.no_brand),View.inflate(context, R.layout.dialog_circle,null),R.style.circle_dialog);
+                    dialog.setOnCancelListener(new DialogInterface.OnCancelListener() {
+                        @Override
+                        public void onCancel(DialogInterface dialogInterface) {
+                            FindProjectResultActivity.this.finish();
+                        }
+                    });
                 }
             }
         }, new ErrorHook() {
@@ -225,6 +236,7 @@ public class FindProjectResultActivity extends BaseActivity implements View.OnCl
         }, FindProject2Reponse.class);
     }
 
+    private TextView tv_title ; //标题
     /**
      * 初始化view
      */
@@ -232,34 +244,23 @@ public class FindProjectResultActivity extends BaseActivity implements View.OnCl
         setContentView(R.layout.activity_findproject_result);
         iv_exit = (ImageView) findViewById(R.id.iv_exit);
         tv_title = (TextView) findViewById(R.id.tv_title);
-
         lv = (RefreshListView) findViewById(R.id.lv_findproject_result);
         tv1 = (TextView) findViewById(R.id.tv_find_project_result1);
         tv2 = (TextView) findViewById(R.id.tv_find_project_result2);
         tv3 = (TextView) findViewById(R.id.tv_find_project_result3);
         ll_hide  = (LinearLayout) findViewById(R.id.ll_find_project_result);
-
-        Intent intent = getIntent();
-        amount = intent.getStringExtra("amount");
-        cid = intent.getStringExtra("cid");
-        area = intent.getStringExtra("area");
-        interest = intent.getStringExtra("interest");
-        isFind = intent.getBooleanExtra("isFind",false);
-        flag = intent.getBooleanExtra("flag",false);
-
-        if(!flag)
         initHeadView();
     }
 
+    private View headview ;
     /**
      * 初始化头部view
      */
     private void initHeadView() {
-        View view = LayoutInflater.from(this).inflate(R.layout.headview_find_project_result,null);
-        tv1_item = (TextView) view.findViewById(R.id.tv_item_find_project_result1);
-        tv2_item = (TextView) view.findViewById(R.id.tv_item_find_project_result2);
-        tv3_item = (TextView) view.findViewById(R.id.tv_item_find_project_result3);
-        lv.addHeaderView(view);
+        headview = LayoutInflater.from(this).inflate(R.layout.headview_find_project_result,null);
+        tv1_item = (TextView) headview.findViewById(R.id.tv_item_find_project_result1);
+        tv2_item = (TextView) headview.findViewById(R.id.tv_item_find_project_result2);
+        tv3_item = (TextView) headview.findViewById(R.id.tv_item_find_project_result3);
     }
 
     /**
@@ -289,40 +290,39 @@ public class FindProjectResultActivity extends BaseActivity implements View.OnCl
     @Override
     public void onLoadingMore() {
         if (hasMore)
-        handler.sendEmptyMessageDelayed(TYPE_LOADMORE,500);
+            handler.sendEmptyMessageDelayed(TYPE_LOADMORE,500);
         else
             lv.completeRefresh();
     }
 
     @Override
     public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-        if (!flag&&i > 1&&i-2<list.size()) {
-            if(isFind)
-            MobclickAgent.onEvent(this,"click24");
-            else
+        if(isFind){
+            if (i > 0&&i - 1<list.size()) {
                 MobclickAgent.onEvent(this,"lv_findproject_result");
-            Intent intent = new Intent(this, BrandActivity.class);
-            intent.putExtra("index", list.get(i - 2).getBrand_id());
-            startActivity(intent);
-        }else if(flag&&i>0&&i-1<list.size()){
-            if(isFind)
-                MobclickAgent.onEvent(this,"click24");
-            else
+                Intent intent = new Intent(this, BrandActivity.class);
+                intent.putExtra("index", list.get(i - 1).getBrand_id());
+                startActivity(intent);
+            }
+        }else{
+            if (i > 1&&i - 2<list.size()) {
                 MobclickAgent.onEvent(this,"lv_findproject_result");
-            Intent intent = new Intent(this, BrandActivity.class);
-            intent.putExtra("index", list.get(i - 1).getBrand_id());
-            startActivity(intent);
+                Intent intent = new Intent(this, BrandActivity.class);
+                intent.putExtra("index", list.get(i - 2).getBrand_id());
+                startActivity(intent);
+            }
         }
+
     }
 
     @Override
     public void onScrollChanged() {
-        if(flag)
-            return;
-        if (lv.getFirstVisiblePosition()==1&& lv.getChildAt(1).getTop() >= lv.getListPaddingTop()){//显示控件
-            ll_hide.setVisibility(View.VISIBLE);
-        }else if(lv.getFirstVisiblePosition()==0){//隐藏控件
-            ll_hide.setVisibility(View.GONE);
+        if(!isFind) {
+            if (lv.getFirstVisiblePosition() == 1 && lv.getChildAt(1).getTop() >= lv.getListPaddingTop()) {//显示控件
+                ll_hide.setVisibility(View.VISIBLE);
+            } else if (lv.getFirstVisiblePosition() == 0) {//隐藏控件
+                ll_hide.setVisibility(View.GONE);
+            }
         }
     }
 }

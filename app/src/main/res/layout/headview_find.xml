@@ -21,7 +21,7 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:orientation="vertical"
-            android:background="@color/translucent"
+            android:background="@drawable/shape_bg_gradient"
             android:layout_alignBottom="@id/iv_find_headview_head"
             android:layout_height="wrap_content">
 

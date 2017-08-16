@@ -1,29 +1,26 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="33dp"
-
-
+    android:layout_height="wrap_content"
     android:background="@color/color_low">
 
 
     <RelativeLayout
         android:id="@+id/rl_search"
-        android:layout_marginBottom="8px"
-        android:layout_marginRight="8px"
-        android:layout_marginLeft="8px"
-        android:layout_marginTop="8px"
         android:layout_width="match_parent"
         android:background="@drawable/search_edittext_shape"
-        android:layout_height="match_parent">
+        android:layout_height="33dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:layout_marginTop="10dp">
 
         <ImageView
             android:id="@+id/iv_search_layout"
-            android:layout_width="20dp"
-            android:layout_height="20dp"
-            android:layout_marginLeft="5dp"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:padding="5dp"
             android:layout_centerVertical="true"
-            android:src="@drawable/img_search_home"/>
+            />
 
         <EditText
             android:layout_toRightOf="@id/iv_search_layout"
@@ -32,11 +29,11 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:hint="@string/search"
-            android:drawablePadding="5dp"
             android:imeOptions="actionSearch"
             android:inputType="text"
             android:textSize="15sp"
-            android:layout_marginLeft="10dp"
+            android:padding="5dp"
+            android:layout_centerVertical="true"
             android:textColorHint="#66676057" />
 
 
@@ -63,7 +60,8 @@
         android:layout_marginLeft="20dp"
         android:layout_marginRight="20dp"
         android:background="@drawable/lv_search_tips_bg"
-        android:visibility="gone"></ListView>
+        android:visibility="gone"
+        />
 </RelativeLayout>
 
 

@@ -18,6 +18,7 @@ import com.can.bimuprojects.Module.Response.BookServiceResponse;
 import com.can.bimuprojects.R;
 import com.can.bimuprojects.activity.JoinProcessActivity;
 import com.can.bimuprojects.utils.GlideRoundTransform;
+import com.can.bimuprojects.utils.GlideUtil;
 
 import java.util.List;
 
@@ -66,30 +67,30 @@ public class InspectAdapter extends BaseAdapter {
             vh = (VH) view.getTag();
         }
         vh.ll.removeAllViews();
-           BookServiceResponse.ServiceBean data =  list.get(i);
+        BookServiceResponse.ServiceBean data =  list.get(i);
         if(Util.isOnMainThread())
-        Glide.with(context).load(data.getLogo()).transform(new GlideRoundTransform(context)).into(vh.iv);
-        vh.ll.addView(addTextView(16,10,data.getTitle(), ContextCompat.getColor(context,R.color.color_app_text_yes)));
+            Glide.with(context).load(data.getLogo()).transform(new GlideRoundTransform(context)).into(vh.iv);
+        vh.ll.addView(addTextView(16,10,data.getTitle(), Color.RED));
         for(int j =0;j<data.getTip().size();j++){
             vh.ll.addView(addTextView(12,0,data.getTip().get(j),Color.BLACK));
         }
         if(data.getChoose().equals("true")){
-            vh.ws.setImageResource(R.drawable.radio_button_on);
-            vh.ws.setTag(true);
+            GlideUtil.loadDrawableImg(context,R.drawable.radio_button_on,vh.ws);
+            vh.tv.setTag(true);
         }else{
-            vh.ws.setImageResource(R.drawable.radio_button_off);
-            vh.ws.setTag(false);
+            GlideUtil.loadDrawableImg(context,R.drawable.radio_button_off,vh.ws);
+            vh.tv.setTag(false);
         }
         vh.ws.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                boolean bb = (Boolean) view.getTag();
+                boolean bb = (Boolean) vh.tv.getTag();
                 listener.onChangeState(i,!bb);
-                vh.ws.setTag(!bb);
+                vh.tv.setTag(!bb);
                 if(!bb)
-                    vh.ws.setImageResource(R.drawable.radio_button_on);
+                    GlideUtil.loadDrawableImg(context,R.drawable.radio_button_on,vh.ws);
                 else
-                    vh.ws.setImageResource(R.drawable.radio_button_off);
+                    GlideUtil.loadDrawableImg(context,R.drawable.radio_button_off,vh.ws);
             }
         });
 

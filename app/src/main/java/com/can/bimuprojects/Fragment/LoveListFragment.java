@@ -9,6 +9,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.android.volley.VolleyError;
 import com.bumptech.glide.Glide;
@@ -54,12 +55,14 @@ public class LoveListFragment extends Fragment implements LoadMoreListView.OnRef
 
     private LoadMoreListView lv;//集合控件
     private LoveListAdapter adapter ; //集合适配器
+    private TextView tv_title ; //标题
     /**
      * 初始化view
      * @param view
      */
     private void initView(View view) {
         lv = (LoadMoreListView) view.findViewById(R.id.rlv_love_list);
+        tv_title = (TextView) view.findViewById(R.id.tv_title);
     }
 
     private int page =0;//页数
@@ -71,6 +74,7 @@ public class LoveListFragment extends Fragment implements LoadMoreListView.OnRef
      * 初始化数据
      */
     private void initData() {
+        tv_title.setText(getString(R.string.your_love));
         data = new ArrayList<>();
         adapter = new LoveListAdapter(getActivity().getWindowManager(),getContext(),data);
         lv.setAdapter(adapter);
@@ -124,10 +128,8 @@ public class LoveListFragment extends Fragment implements LoadMoreListView.OnRef
                 LoveListResponse response = (LoveListResponse) receive.getResponse();
                 if(response!=null&&response.getExe_success()==1){
                     String str = response.getTrue_name();
-                    if(str==null||str.equals("")){
-                        PrefUtils.putBoolean("love_user_name",false);
-                    }else{
-                        PrefUtils.putBoolean("love_user_name",true);
+                    if(str!=null&&!str.equals("")){
+                        LoginUtils.setUserName(str);
                     }
                     if(response.getTotal()>0){
                         hasMore = true;

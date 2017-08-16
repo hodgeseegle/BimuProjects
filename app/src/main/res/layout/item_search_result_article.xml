@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <ImageView
+        android:id="@+id/iv_item_search_logo"
+        android:layout_width="120dp"
+        android:layout_height="80dp"
+        android:layout_margin="10dp"
+        android:layout_centerVertical="true"
+        android:scaleType="centerCrop"/>
+
+    <TextView
+        android:layout_marginTop="10dp"
+        android:layout_toRightOf="@id/iv_item_search_logo"
+        android:id="@+id/tv_item_search_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="@dimen/text_size_16"
+        android:maxLines="2"
+        android:ellipsize="end"
+        android:textColor="@color/color_big_text"
+        android:layout_marginRight="10dp"
+        />
+
+    <TextView
+        android:layout_marginTop="5dp"
+        android:id="@+id/tv_item_search_content"
+        android:layout_toRightOf="@id/iv_item_search_logo"
+        android:layout_below="@id/tv_item_search_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="@dimen/text_size_14"
+        android:maxLines="3"
+        android:ellipsize="end"
+        android:textColor="@color/color_middle_text"
+        android:layout_marginBottom="10dp"
+        android:layout_marginRight="10dp"
+        />
+
+</RelativeLayout>

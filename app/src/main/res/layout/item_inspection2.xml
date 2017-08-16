@@ -28,7 +28,6 @@
             android:id="@+id/iv_item_inspecial_img"
             android:layout_width="match_parent"
             android:layout_height="165dp"
-            android:background="@drawable/loading"
             android:layout_gravity="center_vertical"
             android:scaleType="centerCrop"
             />
@@ -83,37 +82,43 @@
             android:layout_height="wrap_content"
             android:gravity="right|center_vertical"
             android:orientation="horizontal">
-        <TextView
-        android:id="@+id/tv_item_inspection_look"
-        android:layout_width="wrap_content"
-        android:text="0"
-            android:layout_marginRight="5dp"
-        android:textSize="@dimen/text_size_12"
-            android:textColor="@color/orange"
-            android:gravity="center_vertical"
-        android:layout_height="wrap_content" />
+            <TextView
+                android:id="@+id/tv_item_inspection_look"
+                android:layout_width="wrap_content"
+                android:text="0"
+                android:layout_marginRight="5dp"
+                android:textSize="@dimen/text_size_12"
+                android:textColor="@color/color_small_text"
+                android:gravity="center_vertical"
+                android:layout_height="wrap_content" />
 
-        <ImageView
-            android:layout_width="20dp"
-            android:layout_height="20dp"
-            android:src="@drawable/home_look"
-            android:layout_marginRight="10dp"
-            />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="@dimen/text_size_12"
+                android:textColor="@color/color_small_text"
+                android:gravity="center_vertical"
+                android:text="@string/read"
+                android:layout_marginRight="10dp"
+                />
 
-        <TextView
-            android:id="@+id/tv_item_inspection_comment"
-            android:layout_width="wrap_content"
-            android:text="0"
-            android:layout_marginRight="5dp"
-            android:textSize="@dimen/text_size_12"
-            android:textColor="@color/orange"
-            android:gravity="center_vertical"
-            android:layout_height="wrap_content" />
+            <TextView
+                android:id="@+id/tv_item_inspection_comment"
+                android:layout_width="wrap_content"
+                android:text="0"
+                android:layout_marginRight="5dp"
+                android:textSize="@dimen/text_size_12"
+                android:textColor="@color/color_small_text"
+                android:gravity="center_vertical"
+                android:layout_height="wrap_content" />
 
-            <ImageView
-                android:layout_width="20dp"
-                android:layout_height="20dp"
-                android:src="@drawable/home_comment"
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="@dimen/text_size_12"
+                android:textColor="@color/color_small_text"
+                android:gravity="center_vertical"
+                android:text="@string/comment"
                 />
         </LinearLayout>
     </LinearLayout>

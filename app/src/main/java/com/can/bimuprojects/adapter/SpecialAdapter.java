@@ -64,6 +64,8 @@ public class SpecialAdapter extends BaseAdapter{
         if(Util.isOnMainThread())
         Glide.with(context)
                 .load(list.get(i).getImg_url())
+        .centerCrop()
+        .dontAnimate()
                 .placeholder(R.drawable.loading)
                 .into(viewHolder.imageView);
         String title = list.get(i).getTitle();

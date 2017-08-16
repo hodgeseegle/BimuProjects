@@ -2,13 +2,13 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical"
     android:layout_width="match_parent"
+    android:background="@color/color_white"
     android:layout_height="match_parent">
 
     <ImageView
         android:id="@+id/iv_item_love_list"
         android:layout_width="match_parent"
         android:layout_height="180dp"
-        android:src="@drawable/loading"
         android:scaleType="centerCrop"
         android:layout_marginTop="10dp"
         />

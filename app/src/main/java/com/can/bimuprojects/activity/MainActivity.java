@@ -23,6 +23,7 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.util.Util;
+import com.can.bimuprojects.Fragment.ProjectFragment;
 import com.umeng.analytics.MobclickAgent;
 import com.umeng.message.inapp.IUmengInAppMsgCloseCallback;
 import com.umeng.message.inapp.InAppMessageManager;
@@ -110,10 +111,10 @@ public class MainActivity extends BaseActivity implements IUmengInAppMsgCloseCal
                 break;
             case R.id.main_ll_discovery:
                 MobclickAgent.onEvent(this,"main_ll_discovery");
-                if(PrefUtils.get("class_index","").equals("")){
-                    Intent intent = new Intent(this,ActivityInterest.class);
-                    startActivity(intent);
-                }else
+//                if(PrefUtils.get("class_index","").equals("")){
+//                    Intent intent = new Intent(this,ActivityInterest.class);
+//                    startActivity(intent);
+//                }else
                     showFragment(FRAGMENT_FIND);
                 break;
             case R.id.main_ll_bargin:
@@ -292,7 +293,7 @@ public class MainActivity extends BaseActivity implements IUmengInAppMsgCloseCal
 
             case FRAGMENT_FIND:
                     if (fragments[fragmentIndex] == null) {
-                        fragments[fragmentIndex] = new FindFragment();
+                        fragments[fragmentIndex] = new ProjectFragment();
                         transaction.add(R.id.main_ll_content, fragments[fragmentIndex]);
                     }
                 transaction.show(fragments[fragmentIndex]);
@@ -373,7 +374,8 @@ public class MainActivity extends BaseActivity implements IUmengInAppMsgCloseCal
         ObjectAnimator animator = ObjectAnimator.ofFloat(llTabs, "translationY", height, 0);
         animator.setDuration(700);
         animator.setInterpolator(new AnticipateOvershootInterpolator());
-        animator.start();
+        //animator.start();
+        if(!LoginUtils.getLoginStatus())
         hasNotReadMsg();
     }
 

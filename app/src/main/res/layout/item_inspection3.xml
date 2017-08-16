@@ -34,7 +34,6 @@
             android:layout_height="100dp"
             android:layout_weight="1"
             android:scaleType="centerCrop"
-            android:background="@drawable/loading"
             />
 
         <ImageView
@@ -44,7 +43,6 @@
             android:layout_height="100dp"
             android:layout_weight="1"
             android:scaleType="centerCrop"
-            android:background="@drawable/loading"
             />
 
         <ImageView
@@ -54,7 +52,6 @@
             android:layout_height="100dp"
             android:layout_weight="1"
             android:scaleType="centerCrop"
-            android:background="@drawable/loading"
             />
 
 
@@ -97,14 +94,17 @@
                 android:text="0"
                 android:layout_marginRight="5dp"
                 android:textSize="@dimen/text_size_12"
-                android:textColor="@color/orange"
+                android:textColor="@color/color_small_text"
                 android:gravity="center_vertical"
                 android:layout_height="wrap_content" />
 
-            <ImageView
-                android:layout_width="20dp"
-                android:layout_height="20dp"
-                android:src="@drawable/home_look"
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="@dimen/text_size_12"
+                android:textColor="@color/color_small_text"
+                android:gravity="center_vertical"
+                android:text="@string/read"
                 android:layout_marginRight="10dp"
                 />
 
@@ -114,14 +114,17 @@
                 android:text="0"
                 android:layout_marginRight="5dp"
                 android:textSize="@dimen/text_size_12"
-                android:textColor="@color/orange"
+                android:textColor="@color/color_small_text"
                 android:gravity="center_vertical"
                 android:layout_height="wrap_content" />
 
-            <ImageView
-                android:layout_width="20dp"
-                android:layout_height="20dp"
-                android:src="@drawable/home_comment"
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="@dimen/text_size_12"
+                android:textColor="@color/color_small_text"
+                android:gravity="center_vertical"
+                android:text="@string/comment"
                 />
         </LinearLayout>
     </LinearLayout>

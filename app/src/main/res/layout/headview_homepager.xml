@@ -13,339 +13,354 @@
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true">
 
+        <android.support.v4.view.ViewPager
+            android:id="@+id/vp_home_pager"
+            android:fadingEdge="none"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true" />
+
+
         <!--头部滚动-->
-    <android.support.v4.view.ViewPager
-        android:id="@+id/vp_home_pager"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"/>
 
         <RelativeLayout
             android:id="@+id/rl_home"
+            android:layout_marginLeft="5dp"
+            android:layout_marginRight="5dp"
             android:layout_width="match_parent"
+            android:layout_alignBottom="@id/vp_home_pager"
+            android:layout_marginBottom="5dp"
             android:layout_height="wrap_content">
 
-        <!--底部圆点滚动-->
-        <LinearLayout
-            android:id="@+id/ll_home_container"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginRight="10dp"
-            android:gravity="right"
-            android:orientation="horizontal"/>
-
-        <!--三个指示栏-->
-        <LinearLayout
-            android:orientation="horizontal"
-            android:id="@+id/ll_home_head_three"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:gravity="center"
-            android:layout_marginLeft="10dp"
-            android:layout_marginRight="10dp"
-            android:visibility="gone"
-            />
-
-    <!--找项目-->
-    <LinearLayout
-        android:clickable="true"
-        android:id="@+id/ll_home_find_project"
-        android:layout_width="match_parent"
-        android:layout_marginLeft="20dp"
-        android:layout_marginRight="20dp"
-        android:layout_marginBottom="5dp"
-        android:layout_marginTop="10dp"
-        android:layout_below="@id/ll_home_container"
-        android:background="@drawable/shape_find_project_bg"
-        android:orientation="vertical"
-        android:layout_height="wrap_content">
-
-        <!--投资金额-->
-        <RelativeLayout
-            android:id="@+id/rl_home_find_project_money"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="20dp"
-            android:layout_marginTop="12dp"
-            android:layout_marginRight="20dp"
-            android:layout_marginBottom="12dp"
-            android:gravity="center_vertical"
-            >
-
-            <TextView
-                android:layout_centerVertical="true"
-                android:id="@+id/tv_home_money"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textColor="@color/color_big_text"
-                android:text="@string/money"
-                android:textSize="@dimen/text_size_16"
-                />
-
-            <ImageView
-                android:id="@+id/iv_home_money"
-                android:layout_width="25dp"
-                android:layout_height="25dp"
-                android:layout_alignParentRight="true"
-                android:layout_centerVertical="true"
-                />
-
-            <TextView
-                android:id="@+id/tv_find_project_money"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerVertical="true"
-                android:hint="@string/please_choose"
-                android:gravity="center"
-                android:maxEms="8"
-                android:textColor="@color/color_middle_text"
-                android:maxLines="1"
-                android:lines="1"
-                android:layout_toLeftOf="@id/iv_home_money"
-                android:layout_toRightOf="@id/tv_home_money"
-                android:ellipsize="end"
-                android:textColorHint="@color/color_small_text"
-                android:textSize="@dimen/text_size_12"
-                />
-
-
-        </RelativeLayout>
-
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:background="@color/color_divi_line"
-            android:layout_marginLeft="20dp"
-            android:layout_marginRight="20dp"
-            />
-
-        <!--面积大小-->
-        <RelativeLayout
-            android:id="@+id/rl_find_project_area"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="12dp"
-            android:layout_marginLeft="20dp"
-            android:layout_marginRight="20dp"
-            android:layout_marginBottom="12dp"
-            >
-
-            <TextView
-                android:id="@+id/tv_home_area"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textColor="@color/color_big_text"
-                android:text="@string/area"
-                android:textSize="@dimen/text_size_16"
-                />
-
-            <ImageView
-                android:id="@+id/iv_home_area"
-                android:layout_width="25dp"
-                android:layout_height="25dp"
-                android:layout_alignParentRight="true"
-                />
-
-            <TextView
-
-                android:id="@+id/tv_find_project_area"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerInParent="true"
-                android:hint="@string/please_choose"
-                android:maxEms="8"
-                android:textColor="@color/color_middle_text"
-                android:maxLines="1"
-                android:lines="1"
-                android:gravity="center"
-                android:layout_toLeftOf="@id/iv_home_area"
-                android:layout_toRightOf="@id/tv_home_area"
-                android:ellipsize="end"
-                android:textColorHint="@color/color_small_text"
-                android:textSize="@dimen/text_size_12"
-                />
-
-
-        </RelativeLayout>
-
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:background="@color/color_divi_line"
-            android:layout_marginLeft="20dp"
-            android:layout_marginRight="20dp"
-            />
-
-        <!--兴趣行业-->
-        <RelativeLayout
-            android:id="@+id/rl_find_project_interest"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="12dp"
-            android:layout_marginLeft="20dp"
-            android:layout_marginRight="20dp"
-            android:layout_marginBottom="12dp"
-
-            >
-
-            <TextView
-                android:id="@+id/tv_home_interest"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textColor="@color/color_big_text"
-                android:text="@string/interest"
-                android:textSize="@dimen/text_size_16"
-                android:layout_centerVertical="true"
-                />
-
-            <ImageView
-                android:layout_centerVertical="true"
-                android:id="@+id/iv_home_interest"
-                android:layout_width="25dp"
-                android:layout_height="25dp"
-                android:layout_alignParentRight="true"
-                />
-
-            <TextView
-                android:id="@+id/tv_find_project_interest"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerInParent="true"
-                android:hint="@string/please_choose"
-                android:maxEms="8"
-                android:maxLines="1"
-                android:lines="1"
-                android:textColor="@color/color_middle_text"
-                android:gravity="center"
-                android:layout_toRightOf="@id/tv_home_interest"
-                android:layout_toLeftOf="@id/iv_home_interest"
-                android:ellipsize="end"
-                android:textColorHint="@color/color_small_text"
-                android:textSize="@dimen/text_size_12"
-                />
-
-        </RelativeLayout>
-
-
-        <TextView
-            android:id="@+id/btn_home_find_project"
-            android:layout_width="match_parent"
-            android:layout_height="40dp"
-            android:layout_marginLeft="20dp"
-            android:layout_marginRight="20dp"
-            android:layout_marginBottom="10dp"
-            android:text="@string/find_project"
-            android:gravity="center"
-            android:textSize="16sp"
-            android:textColor="@color/color_white"
-            android:background="@drawable/shape_find_project_btn_no"
-            />
-
-    </LinearLayout>
-
-    <!--面积大小-->
-    <LinearLayout
-        android:id="@+id/rl_home_find_project_area_choose"
-        android:layout_alignBottom="@id/ll_home_find_project"
-        android:visibility="gone"
-        android:clickable="true"
-        android:layout_width="match_parent"
-        android:layout_marginLeft="20dp"
-        android:layout_marginRight="20dp"
-        android:layout_marginBottom="5dp"
-        android:layout_marginTop="10dp"
-        android:layout_below="@id/ll_home_container"
-        android:background="@drawable/shape_find_project_bg"
-        android:orientation="vertical"
-        android:layout_height="200dp"
-
-        >
-
-        <TextView
-            android:id="@+id/tv_home_head_size"
-            android:layout_width="match_parent"
-            android:gravity="center"
-            android:layout_height="0dp"
-            android:layout_weight="1"
-            android:text="@string/please_choose_area"
-            android:textSize="16sp"
-            android:textColor="@color/color_big_text"
-            />
-
-            <RelativeLayout
-                android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:gravity="center"
-                android:layout_weight="1">
-
-        <com.can.bimuprojects.view.SeekBarRelativeLayout
-            android:id="@+id/sb_single"
-            android:layout_width="match_parent"
-            android:layout_height="44dp"
-            android:layout_centerInParent="true"
-            >
-
-            <TextView
-                android:id="@+id/seek_bar_relative_layout_text_view"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="24dp"
-                android:text="10"
-                android:textColor="@color/color_big_text"
-                android:textSize="15sp" />
-
-            <SeekBar
-                android:id="@+id/seek_bar_relative_layout_seek_bar"
+            <!--底部圆点滚动-->
+            <LinearLayout
+                android:id="@+id/ll_home_container"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_alignParentBottom="true"
-                android:layout_marginLeft="25dp"
-                android:layout_marginRight="25dp"
-                android:background="@null"
-                android:max="190"
-                android:progressDrawable="@drawable/shape_seekbar_bg"
-                android:maxHeight="2dp"
-                android:minHeight="2dp"
-                android:progress="0"
-                 />
+                android:gravity="right"
+                android:orientation="horizontal"/>
 
-        </com.can.bimuprojects.view.SeekBarRelativeLayout>
-            </RelativeLayout>
-
-            <RelativeLayout
+            <!--三个指示栏-->
+            <LinearLayout
+                android:layout_below="@id/ll_home_container"
+                android:orientation="horizontal"
+                android:id="@+id/ll_home_head_three"
                 android:layout_width="match_parent"
-                android:layout_below="@id/sb_single"
-                android:layout_height="0dp"
+                android:layout_height="wrap_content"
                 android:gravity="center"
-                android:layout_weight="1">
+                android:layout_marginTop="10dp"
+                android:visibility="gone"
+                />
+
+            <include
+                android:id="@+id/ll_home_head_menu"
+                layout="@layout/item_home_head_menu"/>
+
+            <!--找项目-->
+            <LinearLayout
+                android:clickable="true"
+                android:id="@+id/ll_home_find_project"
+                android:layout_width="match_parent"
+                android:layout_marginTop="5dp"
+                android:layout_below="@id/ll_home_head_menu"
+                android:background="@color/color_white"
+                android:orientation="vertical"
+                android:layout_height="wrap_content">
+
+                <!--投资金额-->
+                <RelativeLayout
+                    android:id="@+id/rl_home_find_project_money"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="20dp"
+                    android:layout_marginTop="@dimen/home_head_margin"
+                    android:layout_marginRight="20dp"
+                    android:layout_marginBottom="@dimen/home_head_margin"
+                    android:gravity="center_vertical"
+                    >
+
+                    <TextView
+                        android:layout_centerVertical="true"
+                        android:id="@+id/tv_home_money"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textColor="@color/color_big_text"
+                        android:text="@string/money"
+                        android:textSize="@dimen/text_size_16"
+                        />
+
+                    <ImageView
+                        android:id="@+id/iv_home_money"
+                        android:layout_width="25dp"
+                        android:layout_height="25dp"
+                        android:layout_alignParentRight="true"
+                        android:layout_centerVertical="true"
+                        />
+
+                    <TextView
+                        android:id="@+id/tv_find_project_money"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:hint="@string/please_choose"
+                        android:gravity="center"
+                        android:maxEms="8"
+                        android:textColor="@color/color_middle_text"
+                        android:maxLines="1"
+                        android:lines="1"
+                        android:layout_toLeftOf="@id/iv_home_money"
+                        android:layout_toRightOf="@id/tv_home_money"
+                        android:ellipsize="end"
+                        android:textColorHint="@color/translucent"
+                        android:textSize="@dimen/text_size_12"
+                        />
+
+
+                </RelativeLayout>
 
                 <TextView
-                    android:id="@+id/tv_home_find_project_no_shop"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textSize="16sp"
-                    android:textColor="@color/color_middle_text"
-                    android:text="@string/no_shop"
-                    android:layout_marginLeft="40dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="@color/color_divi_line"
+                    android:layout_marginLeft="20dp"
+                    android:layout_marginRight="20dp"
                     />
 
+                <!--面积大小-->
+                <RelativeLayout
+                    android:id="@+id/rl_find_project_area"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/home_head_margin"
+                    android:layout_marginLeft="20dp"
+                    android:layout_marginRight="20dp"
+                    android:layout_marginBottom="@dimen/home_head_margin"
+                    >
+
+                    <TextView
+                        android:id="@+id/tv_home_area"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textColor="@color/color_big_text"
+                        android:text="@string/area"
+                        android:textSize="@dimen/text_size_16"
+                        />
+
+                    <ImageView
+                        android:id="@+id/iv_home_area"
+                        android:layout_width="25dp"
+                        android:layout_height="25dp"
+                        android:layout_alignParentRight="true"
+                        />
+
+                    <TextView
+
+                        android:id="@+id/tv_find_project_area"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerInParent="true"
+                        android:hint="@string/please_choose"
+                        android:maxEms="8"
+                        android:textColor="@color/color_middle_text"
+                        android:maxLines="1"
+                        android:lines="1"
+                        android:gravity="center"
+                        android:layout_toLeftOf="@id/iv_home_area"
+                        android:layout_toRightOf="@id/tv_home_area"
+                        android:ellipsize="end"
+                        android:textColorHint="@color/translucent"
+                        android:textSize="@dimen/text_size_12"
+                        />
+
+
+                </RelativeLayout>
+
                 <TextView
-                    android:id="@+id/tv_home_find_project_sure_shop"
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="@color/color_divi_line"
+                    android:layout_marginLeft="20dp"
+                    android:layout_marginRight="20dp"
+                    />
+
+                <!--兴趣行业-->
+                <RelativeLayout
+                    android:id="@+id/rl_find_project_interest"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/home_head_margin"
+                    android:layout_marginLeft="20dp"
+                    android:layout_marginRight="20dp"
+                    android:layout_marginBottom="@dimen/home_head_margin"
+
+                    >
+
+                    <TextView
+                        android:id="@+id/tv_home_interest"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textColor="@color/color_big_text"
+                        android:text="@string/interest"
+                        android:textSize="@dimen/text_size_16"
+                        android:layout_centerVertical="true"
+                        />
+
+                    <ImageView
+                        android:layout_centerVertical="true"
+                        android:id="@+id/iv_home_interest"
+                        android:layout_width="25dp"
+                        android:layout_height="25dp"
+                        android:layout_alignParentRight="true"
+                        />
+
+                    <TextView
+                        android:id="@+id/tv_find_project_interest"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerInParent="true"
+                        android:hint="@string/please_choose"
+                        android:maxEms="8"
+                        android:maxLines="1"
+                        android:lines="1"
+                        android:textColor="@color/color_middle_text"
+                        android:gravity="center"
+                        android:layout_toRightOf="@id/tv_home_interest"
+                        android:layout_toLeftOf="@id/iv_home_interest"
+                        android:ellipsize="end"
+                        android:textColorHint="@color/translucent"
+                        android:textSize="@dimen/text_size_12"
+                        />
+
+                </RelativeLayout>
+
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="35dp">
+
+                    <ImageView
+                        android:id="@+id/iv_home_find_project"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:scaleType="centerCrop"
+                        />
+
+                    <TextView
+                        android:id="@+id/tv_home_find_project"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:text="@string/find_project"
+                        android:gravity="center"
+                        android:textSize="16sp"
+                        android:textColor="@color/color_white"
+                        />
+
+                </RelativeLayout>
+
+
+            </LinearLayout>
+
+            <!--面积大小-->
+            <LinearLayout
+                android:id="@+id/rl_home_find_project_area_choose"
+                android:layout_alignBottom="@id/ll_home_find_project"
+                android:clickable="true"
+                android:visibility="gone"
+                android:layout_width="match_parent"
+                android:layout_marginTop="10dp"
+                android:layout_below="@id/ll_home_head_menu"
+                android:background="@color/color_white"
+                android:orientation="vertical"
+                android:layout_height="200dp"
+                >
+
+                <TextView
+                    android:id="@+id/tv_home_head_size"
+                    android:layout_width="match_parent"
                     android:gravity="center"
-                    android:layout_height="wrap_content"
-                    android:textSize="@dimen/text_size_16"
-                    android:layout_alignParentRight="true"
-                    android:textColor="@color/color_red"
-                    android:text="@string/sure"
-                    android:layout_marginRight="40dp"
+                    android:layout_height="0dp"
+                    android:layout_weight="1"
+                    android:text="@string/please_choose_area"
+                    android:textSize="16sp"
+                    android:textColor="@color/color_big_text"
                     />
 
-            </RelativeLayout>
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:gravity="center"
+                    android:layout_weight="1">
 
-    </LinearLayout>
+                    <com.can.bimuprojects.view.SeekBarRelativeLayout
+                        android:id="@+id/sb_single"
+                        android:layout_width="match_parent"
+                        android:layout_height="44dp"
+                        android:layout_centerInParent="true"
+                        >
+
+                        <TextView
+                            android:id="@+id/seek_bar_relative_layout_text_view"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="24dp"
+                            android:text="10"
+                            android:textColor="@color/color_big_text"
+                            android:textSize="15sp" />
+
+                        <SeekBar
+                            android:id="@+id/seek_bar_relative_layout_seek_bar"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentBottom="true"
+                            android:layout_marginLeft="25dp"
+                            android:layout_marginRight="25dp"
+                            android:background="@null"
+                            android:max="190"
+                            android:progressDrawable="@drawable/shape_seekbar_bg"
+                            android:maxHeight="2dp"
+                            android:minHeight="2dp"
+                            android:progress="0"
+                            />
+
+                    </com.can.bimuprojects.view.SeekBarRelativeLayout>
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_below="@id/sb_single"
+                    android:layout_height="0dp"
+                    android:gravity="center"
+                    android:layout_weight="1">
+
+                    <TextView
+                        android:id="@+id/tv_home_find_project_no_shop"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textSize="16sp"
+                        android:textColor="@color/color_middle_text"
+                        android:text="@string/no_shop"
+                        android:layout_marginLeft="40dp"
+                        />
+
+                    <TextView
+                        android:id="@+id/tv_home_find_project_sure_shop"
+                        android:layout_width="wrap_content"
+                        android:gravity="center"
+                        android:layout_height="wrap_content"
+                        android:textSize="@dimen/text_size_16"
+                        android:layout_alignParentRight="true"
+                        android:textColor="@color/color_red"
+                        android:text="@string/sure"
+                        android:layout_marginRight="40dp"
+                        />
+
+                </RelativeLayout>
+
+            </LinearLayout>
 
         </RelativeLayout>
-
 
 
     </RelativeLayout>

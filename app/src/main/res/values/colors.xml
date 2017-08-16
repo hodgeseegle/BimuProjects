@@ -78,6 +78,8 @@
     <color name="color_green">#2ecc71</color>
     <!--深红-->
     <color name="dep_red">#B71C1C</color>
+    <!--紫色-->
+    <color name="color_zise">#CC00FF</color>
 
     <!--color1-->
     <color name="color1">#E74C3C</color>
@@ -88,6 +90,21 @@
     <!--color4-->
     <color name="color4">#F1C40F</color>
 
+    <!--color1-->
+    <color name="color_te1">#4CAF50</color>
+    <!--color2-->
+    <color name="color_te2">#2196F3</color>
+    <!--color3-->
+    <color name="color_te3">#FF9800</color>
+    <!--color4-->
+    <color name="color_te4">#795548</color>
+
+    <!--color首页文字背景-->
+    <color name="color_bg1">#C8E6C9</color>
+    <color name="color_bg2">#BBDEFB</color>
+    <color name="color_bg3">#FFE0B2</color>
+    <color name="color_bg4">#D7CCC8</color>
+
     <!--文字选中颜色-->
     <color name="color_app_text_yes">#ff6a01</color>
     <!--文字未选中颜色-->
@@ -96,5 +113,8 @@
     <color name="color_app_bg">#2980b9</color>
     <!--咨询品牌后的颜色-->
     <color name="color_zixun_brand">#2ecc71</color>
-    
+    <!--标题颜色-->
+    <color name="color_app_title" >#ffffff</color>
+    <color name="color_money_text" >#ff0000</color>
+
 </resources>

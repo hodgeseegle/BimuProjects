@@ -158,13 +158,13 @@ public class SpecialActivity extends BaseActivity implements View.OnClickListene
 
     @Override
     public void onPullRefresh() {
-        handler.sendEmptyMessageDelayed(TYPE_REFRESH,1200);
+        handler.sendEmptyMessageDelayed(TYPE_REFRESH,500);
     }
 
     @Override
     public void onLoadingMore() {
         if (hasMore)
-            handler.sendEmptyMessageDelayed(TYPE_LOADMORE,1200);
+            handler.sendEmptyMessageDelayed(TYPE_LOADMORE,500);
         else
             rlv.completeRefresh();
     }

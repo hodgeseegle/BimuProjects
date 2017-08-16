@@ -20,7 +20,6 @@ import com.android.volley.VolleyError;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.util.Util;
 import com.can.bimuprojects.Constant.MethodConstant;
-import com.can.bimuprojects.Module.Request.AddLoveListRequest;
 import com.can.bimuprojects.Module.Request.BookServiceRequest;
 import com.can.bimuprojects.Module.Request.DataServiceRequest;
 import com.can.bimuprojects.Module.Request.Focus2Request;
@@ -38,6 +37,8 @@ import com.can.bimuprojects.adapter.TypeServiceAdapter;
 import com.can.bimuprojects.network.beans.ErrorHook;
 import com.can.bimuprojects.network.beans.JsonReceive;
 import com.can.bimuprojects.network.beans.ResponseHook;
+import com.can.bimuprojects.utils.AppUtils;
+import com.can.bimuprojects.utils.GlideUtil;
 import com.can.bimuprojects.utils.HttpUtils;
 import com.can.bimuprojects.utils.LoginUtils;
 import com.can.bimuprojects.utils.PrefUtils;
@@ -72,6 +73,7 @@ public class InspectOrKillActivity extends BaseActivity implements View.OnClickL
     private NoScrollListView lv;//集合控件
     private TextView tv_reason ; //淘汰原因
     private TextView tv_tit ; //标题
+    private ImageView iv_kill ;
 
 
 
@@ -80,8 +82,11 @@ public class InspectOrKillActivity extends BaseActivity implements View.OnClickL
      */
     private void initView() {
         setContentView(R.layout.activtiy_inspect);
+        iv_kill = (ImageView) findViewById(R.id.iv_inspect_iv2);
+        GlideUtil.loadDrawableImg(this,R.drawable.kill,iv_kill);
         tv_title = (TextView) findViewById(R.id.tv_inspect_brand);
         ws2 = (ImageView) findViewById(R.id.ws_inspect2);
+        GlideUtil.loadDrawableImg(this,R.drawable.radio_button_off,ws2);
         iv_exit = (ImageView) findViewById(R.id.iv_exit);
         tv_tit = (TextView) findViewById(R.id.tv_title);
         tv_tit.setText(R.string.reservation_service);
@@ -253,11 +258,13 @@ public class InspectOrKillActivity extends BaseActivity implements View.OnClickL
                     }
                 }
                 if(!go_kill){
-                    AddLoveListRequest re = new AddLoveListRequest();
+                    FocusRequest re = new FocusRequest();
                     re.setId(bid);
-                    re.setType("3");
+                    re.setType(3);
                     re.setUid(LoginUtils.getUid());
-                    HttpUtils.postWithoutUid(MethodConstant.SET_LOVE_LIST, re, new ResponseHook() {
+                    re.setClient_type(AppUtils.getClientType(this));
+                    re.setClient_version(AppUtils.getClientVersion(this));
+                    HttpUtils.postWithoutUid(MethodConstant.FOCUS, re, new ResponseHook() {
                         @Override
                         public void deal(Context context, JsonReceive receive) {
 
@@ -277,6 +284,8 @@ public class InspectOrKillActivity extends BaseActivity implements View.OnClickL
                 request.setUid(LoginUtils.getUid());
                 request.setId(bid);
                 request.setType(2);
+                request.setClient_type(AppUtils.getClientType(this));
+                request.setClient_version(AppUtils.getClientVersion(this));
                 HttpUtils.postWithoutUid(MethodConstant.FOCUS, request, new ResponseHook() {
                     @Override
                     public void deal(Context context, JsonReceive receive) {
@@ -300,7 +309,7 @@ public class InspectOrKillActivity extends BaseActivity implements View.OnClickL
                     public void deal(Context context, JsonReceive receive) {
                         Focus2Response response = (Focus2Response) receive.getResponse();
                         if(response!=null&&response.getExe_success()==1){
-                            ToastUtils.show(context,"淘汰成功", Toast.LENGTH_SHORT);
+                            ToastUtils.show(context,"淘汰成功",Toast.LENGTH_SHORT);
                             PrefUtils.putBoolean("love_update",true);
                             finish();
                         }

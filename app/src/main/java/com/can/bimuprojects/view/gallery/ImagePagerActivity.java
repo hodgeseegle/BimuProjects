@@ -24,14 +24,15 @@ import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.android.volley.VolleyError;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.util.Util;
 import com.can.bimuprojects.Constant.MethodConstant;
-import com.can.bimuprojects.Module.Request.AddLoveListRequest;
 import com.can.bimuprojects.Module.Request.BrandRequest;
+import com.can.bimuprojects.Module.Request.FocusRequest;
 import com.can.bimuprojects.Module.Request.SetUserNameRequest;
 import com.can.bimuprojects.Module.Response.AddLoveListResponse;
 import com.can.bimuprojects.Module.Response.OpenShopResponse;
@@ -48,12 +49,17 @@ import com.can.bimuprojects.network.beans.ResponseHook;
 import com.can.bimuprojects.utils.AppUtils;
 import com.can.bimuprojects.utils.HttpUtils;
 import com.can.bimuprojects.utils.LoginUtils;
+import com.can.bimuprojects.utils.NumberUtils;
 import com.can.bimuprojects.utils.PrefUtils;
 import com.can.bimuprojects.utils.ToastUtils;
 import com.can.bimuprojects.view.CircleDialog;
+import com.can.bimuprojects.view.NoScrollListView;
+import com.can.bimuprojects.view.OpenShopNoticeDialog;
 
 import java.util.ArrayList;
 import java.util.List;
+
+
 
 public class ImagePagerActivity extends FragmentActivity implements View.OnClickListener, AdapterView.OnItemClickListener {
 	private static final String STATE_POSITION = "STATE_POSITION";
@@ -64,6 +70,7 @@ public class ImagePagerActivity extends FragmentActivity implements View.OnClick
 	private TextView indicator;
 
 	private TextView tv_open; //开店方案或前往心愿单
+	private RelativeLayout rl;
 
 	@SuppressWarnings("deprecation")
 	@Override
@@ -81,18 +88,20 @@ public class ImagePagerActivity extends FragmentActivity implements View.OnClick
 		if(isConsult){
 			PrefUtils.putBoolean("update_consult",true);
 			tv_open.setText(getString(R.string.entre_love_list));
-			tv_open.setBackgroundColor(ContextCompat.getColor(this,R.color.color_zixun_brand));
+			rl.setBackgroundColor(ContextCompat.getColor(this,R.color.color_zixun_brand));
 		}
 	}
 
 	private Dialog dialog_login ; //登录弹窗
+	private OpenShopNoticeDialog dialog_notice ; //
 	//初始化view
 	private void initView() {
 		setContentView(R.layout.item_image_detail_pager);
+		dialog_notice = new OpenShopNoticeDialog(this,LayoutInflater.from(this).inflate(R.layout.dialog_openshop_notice,null),R.style.dialog_nodata);
 		pagerPosition = getIntent().getIntExtra(EXTRA_IMAGE_INDEX, 0);
 		mPager = (HackyViewPager) findViewById(R.id.hvp_imagepager_activity);
-		tv_open = (TextView) findViewById(R.id.tv_image_detail_openshop_process);
-		dialog_login = AppUtils.showLoginDialog(this);
+		tv_open = (TextView) findViewById(R.id.tv_brand_get_openshop_process);
+		rl = (RelativeLayout) findViewById(R.id.rl);
 	}
 
 	private Dialog dialog; //获取开店方案的dialog
@@ -115,7 +124,7 @@ public class ImagePagerActivity extends FragmentActivity implements View.OnClick
 	private void initDialog() {
 		dialog = new Dialog(this,R.style.style_dialog);
 		View view_dialog = LayoutInflater.from(this).inflate(R.layout.dialog_open_shop_plan, null);
-		lv_dialog = (ListView) view_dialog.findViewById(R.id.lv_brand_dialog);
+		lv_dialog = (NoScrollListView) view_dialog.findViewById(R.id.lv_brand_dialog);
 		tv_dialog_cancle = (TextView) view_dialog.findViewById(R.id.tv_brand_dialog_cancle);
 		tv_dialog_sure = (TextView) view_dialog.findViewById(R.id.tv_brand_dialog_sure);
 		tv_dialog_open_shop_agree = (TextView) view_dialog.findViewById(R.id.tv_dialog_open_shop_agree);
@@ -127,7 +136,6 @@ public class ImagePagerActivity extends FragmentActivity implements View.OnClick
 		iv_dialog = (ImageView) view_dialog.findViewById(R.id.iv_dialog_open_shop_plan);
 		if(Util.isOnMainThread())
 			Glide.with(this).load(R.drawable.get_open_shop_plan).dontAnimate().into(iv_dialog);
-
 		rg_dialog.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
 			@Override
 			public void onCheckedChanged(RadioGroup radioGroup, int i) {
@@ -161,13 +169,17 @@ public class ImagePagerActivity extends FragmentActivity implements View.OnClick
 		tv_dialog_cancle.setOnClickListener(this);
 		lv_dialog.setOnItemClickListener(this);
 		tv_dialog_open_shop_agree.setOnClickListener(this);
+		rl.setOnClickListener(this);
+		dialog_notice.findViewById(R.id.tv_dialog_sure).setOnClickListener(this);
 	}
 
 	@Override
 	public void onClick(View view) {
 		switch (view.getId()){
-			case R.id.tv_image_detail_openshop_process: //获取开店方案或前往心愿单
+			case R.id.tv_brand_get_openshop_process: //获取开店方案或前往心愿单
+			case R.id.rl:
 				if(AppUtils.isNeedShowLoginDialog()){
+					dialog_login = AppUtils.showSMSLoginDialog(this);
 					if(!dialog_login.isShowing()&&!this.isFinishing())
 						dialog_login.show();
 					break;
@@ -179,15 +191,14 @@ public class ImagePagerActivity extends FragmentActivity implements View.OnClick
 					ll_dialog.setVisibility(View.GONE);
 					iv_dialog.setVisibility(View.VISIBLE);
 				}
+
 				if(isConsult){ //前往心愿单
 					Intent intent = new Intent(this,MainActivity.class);
 					intent.putExtra("love",true);
 					startActivity(intent);
 				}else { //获取开店方案
-					if (!isHasOpenshopData)
-						requestOpenShopData();
-					else if (!dialog.isShowing())
-						dialog.show();
+					if (!dialog_notice.isShowing())
+						dialog_notice.show();
 				}
 				break;
 			case R.id.tv_dialog_open_shop_agree: //个人信息保护声明
@@ -203,6 +214,13 @@ public class ImagePagerActivity extends FragmentActivity implements View.OnClick
 				finish();
 				overridePendingTransition(0,
 						android.R.anim.fade_out);
+				break;
+			case R.id.tv_dialog_sure: //确认获取开店方案
+				dialog_notice.dismiss();
+				if (!isHasOpenshopData)
+					requestOpenShopData();
+				else if (!dialog.isShowing())
+					dialog.show();
 				break;
 		}
 	}
@@ -279,14 +297,20 @@ public class ImagePagerActivity extends FragmentActivity implements View.OnClick
 		isConsult = true;
 		consultShop(bid);
 		list_boolean = adapter_dialog.getCheckState();
+		List<String> stringList = new ArrayList<>();
+		stringList.add(bid);
 		for(int i =0;i<list_openshop.size();i++){
 			if(list_boolean.get(i)) {
+				stringList.add(list_openshop.get(i).getBrand_id());
 				consultShop(list_openshop.get(i).getBrand_id());
 			}
 		}
 		dialog.dismiss();
 		Intent intent_open_shop = new Intent(this, OpenShopResultActivity.class);
 		intent_open_shop.putExtra("brand",bid);
+		intent_open_shop.putExtra("logo",str_logo);
+		intent_open_shop.putExtra("name",name);
+		intent_open_shop.putExtra(OpenShopResultActivity.STRING_LIST, NumberUtils.list2String(stringList));
 		startActivity(intent_open_shop);
 	}
 
@@ -294,11 +318,13 @@ public class ImagePagerActivity extends FragmentActivity implements View.OnClick
 	 * 咨询店铺
 	 */
 	private void consultShop(String id){
-		AddLoveListRequest re = new AddLoveListRequest();
+		FocusRequest re = new FocusRequest();
 		re.setId(id);
-		re.setType("3");
+		re.setType(3);
 		re.setUid(LoginUtils.getUid());
-		HttpUtils.postWithoutUid(MethodConstant.SET_LOVE_LIST, re, new ResponseHook() {
+		re.setClient_type(AppUtils.getClientType(this));
+		re.setClient_version(AppUtils.getClientVersion(this));
+		HttpUtils.postWithoutUid(MethodConstant.FOCUS, re, new ResponseHook() {
 			@Override
 			public void deal(Context context, JsonReceive receive) {
 
@@ -324,24 +350,28 @@ public class ImagePagerActivity extends FragmentActivity implements View.OnClick
 	private boolean isFromBrand = false ; //是否从品牌图库进来
 	private String bid;
 	private boolean isConsult = false; //是否咨询过
+	private String str_logo ; //品牌logo
+	private String name ; //品牌名称
 	//初始化数据
 	private void initData(Bundle savedInstanceState) {
 		ArrayList<String> list = getIntent().getStringArrayListExtra("list");
 		isFromBrand = getIntent().getBooleanExtra("brand",false);
 		bid = getIntent().getStringExtra("bid");
 		isConsult = getIntent().getBooleanExtra("consult",false);
+		str_logo = getIntent().getStringExtra("logo");
+		name = getIntent().getStringExtra("name");
 
 		if(isFromBrand)
-			tv_open.setVisibility(View.VISIBLE);
+			rl.setVisibility(View.VISIBLE);
 		else
-			tv_open.setVisibility(View.GONE);
+			rl.setVisibility(View.GONE);
 
 		if(isConsult){
 			tv_open.setText(getString(R.string.entre_love_list));
-			tv_open.setBackgroundColor(ContextCompat.getColor(this,R.color.color_zixun_brand));
+			rl.setBackgroundColor(ContextCompat.getColor(this,R.color.color_zixun_brand));
 		}else{
 			tv_open.setText(getString(R.string.get_openshop_plan));
-			tv_open.setBackgroundColor(ContextCompat.getColor(this,R.color.color_app_text_yes));
+			rl.setBackgroundColor(ContextCompat.getColor(this,R.color.color_app_text_yes));
 		}
 
 

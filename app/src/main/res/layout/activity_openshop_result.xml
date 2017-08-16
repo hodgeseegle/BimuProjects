@@ -6,81 +6,15 @@
     android:fitsSystemWindows="true"
     android:layout_height="match_parent">
 
-    <RelativeLayout
-        android:layout_width="wrap_content"
-        android:padding="20dp"
-        android:layout_height="wrap_content">
+    <include layout="@layout/item_app_title"/>
 
-    <TextView
-        android:id="@+id/tv_open_shop_result_title"
-        android:layout_width="wrap_content"
-        android:textColor="@color/color_big_text"
-        android:textSize="20sp"
-        android:layout_height="wrap_content"
-        android:text="@string/had_notified_brand"
-        />
-
-        <TextView
-            android:layout_marginTop="10dp"
-            android:layout_below="@id/tv_open_shop_result_title"
-            android:layout_alignLeft="@id/tv_open_shop_result_title"
-            android:layout_alignRight="@id/tv_open_shop_result_title"
-            android:layout_width="wrap_content"
-            android:layout_height="1dp"
-            android:background="@color/color_big_text"/>
-
-    </RelativeLayout>
-
-    <TextView
-        android:layout_marginLeft="20dp"
-        android:layout_marginTop="40dp"
-        android:layout_marginRight="20dp"
-        android:textSize="16sp"
-        android:text="@string/notified_brand_content"
+    <com.can.bimuprojects.view.LoadMoreListView
+        android:id="@+id/lv_openshop_result"
+        android:scrollbars="none"
+        android:divider="#ffffff"
+        android:dividerHeight="0dp"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+        android:layout_height="match_parent"/>
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:gravity="center"
-        android:layout_marginBottom="30dp"
-        android:orientation="vertical">
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textSize="16sp"
-        android:text="@string/over_this_you_can"
-        android:layout_gravity="center"
-        />
-
-    <Button
-        android:id="@+id/btn_open_shop_result_look_love"
-        android:layout_width="match_parent"
-        android:layout_height="40dp"
-        android:layout_marginTop="40dp"
-        android:text="@string/look_love_list"
-        android:background="@drawable/shape_open_shop_btn_bg"
-        android:layout_marginLeft="80dp"
-        android:layout_marginRight="80dp"
-        android:textColor="@color/color_red"
-        android:textSize="14sp"
-        />
-
-        <Button
-            android:id="@+id/btn_open_shop_result_look_brand"
-            android:layout_width="match_parent"
-            android:layout_height="40dp"
-            android:layout_marginTop="20dp"
-            android:text="@string/look_brand"
-            android:background="@drawable/shape_open_shop_btn_bg"
-            android:layout_marginLeft="80dp"
-            android:layout_marginRight="80dp"
-            android:textColor="@color/color_red"
-            android:textSize="14sp"
-            />
-
-    </LinearLayout>
 
 </LinearLayout>

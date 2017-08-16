@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content">
+
+    <ImageView
+        android:id="@+id/iv_item_guess_interest"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignRight="@+id/tv_item_guess_interest"
+        android:layout_alignLeft="@id/tv_item_guess_interest"
+        android:layout_alignTop="@id/tv_item_guess_interest"
+        android:layout_alignBottom="@id/tv_item_guess_interest"
+        android:scaleType="centerCrop"
+        />
+
+    <TextView
+        android:id="@id/tv_item_guess_interest"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="@dimen/text_size_14"
+        android:maxLines="1"
+        android:ellipsize="end"
+        android:gravity="center"
+        android:paddingBottom="3dp"
+        android:paddingTop="3dp"
+        android:paddingLeft="10dp"
+        android:paddingRight="10dp"
+        />
+
+</RelativeLayout>

@@ -19,6 +19,7 @@ import android.widget.TextView;
 import com.android.volley.VolleyError;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.util.Util;
+import com.can.bimuprojects.utils.ViewUtil;
 import com.umeng.analytics.MobclickAgent;
 import com.can.bimuprojects.Constant.MethodConstant;
 import com.can.bimuprojects.Module.Request.GetFindRequest;
@@ -49,7 +50,6 @@ import java.util.List;
  */
 
 public class FindFragment extends Fragment implements View.OnClickListener,  AdapterView.OnItemClickListener, RefreshListView.OnRefreshListener, ViewTreeObserver.OnScrollChangedListener {
-
 
     @Override
     public View onCreateView(LayoutInflater inflater,  ViewGroup container,  Bundle savedInstanceState) {
@@ -366,10 +366,21 @@ public class FindFragment extends Fragment implements View.OnClickListener,  Ada
     }
 
     /**
+     * 更新数据
+     */
+    public void updateData(String id,String project){
+        cid = id;
+        str_project = project;
+        page=0;
+        requestITData();
+        lv.setSelection(0);
+    }
+
+    /**
      * 双击返回顶部
      */
     public  void setListView2Top(){
-        lv.setSelection(0);
+        ViewUtil.stopListView(lv,0);
         ll_find_browse.setVisibility(View.GONE);
     }
 }

@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="horizontal"
+    android:layout_width="match_parent"
+    android:layout_marginTop="10dp"
+    android:layout_below="@id/ll_home_container"
+    android:padding="10dp"
+    android:clickable="true"
+    android:background="@color/color_white"
+    android:layout_height="wrap_content">
+
+    <!--全部品牌-->
+    <LinearLayout
+        android:id="@+id/ll_item1"
+        android:layout_width="0dp"
+        android:orientation="vertical"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:layout_weight="1">
+
+        <ImageView
+            android:id="@+id/iv_item1"
+            android:scaleType="centerCrop"
+            android:layout_width="@dimen/home_menu_width"
+            android:layout_height="@dimen/home_menu_height"
+            />
+
+        <TextView
+            android:layout_marginTop="5dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="@dimen/text_size_13"
+            android:textColor="@color/color_small_text"
+            android:text="@string/all_brand"
+            />
+
+    </LinearLayout>
+
+    <!--行业攻略-->
+    <LinearLayout
+        android:id="@+id/ll_item2"
+        android:layout_width="0dp"
+        android:orientation="vertical"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:layout_weight="1">
+
+        <ImageView
+            android:id="@+id/iv_item2"
+            android:scaleType="centerCrop"
+            android:layout_width="@dimen/home_menu_width"
+            android:layout_height="@dimen/home_menu_height"
+            />
+
+        <TextView
+            android:layout_marginTop="5dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="@dimen/text_size_13"
+            android:textColor="@color/color_small_text"
+            android:text="@string/trade_raiders"
+            />
+
+    </LinearLayout>
+
+    <!--实时排行-->
+    <LinearLayout
+        android:id="@+id/ll_item3"
+        android:layout_width="0dp"
+        android:orientation="vertical"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:layout_weight="1">
+
+        <ImageView
+            android:id="@+id/iv_item3"
+            android:scaleType="centerCrop"
+            android:layout_width="@dimen/home_menu_width"
+            android:layout_height="@dimen/home_menu_height"
+            />
+
+        <TextView
+            android:layout_marginTop="5dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="@dimen/text_size_13"
+            android:textColor="@color/color_small_text"
+            android:text="@string/time_ranking"
+            />
+
+    </LinearLayout>
+
+    <!--精选推荐-->
+    <LinearLayout
+        android:id="@+id/ll_item4"
+        android:layout_width="0dp"
+        android:orientation="vertical"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:layout_weight="1">
+
+        <ImageView
+            android:id="@+id/iv_item4"
+            android:scaleType="centerCrop"
+            android:layout_width="@dimen/home_menu_width"
+            android:layout_height="@dimen/home_menu_height"
+            />
+
+        <TextView
+            android:layout_marginTop="5dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="@dimen/text_size_13"
+            android:textColor="@color/color_small_text"
+            android:text="@string/choice_recommend"
+            />
+
+    </LinearLayout>
+
+</LinearLayout>

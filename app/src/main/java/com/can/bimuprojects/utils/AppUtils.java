@@ -5,13 +5,20 @@ import android.app.Activity;
 import android.app.ActivityManager;
 import android.app.Dialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.Uri;
 import android.os.Build;
+import android.os.CountDownTimer;
+import android.support.v4.content.ContextCompat;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.Gravity;
@@ -20,15 +27,22 @@ import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 
 
 import com.android.volley.VolleyError;
 import com.can.bimuprojects.Constant.AppConstant;
 import com.can.bimuprojects.Constant.MethodConstant;
+import com.can.bimuprojects.Module.Hook.DefaultErrorHook;
+import com.can.bimuprojects.Module.Request.GetVerifyCodeRequest;
 import com.can.bimuprojects.Module.Request.SNRequest;
+import com.can.bimuprojects.Module.Request.VerifyLoginRequest;
+import com.can.bimuprojects.Module.Response.GetVerifyCodeResponse;
 import com.can.bimuprojects.Module.Response.SNResponse;
+import com.can.bimuprojects.Module.Response.VerifyLoginResponse;
 import com.can.bimuprojects.R;
 import com.can.bimuprojects.activity.LoginActivity;
 import com.can.bimuprojects.activity.RegisterActivity;
@@ -36,8 +50,16 @@ import com.can.bimuprojects.network.beans.ErrorHook;
 import com.can.bimuprojects.network.beans.JsonReceive;
 import com.can.bimuprojects.network.beans.ResponseHook;
 import com.can.bimuprojects.network.utils.Constants;
+import com.can.bimuprojects.view.ClearEditText;
 
+import java.io.BufferedInputStream;
+import java.io.BufferedOutputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.net.URL;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -95,7 +117,7 @@ public class AppUtils {
         Pattern p = Pattern.compile("^(13[0-9]|14[57]|15[0-35-9]|17[6-8]|18[0-9])[0-9]{8}$");
         Matcher m = p.matcher(mobiles);
         return m.matches();
-}
+    }
     /**
      * 获得设备的屏幕宽度(px)
      *
@@ -263,6 +285,202 @@ public class AppUtils {
         }
     }
 
+    private static ClearEditText et_phone;//手机号输入框
+    private static EditText et_verify;//验证码输入框
+    private static Button btn_get_verify ;//获取验证码
+    private static TextView tv_account_login; //账号密码登录
+    private static TextView tv_login ; //登录
+    private static String phone = ""; //手机号
+    private static String verify = "";//验证码
+    /**
+     * 短信验证码登录弹窗
+     */
+    public static Dialog showSMSLoginDialog(final Context context){
+        PrefUtils.putBoolean(AppConstant.BRAND_ZIXUN,false);
+        phone="";
+        verify = "";
+        final Dialog dialog = new Dialog(context,R.style.style_dialog);
+        View view_dialog = LayoutInflater.from(context).inflate(R.layout.dialog_smslogin,null);
+        view_dialog.findViewById(R.id.iv_close).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) { //点击打叉，关闭弹窗
+                dialog.dismiss();
+            }
+        });
+        et_phone = (ClearEditText) view_dialog.findViewById(R.id.et_phone);
+        et_verify = (EditText) view_dialog.findViewById(R.id.et_verify);
+        btn_get_verify = (Button) view_dialog.findViewById(R.id.btn_get_verify);
+        tv_account_login = (TextView) view_dialog.findViewById(R.id.tv_account_login);
+        tv_login = (TextView) view_dialog.findViewById(R.id.tv_login);
+
+        tv_account_login.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) { // 点击账号密码登录
+                dialog.dismiss();
+                Intent intent = new Intent(context, LoginActivity.class);
+                intent.putExtra("flag",true);
+                ((Activity)context).startActivityForResult(intent, AppConstant.LOGIN_REQUEST);
+            }
+        });
+
+        tv_login.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if(phone!=null&&verify!=null&&!phone.equals("")&&!verify.equals("")){
+                    if (!AppUtils.isMobileNO(phone)) {
+                        ToastUtils.showShort(context,"请输入正确的手机号！");
+                    }else{
+                        VerifyLoginRequest request =new VerifyLoginRequest();
+                        request.setPhone(phone);
+                        request.setVerify(verify);
+                        request.setUid(PrefUtils.get("uid",""));
+                        request.setPassword(EncryptionUtils.encrypt(phone.substring(phone.length()-4,phone.length()),phone));
+                        HttpUtils.postWithoutUid(MethodConstant.VERIFY_LOGIN, request, new ResponseHook() {
+                            @Override
+                            public void deal(Context context, JsonReceive receive) {
+                                VerifyLoginResponse response = (VerifyLoginResponse) receive.getResponse();
+                                int status = receive.getStatus();
+                                if(status==200&&response!=null){
+                                    int code = response.getCode();
+                                    int success = response.getExe_success();
+                                    String uid = response.getUid();
+                                    if(code==1&&success==1&&uid!=null&&!uid.equals("")){
+                                        PrefUtils.putBoolean(AppConstant.BRAND_ZIXUN,true);
+                                        LoginUtils.setLoginUid(response.getUid());
+                                        LoginUtils.setLoginStatus(false);
+                                        PrefUtils.putBoolean("update_home",true);
+                                        dialog.dismiss();
+                                    }
+                                }else if(status==402){
+                                    ToastUtils.showShort(context,"验证码已经过期！");
+                                }else if(status==403){
+                                    ToastUtils.showShort(context,"验证码错误！");
+                                }else if(status==402){
+                                    ToastUtils.showShort(context,"未查询到验证码！");
+                                }else if(status==502){
+                                    ToastUtils.showShort(context,"您的请求太过频繁,请稍后再试！");
+                                }
+                            }
+                        }, new ErrorHook() {
+                            @Override
+                            public void deal(Context context, VolleyError error) {
+                                ToastUtils.showShort(context,"网路似乎正在出小差！");
+                            }
+                        }, VerifyLoginResponse.class);
+                    }
+                }
+            }
+        });
+        et_phone.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+                if(et_phone.getText()!=null){
+                    phone = et_phone.getText().toString();
+                    setLoginButtonClick(context);
+                }else{
+                    phone = "";
+                }
+            }
+        });
+
+        dialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
+            @Override
+            public void onDismiss(DialogInterface dialogInterface) {
+                timer.cancel();
+            }
+        });
+
+        et_verify.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+                if(et_verify.getText()!=null){
+                    verify = et_verify.getText().toString();
+                    setLoginButtonClick(context);
+                }else{
+                    verify = "";
+                }
+            }
+        });
+        btn_get_verify.setText("| 获取验证码");
+        btn_get_verify.setEnabled(true);
+        btn_get_verify.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (!AppUtils.isMobileNO(phone)) {
+                    ToastUtils.showShort(context,"请输入正确的手机号！");
+                    return;
+                }
+                timer.start();
+                HttpUtils.postWithoutUid(MethodConstant.GET_VERIFY_CODE,
+                        new GetVerifyCodeRequest(phone),
+                        new ResponseHook() {
+                            @Override
+                            public void deal(Context context, JsonReceive receive) {
+                                if(receive!=null&&receive.getStatus()==504){
+                                    ToastUtils.showShort(context,"验证码已发出！");
+                                }
+                            }
+                        }, new DefaultErrorHook(), GetVerifyCodeResponse.class);
+            }
+        });
+
+        dialog.setContentView(view_dialog);
+        dialog.setCanceledOnTouchOutside(false);
+        Window window = dialog.getWindow();
+        window.setGravity(Gravity.CENTER);
+        WindowManager.LayoutParams params = window.getAttributes();
+        DisplayMetrics metric = new DisplayMetrics();
+        ((Activity)context).getWindowManager().getDefaultDisplay().getMetrics(metric);
+        params.width = metric.widthPixels*9/10;
+        params.height = LinearLayout.LayoutParams.WRAP_CONTENT;
+        window.setAttributes(params);
+        return dialog;
+    }
+
+    //定时器
+    static CountDownTimer timer = new CountDownTimer(60000, 1000) {
+        @Override
+        public void onTick(long millisUntilFinished) {
+            btn_get_verify.setText("| "+millisUntilFinished / 1000 + "秒后重新获取");
+            btn_get_verify.setEnabled(false);
+        }
+
+        @Override
+        public void onFinish() {
+            btn_get_verify.setText("| 重新获取");
+            btn_get_verify.setEnabled(true);
+        }
+    };
+
+    //设置登录按钮是否可点击
+    private static void setLoginButtonClick(Context context){
+        if(phone!=null&&verify!=null&&!phone.equals("")&&!verify.equals("")){
+            tv_login.setBackgroundColor(ContextCompat.getColor(context,R.color.color_app_bg));
+        }else{
+            tv_login.setBackgroundColor(ContextCompat.getColor(context,R.color.color_no_select));
+        }
+    }
+
 
     /**
      * 弹窗进行登录操作
@@ -276,7 +494,7 @@ public class AppUtils {
                 dialog.dismiss();
                 Intent intent = new Intent(context, LoginActivity.class);
                 intent.putExtra("flag",true);
-                ((Activity)context).startActivityForResult(intent,AppConstant.LOGIN_REQUEST);
+                ((Activity)context).startActivityForResult(intent, AppConstant.LOGIN_REQUEST);
             }
         });
 
@@ -289,7 +507,6 @@ public class AppUtils {
                 ((Activity)context).startActivityForResult(intent, AppConstant.LOGIN_REQUEST);
             }
         });
-
 
         dialog.setContentView(view_dialog);
         Window window = dialog.getWindow();
@@ -317,7 +534,6 @@ public class AppUtils {
                         if(response.getExe_success()==1){
                             String uid = response.getUid();
                             if(uid!=null&&!uid.equals("")){
-                                Log.i("bimu",uid);
                                 LoginUtils.setLoginUid(uid);
                                 PrefUtils.put("uid",uid);
                             }
@@ -333,5 +549,67 @@ public class AppUtils {
         }
     }
 
+    /**
+     * 获取关注和咨询的type
+     */
+    public static String getClientType(Context context){
+        return context.getString(R.string.android);
+    }
+
+    /**
+     * 获取关注和咨询的version
+     */
+    public static String getClientVersion(Context context){
+        return context.getString(R.string.app_name)+"-"+context.getString(R.string.version_name);
+    }
+
+
+    /**
+     * 把Bitmap转Byte
+     */
+    public static byte[] Bitmap2Bytes(Bitmap bm){
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        bm.compress(Bitmap.CompressFormat.PNG, 100, baos);
+        return baos.toByteArray();
+    }
+
+    /**
+     * 把网络资源图片转化成bitmap
+     * @param url  网络资源图片
+     * @return  Bitmap
+     */
+    public static Bitmap GetLocalOrNetBitmap(String url) {
+        if(url==null)
+            return null;
+        Bitmap bitmap = null;
+        InputStream in = null;
+        BufferedOutputStream out = null;
+        try {
+            in = new BufferedInputStream(new URL(url).openStream(), 1024);
+            final ByteArrayOutputStream dataStream = new ByteArrayOutputStream();
+            out = new BufferedOutputStream(dataStream, 1024);
+            copy(in, out);
+            out.flush();
+            byte[] data = dataStream.toByteArray();
+            bitmap = BitmapFactory.decodeByteArray(data, 0, data.length);
+            data = null;
+            return bitmap;
+        } catch (IOException e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+    private static void copy(InputStream in, OutputStream out)
+            throws IOException {
+        byte[] b = new byte[1024];
+        int read;
+        while ((read = in.read(b)) != -1) {
+            out.write(b, 0, read);
+        }
+    }
+
+
 
 }
+

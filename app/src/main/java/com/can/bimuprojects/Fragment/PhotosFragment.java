@@ -33,15 +33,19 @@ public class PhotosFragment extends Fragment {
 
     private String bid ;//品牌id
     private boolean consult ; //是否咨询过
+    private String str_logo; //品牌logo
+    private String name ; //品牌名称
     @Override
     public void onViewCreated(View view,  Bundle savedInstanceState) {
         imgLists = new ArrayList<>();
         imgLists = getArguments().getStringArrayList("list");
         bid = getArguments().getString("bid");
         consult = getArguments().getBoolean("consult");
+        str_logo = getArguments().getString("logo");
+        name = getArguments().getString("name");
         PrefUtils.putBoolean("update_consult",consult);
         if(imgLists!=null){
-            adapter = new PhotosAdapter(getContext(),bid,consult,imgLists);
+            adapter = new PhotosAdapter(getContext(),bid,consult,imgLists,str_logo,name);
             gv.setAdapter(adapter);
         }
     }
@@ -53,3 +57,4 @@ public class PhotosFragment extends Fragment {
         adapter.setData(consult);
     }
 }
+

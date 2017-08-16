@@ -39,9 +39,16 @@ import java.util.Map;
 
 public class ActivityInterest extends BaseActivity implements View.OnClickListener, AdapterView.OnItemClickListener {
 
+    public static final String TRADE = "trade";
+    public static final String CHANGE = "change";
+    public static final int REQUEST_CODE = 0x111;
+    public static final int RESPONSE_CODE = 0x222;
+
     public static int lv_position ; //点击的listview下标
     public static List<List<Boolean>> list_boolean  ; //多选的选择集合
     private boolean isMore = false ; //是否选择多项，还是单项
+    private boolean isTrade = false ; //点击右侧图片是否进入行业
+    private boolean isChangeEnter = false ; //是否从更换行业进入
     private int select_total ; //选择总数
     private List<String> select_list; //选择的集合
     private List<List<String>> id_list ; //id的集合
@@ -73,9 +80,9 @@ public class ActivityInterest extends BaseActivity implements View.OnClickListen
     private void initView() {
         setContentView(R.layout.activity_interest);
         lv = (ListView) findViewById(R.id.lv_interest);
-        iv_exit = (ImageView) findViewById(R.id.iv_exit_interest);
+        iv_exit = (ImageView) findViewById(R.id.iv_exit);
         gv = (GridView) findViewById(R.id.gv_interest);
-        tv_sure = (TextView) findViewById(R.id.tv_sure_interest);
+        tv_sure = (TextView) findViewById(R.id.tv_right);
         
     }
     /**
@@ -91,10 +98,10 @@ public class ActivityInterest extends BaseActivity implements View.OnClickListen
     @Override
     public void onClick(View view) {
         switch (view.getId()){
-            case R.id.iv_exit_interest://退出
+            case R.id.iv_exit://退出
                 finish();
                 break;
-            case R.id.tv_sure_interest: //确定
+            case R.id.tv_right: //确定
                 if(list2String()==null||list2String().equals("")){
                     ToastUtils.showShort(this,"请至少选择一项");
                     return;
@@ -169,6 +176,9 @@ public class ActivityInterest extends BaseActivity implements View.OnClickListen
 
         Intent intent = getIntent();
         isMore = intent.getBooleanExtra("more",false);
+        isTrade = intent.getBooleanExtra(TRADE,false);
+        isChangeEnter = intent.getBooleanExtra(CHANGE,false);
+        tv_sure.setText(getString(R.string.sure));
 
         if(isMore)
             tv_sure.setVisibility(View.VISIBLE);
@@ -265,11 +275,25 @@ public class ActivityInterest extends BaseActivity implements View.OnClickListen
                     }
                     adapter_gv.notifyDataSetChanged();
                 }else{
-                    PrefUtils.put("class_index",list_gv.get(i).getId());
-                    PrefUtils.put("interest",list_gv.get(i).getName());
-                    Intent intent = new Intent(ActivityInterest.this,MainActivity.class);
-                    intent.putExtra("find",true);
-                    startActivity(intent);
+                    if(isTrade){
+                        Intent intent = new Intent(this,ChooseTypeActivity.class);
+                        intent.putExtra("notFind",true);
+                        intent.putExtra("cid",list_gv.get(i).getId());
+                        intent.putExtra("project",list_gv.get(i).getName());
+                        startActivity(intent);
+                    }else if(isChangeEnter){
+                        Intent intent = getIntent();
+                        intent.putExtra("cid",list_gv.get(i).getId());
+                        intent.putExtra("project",list_gv.get(i).getName());
+                        setResult(RESPONSE_CODE,intent);
+                        finish();
+                    }else{
+                        PrefUtils.put("class_index",list_gv.get(i).getId());
+                        PrefUtils.put("interest",list_gv.get(i).getName());
+                        Intent intent = new Intent(ActivityInterest.this,MainActivity.class);
+                        intent.putExtra("find",true);
+                        startActivity(intent);
+                    }
                 }
                 break;
         }

@@ -2,6 +2,7 @@ package com.can.bimuprojects.adapter;
 
 import android.content.Context;
 import android.graphics.Color;
+import android.support.v4.content.ContextCompat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -69,16 +70,16 @@ public class PersonalAdapter extends BaseAdapter {
         }
         PersonalCardBean data = dataList.get(i);
         if(data.getTimestamp()!=null)
-        vh.tv_date.setText(DateUtils.timestampToString(data.getTimestamp()));
+            vh.tv_date.setText(DateUtils.timestampToString(data.getTimestamp()));
         vh.tv_title.setText(data.getText()+"");
         vh.tv_look.setText(data.getRead_num()+"");
         vh.tv_like.setText(data.getLike_count()+"");
         vh.tv_comment.setText(data.getComment_count()+"");
         if(data.getHas_praised().equals("1")){
-            vh.tv_like.setTextColor(Color.parseColor("#FF6A6A"));
+            vh.tv_like.setTextColor(ContextCompat.getColor(context,R.color.color_app_text_yes));
             vh.iv_like.setImageResource(R.drawable.icon_like_detail);
         }else{
-            vh.tv_like.setTextColor(Color.parseColor("#999999"));
+            vh.tv_like.setTextColor(ContextCompat.getColor(context,R.color.color_small_text));
             vh.iv_like.setImageResource(R.drawable.icon_unlike_detail);
         }
         if(Util.isOnMainThread())
@@ -87,34 +88,34 @@ public class PersonalAdapter extends BaseAdapter {
         if(list!=null) {
             if (list.size() > 0) {
                 if (list.size() >= 3 && (Util.isOnMainThread())) {
-                    Glide.with(context).load(getString(list.get(0), "http://30.bimuwang.com/upload/articlePictures/thumb_<img src=\"")).into(vh.iv1);
-                    Glide.with(context).load(getString(list.get(1), "http://30.bimuwang.com/upload/articlePictures/thumb_<img src=\"")).into(vh.iv2);
-                    Glide.with(context).load(getString(list.get(2), "http://30.bimuwang.com/upload/articlePictures/thumb_<img src=\"")).into(vh.iv3);
+                    Glide.with(context).load(list.get(0)).placeholder(R.drawable.loading).dontAnimate().into(vh.iv1);
+                    Glide.with(context).load(list.get(1)).placeholder(R.drawable.loading).dontAnimate().into(vh.iv2);
+                    Glide.with(context).load(list.get(2)).placeholder(R.drawable.loading).dontAnimate().into(vh.iv3);
                     vh.iv1.setVisibility(View.VISIBLE);
                     vh.iv2.setVisibility(View.VISIBLE);
                     vh.iv3.setVisibility(View.VISIBLE);
                 } else if (list.size() == 2 && (Util.isOnMainThread())) {
-                    Glide.with(context).load(getString(list.get(0), "http://30.bimuwang.com/upload/articlePictures/thumb_<img src=\"")).into(vh.iv1);
-                    Glide.with(context).load(getString(list.get(1), "http://30.bimuwang.com/upload/articlePictures/thumb_<img src=\"")).into(vh.iv2);
+                    Glide.with(context).load(list.get(0)).placeholder(R.drawable.loading).dontAnimate().into(vh.iv1);
+                    Glide.with(context).load(list.get(1)).placeholder(R.drawable.loading).dontAnimate().into(vh.iv2);
                     vh.iv1.setVisibility(View.VISIBLE);
                     vh.iv2.setVisibility(View.VISIBLE);
                     vh.iv3.setVisibility(View.INVISIBLE);
                 } else if (list.size() == 1 && (Util.isOnMainThread())) {
-                    Glide.with(context).load(getString(list.get(0), "http://30.bimuwang.com/upload/articlePictures/thumb_<img src=\"")).into(vh.iv1);
+                    Glide.with(context).load(list.get(0)).placeholder(R.drawable.loading).dontAnimate().into(vh.iv1);
                     vh.iv1.setVisibility(View.VISIBLE);
                     vh.iv2.setVisibility(View.INVISIBLE);
                     vh.iv3.setVisibility(View.INVISIBLE);
                 }
             }else{
-                    vh.iv1.setVisibility(View.GONE);
-                    vh.iv2.setVisibility(View.GONE);
-                    vh.iv3.setVisibility(View.GONE);
-            }
-            } else {
                 vh.iv1.setVisibility(View.GONE);
                 vh.iv2.setVisibility(View.GONE);
                 vh.iv3.setVisibility(View.GONE);
             }
+        } else {
+            vh.iv1.setVisibility(View.GONE);
+            vh.iv2.setVisibility(View.GONE);
+            vh.iv3.setVisibility(View.GONE);
+        }
         return convertView;
     }
 
@@ -138,7 +139,6 @@ public class PersonalAdapter extends BaseAdapter {
         ImageView iv_like;
         ImageView iv1,iv2,iv3;
         ImageView iv_circle;
-
     }
 
 }

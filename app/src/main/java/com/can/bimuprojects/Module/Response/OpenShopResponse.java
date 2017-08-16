@@ -35,24 +35,30 @@ public class OpenShopResponse {
 
     public static class DataBean {
         /**
-         * brand_id : 2049
-         * brand_name : 台资味外卖
-         * classify_id : 61
-         * industry_id : 50
-         * invest_amount : 5.8
-         * brand_location : 天津
-         * shop_area : 0 平-100 平
-         * brand_logo : http://v30.bimuwang.com/upload/brandLogo/thumb_57690ac3bbe94.png
+         * brand_id : 2479
+         * brand_name : 王子品牌
+         * classify_id : 80
+         * invest_amount : 232
+         * brand_location : 北京
+         * shop_area : 123 平-123 平
+         * brand_logo : http://v30.bimuwang.com/upload/brandLogo/58c8e579750f7.jpg
+         * brand_background : http://v30.bimuwang.com/upload/brandLogo/58c8e5acabd4c.jpg
+         * autof :
+         * autos :
+         * scribe : 479
          */
 
         private String brand_id;
         private String brand_name;
         private String classify_id;
-        private String industry_id;
         private String invest_amount;
         private String brand_location;
         private String shop_area;
         private String brand_logo;
+        private String brand_background;
+        private String autof;
+        private String autos;
+        private String scribe;
 
         public String getBrand_id() {
             return brand_id;
@@ -76,14 +82,6 @@ public class OpenShopResponse {
 
         public void setClassify_id(String classify_id) {
             this.classify_id = classify_id;
-        }
-
-        public String getIndustry_id() {
-            return industry_id;
-        }
-
-        public void setIndustry_id(String industry_id) {
-            this.industry_id = industry_id;
         }
 
         public String getInvest_amount() {
@@ -116,6 +114,38 @@ public class OpenShopResponse {
 
         public void setBrand_logo(String brand_logo) {
             this.brand_logo = brand_logo;
+        }
+
+        public String getBrand_background() {
+            return brand_background;
+        }
+
+        public void setBrand_background(String brand_background) {
+            this.brand_background = brand_background;
+        }
+
+        public String getAutof() {
+            return autof;
+        }
+
+        public void setAutof(String autof) {
+            this.autof = autof;
+        }
+
+        public String getAutos() {
+            return autos;
+        }
+
+        public void setAutos(String autos) {
+            this.autos = autos;
+        }
+
+        public String getScribe() {
+            return scribe;
+        }
+
+        public void setScribe(String scribe) {
+            this.scribe = scribe;
         }
     }
 }

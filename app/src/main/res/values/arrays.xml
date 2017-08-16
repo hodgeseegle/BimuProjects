@@ -9,17 +9,17 @@
 
     <!--搜索品牌结果-->
     <string-array name="search_brand_result">
-        <item>文章</item>
         <item>品牌</item>
+        <item>文章</item>
         <item>行业</item>
     </string-array>
 
     <!--品牌颜色集合-->
     <string-array name="brand_colors">
-        <item>@color/color1</item>
-        <item>@color/color2</item>
-        <item>@color/color3</item>
-        <item>@color/color4</item>
+        <item>@color/color_te1</item>
+        <item>@color/color_te2</item>
+        <item>@color/color_te3</item>
+        <item>@color/color_te4</item>
     </string-array>
 
     <!--金额集合-->

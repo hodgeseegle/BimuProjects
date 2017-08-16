@@ -1,6 +1,7 @@
 package com.can.bimuprojects.network.utils;
 
 import android.content.Context;
+import android.net.wifi.WifiManager;
 import android.telephony.TelephonyManager;
 
 import com.can.bimuprojects.utils.AppUtils;
@@ -23,7 +24,6 @@ public class Constants {
 	public static final int RTIMES = 1;
 	public static String SECRET = "567745674567544";
 
-
 	/**
 	 * 获取设备的sn码
 	 * */
@@ -31,9 +31,13 @@ public class Constants {
 		if (sn.equals("")) {
 			TelephonyManager tm = (TelephonyManager) context
 					.getSystemService(Context.TELEPHONY_SERVICE);
-			sn = tm.getSimSerialNumber()==null ? "" : tm.getSimSerialNumber();
-			if(sn==null||sn.equals("")){
-				sn = tm.getDeviceId();
+			sn = tm.getDeviceId()==null?"":tm.getDeviceId();
+			if(sn.equals("")){
+				sn = tm.getSimSerialNumber()==null ? "" : tm.getSimSerialNumber();
+			}
+			if(sn.equals("")){
+				WifiManager wm = (WifiManager)context.getSystemService(Context.WIFI_SERVICE);
+				sn= wm.getConnectionInfo().getMacAddress()==null?"":wm.getConnectionInfo().getMacAddress();
 			}
 		}
 		return sn;

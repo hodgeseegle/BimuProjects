@@ -22,7 +22,7 @@
         <TextView
             android:layout_width="match_parent"
             android:layout_height="1dp"
-            android:background="@color/colorGray"
+            android:background="@color/color_divi_line"
             />
         <LinearLayout
             android:orientation="horizontal"
@@ -36,28 +36,28 @@
                 android:layout_marginTop="10dp"
                 android:layout_width="0dp"
                 android:layout_weight="1"
-               android:focusable="true"
+                android:focusable="true"
                 android:focusableInTouchMode="true"
                 android:layout_marginLeft="10dp"
                 android:background="@drawable/shape_article_detail_edittext"
                 android:layout_height="wrap_content">
 
-        <EditText
-            android:id="@+id/et_article_detail"
-            android:imeOptions="actionSend"
-            android:background="@null"
-            android:layout_gravity="center_vertical"
-            android:layout_width="0dp"
-            android:layout_weight="1"
-            android:layout_marginTop="5dp"
-            android:layout_marginBottom="5dp"
-            android:layout_marginLeft="10dp"
-            android:hint="@string/say_something"
-            android:textColor="@color/color_big_text"
-            android:textSize="16sp"
-            android:inputType="text"
-            android:textColorHint="@color/color_small_text"
-            android:layout_height="match_parent" />
+                <EditText
+                    android:id="@+id/et_article_detail"
+                    android:imeOptions="actionSend"
+                    android:background="@null"
+                    android:layout_gravity="center_vertical"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_marginTop="5dp"
+                    android:layout_marginBottom="5dp"
+                    android:layout_marginLeft="10dp"
+                    android:hint="@string/say_something"
+                    android:textColor="@color/color_big_text"
+                    android:textSize="16sp"
+                    android:inputType="text"
+                    android:textColorHint="@color/color_small_text"
+                    android:layout_height="match_parent" />
 
             </LinearLayout>
 
@@ -89,11 +89,11 @@
                     android:gravity="center"
                     android:layout_height="wrap_content">
 
-                <ImageView
-                    android:id="@+id/iv_article_detail_parised"
-                    android:layout_width="30dp"
-                    android:layout_height="30dp"
-                    />
+                    <ImageView
+                        android:id="@+id/iv_article_detail_parised"
+                        android:layout_width="30dp"
+                        android:layout_height="30dp"
+                        />
 
                 </LinearLayout>
 
@@ -103,11 +103,11 @@
                     android:gravity="center"
                     android:layout_height="wrap_content">
 
-                <ImageView
-                    android:id="@+id/iv_article_detail_share"
-                    android:layout_width="30dp"
-                    android:layout_height="30dp"
-                    />
+                    <ImageView
+                        android:id="@+id/iv_article_detail_share"
+                        android:layout_width="30dp"
+                        android:layout_height="30dp"
+                        />
                 </LinearLayout>
 
             </LinearLayout>

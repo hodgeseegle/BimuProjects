@@ -30,7 +30,7 @@ public class BaseActivity extends AppCompatActivity {
 
     private BimuApplication application;
     private BaseActivity oContext;
-
+    private Dialog dialog_login ;//登录弹窗
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -47,7 +47,6 @@ public class BaseActivity extends AppCompatActivity {
             statusBarView.setBackgroundColor(ContextCompat.getColor(this,R.color.color_app_bg));
             decorViewGroup.addView(statusBarView);
         }
-        dialog_login = AppUtils.showLoginDialog(this);
         if (application == null) {
             // 得到Application对象
             application = (BimuApplication) getApplication();
@@ -65,7 +64,6 @@ public class BaseActivity extends AppCompatActivity {
         }
         return statusBarHeight;
     }
-
     //销毁当个Activity方法
     public void removeActivity() {
         application.removeActivity(oContext);// 调用myApplication的销毁单个Activity方法
@@ -84,7 +82,7 @@ public class BaseActivity extends AppCompatActivity {
     public Dialog showDialog(String content) {
         CircleDialog builder = new CircleDialog(this,content, View.inflate(this, R.layout.dialog_circle,null),R.style.circle_dialog);
         if(!this.isFinishing())
-        builder.show();
+            builder.show();
         return builder;
     }
 
@@ -113,9 +111,9 @@ public class BaseActivity extends AppCompatActivity {
         return super.onTouchEvent(event);
     }
 
-    private Dialog dialog_login ;//登录弹窗
     //展示登录弹窗
     public boolean showLoginDialog(){
+        dialog_login = AppUtils.showSMSLoginDialog(this);
         if(AppUtils.isNeedShowLoginDialog()){
             if(!dialog_login.isShowing()&&!this.isFinishing()){
                 dialog_login.show();
@@ -124,6 +122,5 @@ public class BaseActivity extends AppCompatActivity {
         }
         return false;
     }
-
 
 }

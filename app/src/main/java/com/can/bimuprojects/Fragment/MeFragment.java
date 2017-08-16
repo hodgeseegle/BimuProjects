@@ -182,6 +182,8 @@ public class MeFragment extends Fragment implements View.OnClickListener {
                     if(Util.isOnMainThread())
                     Glide.with(context).load(response.getUser_image_url())
                             .transform(new GlideCircleTransform(context))
+                    .placeholder(R.drawable.default_logo)
+                    .dontAnimate()
                             .into(ivHeadIcon);
                     if (response.getNot_read_message() >0) {
                         redPot.setVisibility(View.VISIBLE);

@@ -2,6 +2,7 @@ package com.can.bimuprojects.activity;
 
 import android.app.Dialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
@@ -32,19 +33,24 @@ import com.android.volley.VolleyError;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.util.Util;
 import com.can.bimuprojects.Constant.AppConstant;
+import com.can.bimuprojects.Module.Request.FocusRequest;
+import com.can.bimuprojects.utils.GlideUtil;
+import com.can.bimuprojects.utils.ShareUtils;
+import com.can.bimuprojects.utils.UiUtils;
+import com.can.bimuprojects.view.DragScaleImageView;
+import com.can.bimuprojects.view.NoScrollListView;
+import com.can.bimuprojects.view.OpenShopNoticeDialog;
 import com.umeng.analytics.MobclickAgent;
 import com.umeng.socialize.ShareAction;
 import com.umeng.socialize.UMShareListener;
 import com.umeng.socialize.bean.SHARE_MEDIA;
 import com.umeng.socialize.media.UMImage;
 import com.can.bimuprojects.Constant.MethodConstant;
-import com.can.bimuprojects.Module.Request.AddLoveListRequest;
 import com.can.bimuprojects.Module.Request.BrandDetailDetailRequest;
 import com.can.bimuprojects.Module.Request.BrandDetailDetailResponse;
 import com.can.bimuprojects.Module.Request.BrandRequest;
 import com.can.bimuprojects.Module.Request.SetUserNameRequest;
 import com.can.bimuprojects.Module.Response.AddLoveListResponse;
-import com.can.bimuprojects.Module.Response.BrandImgResponse;
 import com.can.bimuprojects.Module.Response.BrandResponse;
 import com.can.bimuprojects.Module.Response.OpenShopResponse;
 import com.can.bimuprojects.Module.Response.SetUserNameResponse;
@@ -63,10 +69,8 @@ import com.can.bimuprojects.utils.HttpUtils;
 import com.can.bimuprojects.utils.LoginUtils;
 import com.can.bimuprojects.utils.NumberUtils;
 import com.can.bimuprojects.utils.PrefUtils;
-import com.can.bimuprojects.utils.ToastUtils;
 import com.can.bimuprojects.view.BrandChildListView;
 import com.can.bimuprojects.view.BrandGridView;
-import com.can.bimuprojects.view.BrandParentListView;
 import com.can.bimuprojects.view.LoadDialog;
 import com.can.bimuprojects.view.gallery.ImagePagerActivity;
 
@@ -86,7 +90,7 @@ public class BrandActivity extends BaseActivity implements View.OnClickListener,
     private TextView tv_title; //标题
     private ImageView iv_love; //加入或取消心愿单按钮
     private ImageView iv_exit; //退出按钮
-    private BrandParentListView lv; //集合控件
+    private ListView lv; //集合控件
     private ImageView iv_share ; //分享
     private ImageView iv_dagou ; //打钩
 
@@ -98,6 +102,7 @@ public class BrandActivity extends BaseActivity implements View.OnClickListener,
 
     private LinearLayout ll_get_join_process; //加盟流程
     private TextView tv_brand_get_openshop_process; //开店方案
+    private RelativeLayout rl;
 
     private TextView tv_detail, tv_fee, tv_assess, tv_recommend; //详情 费用 评价 推荐 按钮
 
@@ -106,7 +111,11 @@ public class BrandActivity extends BaseActivity implements View.OnClickListener,
     private ImageView iv_add_comment ; //添加评论
     private String brand ; //品牌名称
 
+    private String brand_logo =""; //品牌logo
+
     private int view_id = 0; //view ID
+
+    private View view1,view2,view3,view4 ; //下划线
 
     @Override
     protected void onCreate( Bundle savedInstanceState) {
@@ -121,16 +130,38 @@ public class BrandActivity extends BaseActivity implements View.OnClickListener,
         super.onResume();
         boolean isUpdateConsult = PrefUtils.getBoolean("update_consult",false);
         if(isUpdateConsult) {
-            requestITData();
+            isConsult = true;
+            tv_brand_get_openshop_process.setText(getString(R.string.entre_love_list));
+            rl.setBackgroundColor(ContextCompat.getColor(this,R.color.color_zixun_brand));
+            if (!isLove) {
+                if(!this.isFinishing()&&Util.isOnMainThread())
+                    Glide.with(this).load(R.drawable.remove_love_list).into(iv_love);
+                isLove = !isLove;
+            }
         }
     }
 
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if(resultCode== AppConstant.LOGIN_REQUEST)
+            requestITData();
+    }
 
+    private OpenShopNoticeDialog dialog_notice ;
     /**
      * 初始化view
      */
     private void initView() {
         setContentView(R.layout.activity_brand);
+        dialog_notice = new OpenShopNoticeDialog(this,LayoutInflater.from(this).inflate(R.layout.dialog_openshop_notice,null),R.style.dialog_nodata);
+        view1 = findViewById(R.id.view_brand1);
+        view2 = findViewById(R.id.view_brand2);
+        view3 = findViewById(R.id.view_brand3);
+        view4 = findViewById(R.id.view_brand4);
+        setChooseIndex(1);
+        iv_dagou = (ImageView) findViewById(R.id.iv_dagou);
+        GlideUtil.loadDrawableImg(this,R.drawable.da_gou,iv_dagou);
         tv_title = (TextView) findViewById(R.id.tv_brand_title);
         iv_share = (ImageView) findViewById(R.id.iv_brand_share);
         iv_exit = (ImageView) findViewById(R.id.iv_exit_brand);
@@ -138,24 +169,20 @@ public class BrandActivity extends BaseActivity implements View.OnClickListener,
         tv_detail = (TextView) findViewById(R.id.tv_brand_detail);
         tv_fee = (TextView) findViewById(R.id.tv_brand_fee);
         iv_add_comment = (ImageView) findViewById(R.id.iv_brand_add_comment);
-        iv_dagou = (ImageView) findViewById(R.id.iv_brand_dagou);
+        if(Util.isOnMainThread())
+            Glide.with(this).load(R.drawable.img_add_comment).into(iv_add_comment);
         tv_assess = (TextView) findViewById(R.id.tv_brand_assess);
         tv_recommend = (TextView) findViewById(R.id.tv_brand_recommend);
         ll_get_join_process = (LinearLayout) findViewById(R.id.ll_brand_get_join_process);
-        lv = (BrandParentListView) findViewById(R.id.lv_brand_detail);
+        lv = (ListView) findViewById(R.id.lv_brand_detail);
         tv_brand_get_openshop_process = (TextView) findViewById(R.id.tv_brand_get_openshop_process);
-
-        if(Util.isOnMainThread()){
-            Glide.with(this).load(R.drawable.img_add_comment).into(iv_add_comment);
-            Glide.with(this).load(R.drawable.da_gou).into(iv_dagou);
-        }
-
+        rl = (RelativeLayout) findViewById(R.id.rl);
         lv.setSelected(true);
         showDialogFromBottom();
         initHeadView();
     }
 
-    private ImageView iv_head_bg; //头部背景图
+    private DragScaleImageView iv_head_bg; //头部背景图
     private ImageView iv_head_logo; //头部logo图
     private TextView tv_head_title; //头部标题
     private LinearLayout ll_head_imgs; //头部全部图片
@@ -170,7 +197,10 @@ public class BrandActivity extends BaseActivity implements View.OnClickListener,
         iv_camera = (ImageView) view_head.findViewById(R.id.iv_brand_detail_camera);
         if(Util.isOnMainThread())
             Glide.with(this).load(R.drawable.camera).into(iv_camera);
-        iv_head_bg = (ImageView) view_head.findViewById(R.id.iv_brand_detail_head);
+        iv_head_bg = (DragScaleImageView) view_head.findViewById(R.id.iv_brand_detail_head);
+        DisplayMetrics metrics = new DisplayMetrics();
+        getWindowManager().getDefaultDisplay().getMetrics(metrics);
+        iv_head_bg.setImageWidthAndHeight(metrics.widthPixels,metrics.widthPixels/2);
         iv_head_logo = (ImageView) view_head.findViewById(R.id.iv_brand_detail_logo);
         tv_head_title = (TextView) view_head.findViewById(R.id.tv_brand_detail_title);
         ll_head_imgs = (LinearLayout) view_head.findViewById(R.id.ll_brand_detail_head_imgs);
@@ -182,11 +212,11 @@ public class BrandActivity extends BaseActivity implements View.OnClickListener,
         initRecommend();
         if(AppUtils.isNetworkOK(this)){
             if(Util.isOnMainThread())
-                Glide.with(this).load(R.drawable.share).into(iv_share);
+                Glide.with(this).load(R.drawable.share_white).into(iv_share);
             lv.addHeaderView(view_head);
-            lv.addHeaderView(view_detail);
-            lv.addHeaderView(view_fee);
             lv.addHeaderView(view_assess);
+            lv.addHeaderView(view_fee);
+            lv.addHeaderView(view_detail);
             lv.addHeaderView(view_recommend);
             iv_add_comment.setVisibility(View.VISIBLE);
         }
@@ -283,6 +313,7 @@ public class BrandActivity extends BaseActivity implements View.OnClickListener,
      * 设置监听事件
      */
     private void setListener() {
+        dialog_notice.findViewById(R.id.tv_dialog_sure).setOnClickListener(this);
         iv_love.setOnClickListener(this);
         iv_exit.setOnClickListener(this);
         tv_recommend.setOnClickListener(this);
@@ -293,6 +324,7 @@ public class BrandActivity extends BaseActivity implements View.OnClickListener,
         gv_recommend.setOnItemClickListener(this);
         ll_get_join_process.setOnClickListener(this);
         tv_brand_get_openshop_process.setOnClickListener(this);
+        rl.setOnClickListener(this);
         ll_head_imgs.setOnClickListener(this);
         lv_dialog.setOnItemClickListener(this);
         btn_raiders.setOnClickListener(this);
@@ -318,22 +350,22 @@ public class BrandActivity extends BaseActivity implements View.OnClickListener,
                 break;
 
             case R.id.tv_brand_detail: //详情
-                setColorChange(tv_detail);
-                setSelect(1);
+                setColorChange(3,tv_detail);
+                setSelect(3);
                 break;
 
             case R.id.tv_brand_fee://费用
-                setColorChange(tv_fee);
+                setColorChange(2,tv_fee);
                 setSelect(2);
                 break;
 
             case R.id.tv_brand_assess: //评价
-                setColorChange(tv_assess);
-                setSelect(3);
+                setColorChange(1,tv_assess);
+                setSelect(1);
                 break;
 
             case R.id.tv_brand_recommend: //推荐
-                setColorChange(tv_recommend);
+                setColorChange(4,tv_recommend);
                 setSelect(4);
                 break;
 
@@ -343,19 +375,23 @@ public class BrandActivity extends BaseActivity implements View.OnClickListener,
                 break;
 
             case R.id.tv_brand_get_openshop_process: //开店方案或前往心愿单
-                if(showLoginDialog())
+            case R.id.rl:
+                if(showLoginDialog()){
+                    handler.sendEmptyMessage(2);
                     break;
+                }
                 openShop();
                 break;
 
             case R.id.ll_brand_detail_head_imgs: //全看全部照片
-                if(img_total!=null) {
+                if(!img_total.equals("")) {
                     MobclickAgent.onEvent(this,"ll_brand_detail_head_imgs");
                     Intent intent = new Intent(getApplicationContext(), PhotosActivity.class);
                     intent.putExtra(ImagePagerActivity.EXTRA_IMAGE_INDEX, 0);
                     intent.putExtra("bid",bid);
                     intent.putExtra("consult",isConsult);
                     intent.putExtra("brand",brand);
+                    intent.putExtra("logo",brand_logo);
                     startActivity(intent);
                     overridePendingTransition(0, android.R.anim.fade_out);
                 }
@@ -388,74 +424,17 @@ public class BrandActivity extends BaseActivity implements View.OnClickListener,
                 break;
 
             case R.id.iv_brand_share://分享品牌
-                share();
+                ShareUtils.shareBrand(this,bid,brand,brand_logo);
+                break;
+
+            case R.id.tv_dialog_sure:
+                dialog_notice.dismiss();
+                if (!isHasOpenshopData)
+                    requestOpenShopData();
+                else if (!dialog.isShowing())
+                    dialog.show();
                 break;
         }
-    }
-
-    //开店方案或前往心愿单
-    private void openShop() {
-        if(LoginUtils.getUserName().equals("")){
-            ll_dialog.setVisibility(View.VISIBLE);
-            iv_dialog.setVisibility(View.GONE);
-        }else{
-            ll_dialog.setVisibility(View.GONE);
-            iv_dialog.setVisibility(View.VISIBLE);
-        }
-
-        MobclickAgent.onEvent(this,"tv_brand_get_openshop_process");
-        if(isConsult){ //前往心愿单
-                    Intent intent = new Intent(this,MainActivity.class);
-                    intent.putExtra("love",true);
-                    startActivity(intent);
-        }else { //获取开店方案
-            if (!isHasOpenshopData)
-                requestOpenShopData();
-            else if (!dialog.isShowing())
-                dialog.show();
-        }
-    }
-
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        if(resultCode== AppConstant.LOGIN_REQUEST)
-            requestITData();
-
-    }
-
-    /**
-     * 分享
-     */
-    private void share() {
-        UMImage umImage = new UMImage(this, BitmapFactory.decodeResource(getResources(), R.drawable.ic_launcher));
-        if(str_share_logo!=null){
-            umImage = new UMImage(this,str_share_logo);
-        }
-        new ShareAction(this)
-                .setDisplayList(SHARE_MEDIA.WEIXIN, SHARE_MEDIA.WEIXIN_CIRCLE)
-                .withMedia(umImage)
-                .withText(getString(R.string.share_article_title))
-                .setCallback(new UMShareListener() {
-                    @Override
-                    public void onResult(SHARE_MEDIA share_media) {
-                        ToastUtils.showShort(BrandActivity.this,"分享成功");
-                    }
-
-                    @Override
-                    public void onError(SHARE_MEDIA share_media, Throwable throwable) {
-                        ToastUtils.showShort(BrandActivity.this,"分享失败");
-                    }
-
-                    @Override
-                    public void onCancel(SHARE_MEDIA share_media) {
-                        ToastUtils.showShort(BrandActivity.this,"分享已取消");
-                    }
-                })
-                .withTitle("分享品牌")
-                .withTargetUrl("http://app.bimuwang.com/bimu/interface/" +
-                        "share_article.php?article_id=" + bid+"&from=singlemessage&isappinstalled=1")
-                .open();
     }
 
     /**
@@ -467,12 +446,12 @@ public class BrandActivity extends BaseActivity implements View.OnClickListener,
     }
 
     /**
-     * 加入 移除心愿单
+     * 加入移除心愿单
      */
     private void addLoveList() {
         isConsult = false;
         tv_brand_get_openshop_process.setText(getString(R.string.get_openshop_plan));
-        tv_brand_get_openshop_process.setBackgroundColor(ContextCompat.getColor(this,R.color.color_app_text_yes));
+        rl.setBackgroundColor(ContextCompat.getColor(this,R.color.color_app_text_yes));
         if (isLove) {
             if(!this.isFinishing()&&Util.isOnMainThread())
                 Glide.with(this).load(R.drawable.love_white).into(iv_love);
@@ -489,11 +468,13 @@ public class BrandActivity extends BaseActivity implements View.OnClickListener,
         @Override
         public boolean handleMessage(Message message) {
             if(message.what==1) {
-                AddLoveListRequest request = new AddLoveListRequest();
+                FocusRequest request = new FocusRequest();
                 request.setUid(LoginUtils.getUid());
-                request.setType("2");
+                request.setType(2);
                 request.setId(bid);
-                HttpUtils.postWithoutUid(MethodConstant.SET_LOVE_LIST, request, new ResponseHook() {
+                request.setClient_type(AppUtils.getClientType(BrandActivity.this));
+                request.setClient_version(AppUtils.getClientVersion(BrandActivity.this));
+                HttpUtils.postWithoutUid(MethodConstant.FOCUS, request, new ResponseHook() {
                     @Override
                     public void deal(Context context, JsonReceive receive) {
                         AddLoveListResponse response = (AddLoveListResponse) receive.getResponse();
@@ -507,6 +488,15 @@ public class BrandActivity extends BaseActivity implements View.OnClickListener,
 
                     }
                 }, AddLoveListResponse.class);
+            }else if(message.what==2){
+                handler.sendEmptyMessageDelayed(2,500);
+                if(PrefUtils.getBoolean(AppConstant.BRAND_ZIXUN,false)){
+                    PrefUtils.putBoolean(AppConstant.BRAND_ZIXUN,false);
+                    handler.removeMessages(2);
+                    requestITData();
+                }
+            }else if(message.what==3){
+                wv.loadData(html, "text/html;charset=UTF-8", null);
             }
             return false;
         }
@@ -549,15 +539,23 @@ public class BrandActivity extends BaseActivity implements View.OnClickListener,
         list_boolean = adapter_dialog.getCheckState();
         dialog.dismiss();
         isConsult = !isConsult;
-        tv_brand_get_openshop_process.setBackgroundColor(ContextCompat.getColor(this,R.color.color_zixun_brand));
+        rl.setBackgroundColor(ContextCompat.getColor(this,R.color.color_zixun_brand));
         tv_brand_get_openshop_process.setText(getString(R.string.entre_love_list));
         consultShop(bid);
+        List<String> stringList = new ArrayList<>();
+        stringList.add(bid);
         for(int i =0;i<list_boolean.size();i++){
-            if(list_boolean.get(i))
+            if(list_boolean.get(i)){
+                stringList.add(list_openshop.get(i).getBrand_id());
                 consultShop(list_openshop.get(i).getBrand_id());
+            }
         }
         PrefUtils.putBoolean("love_update",true);
         Intent intent_open_shop = new Intent(BrandActivity.this, OpenShopResultActivity.class);
+        intent_open_shop.putExtra(OpenShopResultActivity.STRING_LIST,NumberUtils.list2String(stringList));
+        intent_open_shop.putExtra("brand",bid);
+        intent_open_shop.putExtra("logo",brand_logo);
+        intent_open_shop.putExtra("name",brand);
         startActivity(intent_open_shop);
     }
 
@@ -565,11 +563,13 @@ public class BrandActivity extends BaseActivity implements View.OnClickListener,
      * 咨询店铺
      */
     private void consultShop(String id){
-        AddLoveListRequest re = new AddLoveListRequest();
+        FocusRequest re = new FocusRequest();
         re.setId(id);
-        re.setType("3");
+        re.setType(3);
         re.setUid(LoginUtils.getUid());
-        HttpUtils.postWithoutUid(MethodConstant.SET_LOVE_LIST, re, new ResponseHook() {
+        re.setClient_type(AppUtils.getClientType(BrandActivity.this));
+        re.setClient_version(AppUtils.getClientVersion(BrandActivity.this));
+        HttpUtils.postWithoutUid(MethodConstant.FOCUS, re, new ResponseHook() {
             @Override
             public void deal(Context context, JsonReceive receive) {
 
@@ -588,12 +588,13 @@ public class BrandActivity extends BaseActivity implements View.OnClickListener,
      *
      * @param tv
      */
-    private void setColorChange(TextView tv) {
+    private void setColorChange(int index,TextView tv) {
         tv_detail.setTextColor(ContextCompat.getColor(this,R.color.brand_text));
         tv_fee.setTextColor(ContextCompat.getColor(this,R.color.brand_text));
         tv_assess.setTextColor(ContextCompat.getColor(this,R.color.brand_text));
         tv_recommend.setTextColor(ContextCompat.getColor(this,R.color.brand_text));
         tv.setTextColor(ContextCompat.getColor(this,R.color.color_app_text_yes));
+        setChooseIndex(index);
     }
 
     /**
@@ -673,7 +674,7 @@ public class BrandActivity extends BaseActivity implements View.OnClickListener,
     private void showDialogFromBottom() {
         dialog = new Dialog(this,R.style.style_dialog);
         View view_dialog = LayoutInflater.from(this).inflate(R.layout.dialog_open_shop_plan, null);
-        lv_dialog = (ListView) view_dialog.findViewById(R.id.lv_brand_dialog);
+        lv_dialog = (NoScrollListView) view_dialog.findViewById(R.id.lv_brand_dialog);
         tv_dialog_cancle = (TextView) view_dialog.findViewById(R.id.tv_brand_dialog_cancle);
         tv_dialog_sure = (TextView) view_dialog.findViewById(R.id.tv_brand_dialog_sure);
         tv_dialog_open_shop_agree = (TextView) view_dialog.findViewById(R.id.tv_dialog_open_shop_agree);
@@ -747,12 +748,34 @@ public class BrandActivity extends BaseActivity implements View.OnClickListener,
         if(str!=null)
             LoginUtils.setUserName(str);
         setHeadData(response.getData());
-        setDetailData();
         setAssessData(response.getArticledata());
         setRecommendData(response.getBrandlist());
-        if(view_id==R.id.tv_brand_get_openshop_process){
+        if(view_id==R.id.tv_brand_get_openshop_process||view_id==R.id.rl){
             openShop();
             view_id = 0;
+        }
+        setDetailData();
+    }
+
+
+    //开店方案或前往心愿单
+    private void openShop() {
+        if(LoginUtils.getUserName().equals("")){
+            ll_dialog.setVisibility(View.VISIBLE);
+            iv_dialog.setVisibility(View.GONE);
+        }else{
+            ll_dialog.setVisibility(View.GONE);
+            iv_dialog.setVisibility(View.VISIBLE);
+        }
+
+        MobclickAgent.onEvent(this,"tv_brand_get_openshop_process");
+        if(isConsult){ //前往心愿单
+            Intent intent = new Intent(this,MainActivity.class);
+            intent.putExtra("love",true);
+            startActivity(intent);
+        }else { //获取开店方案
+            if (!dialog_notice.isShowing())
+            dialog_notice.show();
         }
     }
 
@@ -762,6 +785,7 @@ public class BrandActivity extends BaseActivity implements View.OnClickListener,
      * @param brandlist
      */
     private void setRecommendData(List<BrandResponse.BrandlistBean> brandlist) {
+        list_recommend.clear();
         list_recommend.addAll(brandlist);
         adapter_recommend.notifyDataSetChanged();
     }
@@ -777,10 +801,12 @@ public class BrandActivity extends BaseActivity implements View.OnClickListener,
         }else{
             btn_raiders.setVisibility(View.GONE);
         }
+        list_assess.clear();
         list_assess.addAll(articledata);
         adapter_assess.notifyDataSetChanged();
     }
 
+    private String html ;
     /**
      * 设置详情页的数据
      */
@@ -792,7 +818,8 @@ public class BrandActivity extends BaseActivity implements View.OnClickListener,
             public void deal(Context context, JsonReceive receive) {
                 BrandDetailDetailResponse response = (BrandDetailDetailResponse) receive.getResponse();
                 if (response != null) {
-                    wv.loadData(response.getHtml(), "text/html;charset=UTF-8", null);
+                    html = response.getHtml();
+                    handler.sendEmptyMessage(3);
                 }
             }
         }, new ErrorHook() {
@@ -803,7 +830,6 @@ public class BrandActivity extends BaseActivity implements View.OnClickListener,
         }, BrandDetailDetailResponse.class);
     }
 
-    private String str_share_logo; //分享图片
     /**
      * 设置头部的数据
      */
@@ -812,19 +838,19 @@ public class BrandActivity extends BaseActivity implements View.OnClickListener,
             img_total = data.getPhoto_num();
             tv_head_imgs.setText("查看"+img_total+"张图片");
         }
-
         List<String> list_str = data.getAuth();
+        ll_head_flags.removeAllViews();
         for(int i =0;i<list_str.size();i++){
-            ll_head_flags.addView(getTV(list_str.get(i),i));
+            ll_head_flags.addView(UiUtils.getTV(this,list_str.get(i),i));
         }
         if(data.getConsult().equals("0")){
             isConsult = false;
             tv_brand_get_openshop_process.setText(getString(R.string.get_openshop_plan));
-            tv_brand_get_openshop_process.setBackgroundColor(ContextCompat.getColor(this,R.color.color_app_text_yes));
+            rl.setBackgroundColor(ContextCompat.getColor(this,R.color.color_app_text_yes));
         }else{
             isConsult = true;
             tv_brand_get_openshop_process.setText(getString(R.string.entre_love_list));
-            tv_brand_get_openshop_process.setBackgroundColor(ContextCompat.getColor(this,R.color.color_zixun_brand));
+            rl.setBackgroundColor(ContextCompat.getColor(this,R.color.color_zixun_brand));
         }
         if (data.getScribe().equals("0")) {
             isLove = false;
@@ -840,16 +866,17 @@ public class BrandActivity extends BaseActivity implements View.OnClickListener,
         }
         if(data.getBrand_name()!=null){
             brand = data.getBrand_name();
-            tv_title.setText(brand);
+            tv_title.setText(data.getBrand_name());
             PrefUtils.put("recent_brand_id",bid);
             PrefUtils.put("recent_brand_name",brand);
         }
-        if(Util.isOnMainThread()){
-            Glide.with(getApplicationContext()).load(data.getBrand_background()).into(iv_head_bg);
-            str_share_logo = data.getBrand_background();
+        if(Util.isOnMainThread()&&data.getBrand_background()!=null){
+            iv_head_bg.setImageBitmap(data.getBrand_background());
         }
-        if(Util.isOnMainThread())
+        if(Util.isOnMainThread()&&data.getBrand_logo()!=null){
             Glide.with(getApplicationContext()).load(data.getBrand_logo()).transform(new GlideRoundTransform(this)).into(iv_head_logo);
+            brand_logo = data.getBrand_logo();
+        }
         tv_head_title.setText(data.getBrand_name() + " · 投资 " + data.getInvest_amount() + " 万 · 总部" + data.getBrand_location() + " · 适合面积 " + data.getShop_area());
         setOneFee(data.getBaozheng_fei(), tv_baozheng, rl_baozheng);
         setOneFee(data.getJoin_fei(), tv_join, rl_join);
@@ -864,30 +891,7 @@ public class BrandActivity extends BaseActivity implements View.OnClickListener,
         tv_detail_total.setText("预计初期投入" + data.getInvest_amount() + "万");
     }
 
-    private int [] bgs = new int[]{R.drawable.shape_brand_color1,R.drawable.shape_brand_color2,R.drawable.shape_brand_color3,R.drawable.shape_brand_color4};
-    /**
-     * 添加textview
-     * @param content
-     * @return
-     */
-    private TextView getTV(String content,int index){
-        TextView tv = new TextView(this);
-        LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT,LinearLayout.LayoutParams.WRAP_CONTENT);
-        params.setMargins(0,0,20,0);
-        tv.setLayoutParams(params);
-        tv.setMaxLines(1);
-        tv.setTextSize(12);
-        tv.setEllipsize(TextUtils.TruncateAt.END);
-        tv.setPadding(10,5,10,5);
-        tv.setText(content);
-        index = index%4;
-        tv.setBackgroundResource(bgs[index]);
-        tv.setTextColor(getResources().getIntArray(R.array.brand_colors)[index]);
-        return tv;
-    }
-
-    private String img_total;
-
+    private String img_total =""; //图片数量
     /**
      * 设置某一项的值
      */
@@ -897,6 +901,30 @@ public class BrandActivity extends BaseActivity implements View.OnClickListener,
         } else {
             tv.setText(fee + "万");
             ll.setVisibility(View.VISIBLE);
+        }
+    }
+
+    /**
+     * 设置选择哪项
+     */
+    private void setChooseIndex(int index){
+        view1.setVisibility(View.GONE);
+        view2.setVisibility(View.GONE);
+        view3.setVisibility(View.GONE);
+        view4.setVisibility(View.GONE);
+        switch (index){
+            case 1:
+                view1.setVisibility(View.VISIBLE);
+                break;
+            case 2:
+                view2.setVisibility(View.VISIBLE);
+                break;
+            case 3:
+                view3.setVisibility(View.VISIBLE);
+                break;
+            case 4:
+                view4.setVisibility(View.VISIBLE);
+                break;
         }
     }
 
@@ -930,7 +958,6 @@ public class BrandActivity extends BaseActivity implements View.OnClickListener,
 
     }
 
-
     @Override
     public void onScrollStateChanged(AbsListView absListView, int i) {
         switch (i) {
@@ -949,32 +976,20 @@ public class BrandActivity extends BaseActivity implements View.OnClickListener,
     }
 
     private boolean scrollFlag = false;// 标记是否滑动
-    private int lastVisibleItemPosition;// 标记上次滑动位置
 
     @Override
     public void onScroll(AbsListView absListView, int firstVisibleItem, int i1, int i2) {
         if(absListView.getId()==R.id.lv_brand_detail){
             if (scrollFlag) {
-
                 if(firstVisibleItem==1){
-                    setColorChange(tv_detail);
+                    setColorChange(1,tv_assess);
                 }else if(firstVisibleItem==2){
-                    setColorChange(tv_fee);
+                    setColorChange(2,tv_fee);
                 }else if(firstVisibleItem==3){
-                    setColorChange(tv_assess);
+                    setColorChange(3,tv_detail);
                 }else if(firstVisibleItem==4){
-                    setColorChange(tv_recommend);
+                    setColorChange(4,tv_recommend);
                 }
-                if (firstVisibleItem > lastVisibleItemPosition) {//上滑
-
-                }
-                if (firstVisibleItem < lastVisibleItemPosition) {//下滑
-
-                }
-                if (firstVisibleItem == lastVisibleItemPosition) {
-                    return;
-                }
-                lastVisibleItemPosition = firstVisibleItem;
             }
         }
     }

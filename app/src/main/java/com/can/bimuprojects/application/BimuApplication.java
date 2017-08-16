@@ -8,6 +8,7 @@ import android.preference.PreferenceManager;
 import android.support.multidex.MultiDexApplication;
 import android.widget.Toast;
 
+import com.can.bimuprojects.utils.GlideUtil;
 import com.umeng.analytics.MobclickAgent;
 import com.umeng.message.IUmengRegisterCallback;
 import com.umeng.message.PushAgent;
@@ -43,7 +44,7 @@ public class BimuApplication extends MultiDexApplication {
         oList = new ArrayList<>();
         //集合自定义事件测试
         MobclickAgent.setDebugMode( true );
-
+        GlideUtil.clearImage(context);
 
         //配置微信
         PlatformConfig.setWeixin("wx83d33f0622eed5e7", "a653b801d4ffc5338d1e291ca36318b9");

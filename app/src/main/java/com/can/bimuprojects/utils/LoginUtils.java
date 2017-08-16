@@ -24,16 +24,15 @@ public class LoginUtils {
     }
 
     /**
-     * 判断是否已经登录
-     *
-     * @return
+     * 判断是否为游客登录
      */
     public static boolean getLoginStatus() {
         return PrefUtils.getDefaultPref().getBoolean(LOGIN_STATUS, false);
     }
 
     /**
-     * 保存登录的状态
+     * true:表示游客登录
+     * false：表示手机号登录
      */
     public static void setLoginStatus(boolean status) {
         if (status == false) {
@@ -68,17 +67,12 @@ public class LoginUtils {
      */
     public static void exitLogin(){
         LoginUtils.setLoginStatus(true);
-        if(PrefUtils.get("uid","").equals(""))
-            AppUtils.setSNWithoutLogin(BimuApplication.getContext());
-        else
-            LoginUtils.setLoginUid(PrefUtils.get("uid",""));
+        AppUtils.setSNWithoutLogin(BimuApplication.getContext());
         LoginUtils.setUserName("");
     }
 
     /**
      * 登录功能
-     *
-     * @return
      */
     public static void startLogin(LoginRequest request, final LoginListener listener) {
         HttpUtils.postWithoutUid(MethodConstant.LOGIN, request, new ResponseHook() {

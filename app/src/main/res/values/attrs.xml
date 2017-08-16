@@ -10,5 +10,8 @@
     </attr>
 
 
+    <declare-styleable name="DragScaleImageView">
+        <attr name="scale_image" format="reference|color" />
+    </declare-styleable>
 
 </resources>

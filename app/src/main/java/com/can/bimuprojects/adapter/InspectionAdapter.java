@@ -16,6 +16,7 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.util.Util;
 import com.can.bimuprojects.Module.Response.HomePagerResponse;
 import com.can.bimuprojects.R;
+import com.can.bimuprojects.activity.BrandActivity;
 import com.can.bimuprojects.utils.GlideRoundTransform;
 import com.can.bimuprojects.utils.UiUtils;
 import com.can.bimuprojects.view.gallery.ImagePagerActivity;
@@ -151,22 +152,35 @@ public class InspectionAdapter extends BaseAdapter {
                     vh.ll_content.setVisibility(View.VISIBLE);
                     vh.tv_content2.setVisibility(View.GONE);
                     if(Util.isOnMainThread()&&list.get(i).getArticle_logo()!=null&&list.get(i).getArticle_logo().size()>0)
-                        Glide.with(context).load(list.get(i).getArticle_logo().get(0)).into(vh.iv_img);
+                        Glide.with(context).load(list.get(i).getArticle_logo().get(0)).placeholder(R.drawable.loading).dontAnimate().into(vh.iv_img);
                 }
                 vh.ll.removeAllViews();
-                if(list.get(i).getOrder()!=null)
-                for(int j=0;j<list.get(i).getOrder().size();j++){
-                    ImageView imageView = new ImageView(context);
-                    DisplayMetrics metrics = new DisplayMetrics();
-                    ((Activity)context).getWindowManager().getDefaultDisplay().getMetrics(metrics);
-                    LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(UiUtils.dip2px(28),UiUtils.dip2px(28));
-                    params.setMargins(UiUtils.dip2px(4),0,UiUtils.dip2px(4),0);
-                    imageView.setLayoutParams(params);
-                    if(Util.isOnMainThread())
-                        Glide.with(context).load(list.get(i).getOrder().get(j).toString()).transform(new GlideRoundTransform(context)).into(imageView); //图片资源
-                    vh.ll.addView(imageView);
-                }
-                if(list.get(i).getOrder()==null||list.get(i).getOrder().size()==0){
+                List<HomePagerResponse.InspectionlogBean.OrderBean> order = list.get(i).getOrder();
+                if(order!=null)
+                    for(int j=0;j<order.size();j++){
+                        final HomePagerResponse.InspectionlogBean.OrderBean bean = order.get(j);
+
+                        ImageView imageView = new ImageView(context);
+                        DisplayMetrics metrics = new DisplayMetrics();
+                        ((Activity)context).getWindowManager().getDefaultDisplay().getMetrics(metrics);
+                        LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(UiUtils.dip2px(28),UiUtils.dip2px(28));
+                        params.setMargins(UiUtils.dip2px(4),0,UiUtils.dip2px(4),0);
+                        imageView.setLayoutParams(params);
+                        if(Util.isOnMainThread()&&bean.getArtimg()!=null)
+                            Glide.with(context).load(bean.getArtimg()).transform(new GlideRoundTransform(context)).into(imageView); //图片资源
+                        imageView.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View view) {
+                                if(bean.getBid()!=null&&!bean.getBid().equals("")){
+                                    Intent intent = new Intent(context, BrandActivity.class);
+                                    intent.putExtra("index",bean.getBid());
+                                    context.startActivity(intent);
+                                }
+                            }
+                        });
+                        vh.ll.addView(imageView);
+                    }
+                if(order==null||order.size()==0){
                     vh.tv_reducible_brands.setVisibility(View.GONE);
                 }else{
                     vh.tv_reducible_brands.setVisibility(View.VISIBLE);
@@ -185,22 +199,35 @@ public class InspectionAdapter extends BaseAdapter {
                     vh2.ll_content.setVisibility(View.VISIBLE);
                     vh2.tv_content2.setVisibility(View.GONE);
                     if(Util.isOnMainThread()&&list.get(i).getArticle_logo()!=null&&list.get(i).getArticle_logo().size()>0)
-                        Glide.with(context).load(list.get(i).getArticle_logo().get(0)).into(vh2.iv_img);
+                        Glide.with(context).load(list.get(i).getArticle_logo().get(0)).placeholder(R.drawable.loading).dontAnimate().into(vh2.iv_img);
                 }
                 vh2.ll.removeAllViews();
-                if(list.get(i).getOrder()!=null&&list.get(i).getOrder().size()>0)
-                for(int j=0;j<list.get(i).getOrder().size();j++){
-                    ImageView imageView = new ImageView(context);
-                    DisplayMetrics metrics = new DisplayMetrics();
-                    ((Activity)context).getWindowManager().getDefaultDisplay().getMetrics(metrics);
-                    LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(UiUtils.dip2px(28),UiUtils.dip2px(28));
-                    params.setMargins(UiUtils.dip2px(4),0,UiUtils.dip2px(4),0);
-                    imageView.setLayoutParams(params);
-                    if(Util.isOnMainThread())
-                        Glide.with(context).load(list.get(i).getOrder().get(j).toString()).transform(new GlideRoundTransform(context)).into(imageView); //图片资源
-                    vh2.ll.addView(imageView);
-                }
-                if(list.get(i).getOrder()==null||list.get(i).getOrder().size()==0){
+                List<HomePagerResponse.InspectionlogBean.OrderBean> order2 = list.get(i).getOrder();
+                if(order2!=null)
+                    for(int j=0;j<order2.size();j++){
+                        final HomePagerResponse.InspectionlogBean.OrderBean bean = order2.get(j);
+
+                        ImageView imageView = new ImageView(context);
+                        DisplayMetrics metrics = new DisplayMetrics();
+                        ((Activity)context).getWindowManager().getDefaultDisplay().getMetrics(metrics);
+                        LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(UiUtils.dip2px(28),UiUtils.dip2px(28));
+                        params.setMargins(UiUtils.dip2px(4),0,UiUtils.dip2px(4),0);
+                        imageView.setLayoutParams(params);
+                        if(Util.isOnMainThread()&&bean.getArtimg()!=null)
+                            Glide.with(context).load(bean.getArtimg()).transform(new GlideRoundTransform(context)).into(imageView); //图片资源
+                        imageView.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View view) {
+                                if(bean.getBid()!=null&&!bean.getBid().equals("")){
+                                    Intent intent = new Intent(context, BrandActivity.class);
+                                    intent.putExtra("index",bean.getBid());
+                                    context.startActivity(intent);
+                                }
+                            }
+                        });
+                        vh2.ll.addView(imageView);
+                    }
+                if(order2==null||order2.size()==0){
                     vh2.tv_reducible_brands.setVisibility(View.GONE);
                 }else{
                     vh2.tv_reducible_brands.setVisibility(View.VISIBLE);
@@ -215,20 +242,20 @@ public class InspectionAdapter extends BaseAdapter {
                     vh3.tv_content.setText(list.get(i).getArticle_html());
                 if(logo_list!=null)
                     if(logo_list.size()>=3&&(Util.isOnMainThread())){
-                        Glide.with(context).load(logo_list.get(0)).dontAnimate().into(vh3.iv1);
-                        Glide.with(context).load(logo_list.get(1)).dontAnimate().into(vh3.iv2);
-                        Glide.with(context).load(logo_list.get(2)).dontAnimate().into(vh3.iv3);
+                        Glide.with(context).load(logo_list.get(0)).placeholder(R.drawable.loading).dontAnimate().into(vh3.iv1);
+                        Glide.with(context).load(logo_list.get(1)).placeholder(R.drawable.loading).dontAnimate().into(vh3.iv2);
+                        Glide.with(context).load(logo_list.get(2)).placeholder(R.drawable.loading).dontAnimate().into(vh3.iv3);
                         vh3.iv1.setVisibility(View.VISIBLE);
                         vh3.iv2.setVisibility(View.VISIBLE);
                         vh3.iv3.setVisibility(View.VISIBLE);
                     }else if(logo_list.size()==2&&(Util.isOnMainThread())){
-                        Glide.with(context).load(logo_list.get(0)).dontAnimate().into(vh3.iv1);
-                        Glide.with(context).load(logo_list.get(1)).dontAnimate().into(vh3.iv2);
+                        Glide.with(context).load(logo_list.get(0)).placeholder(R.drawable.loading).dontAnimate().into(vh3.iv1);
+                        Glide.with(context).load(logo_list.get(1)).placeholder(R.drawable.loading).dontAnimate().into(vh3.iv2);
                         vh3.iv1.setVisibility(View.VISIBLE);
                         vh3.iv2.setVisibility(View.VISIBLE);
                         vh3.iv3.setVisibility(View.INVISIBLE);
                     }else if(logo_list.size()==1&&(Util.isOnMainThread())){
-                        Glide.with(context).load(logo_list.get(0)).dontAnimate().into(vh3.iv1);
+                        Glide.with(context).load(logo_list.get(0)).placeholder(R.drawable.loading).dontAnimate().into(vh3.iv1);
                         vh3.iv1.setVisibility(View.VISIBLE);
                         vh3.iv2.setVisibility(View.INVISIBLE);
                         vh3.iv3.setVisibility(View.INVISIBLE);
@@ -269,19 +296,32 @@ public class InspectionAdapter extends BaseAdapter {
                 });
 
                 vh3.ll.removeAllViews();
-                if(list.get(i).getOrder()!=null&&list.get(i).getOrder().size()>0)
-                    for(int j=0;j<list.get(i).getOrder().size();j++){
+                List<HomePagerResponse.InspectionlogBean.OrderBean> order3 = list.get(i).getOrder();
+                if(order3!=null)
+                    for(int j=0;j<order3.size();j++){
+                        final HomePagerResponse.InspectionlogBean.OrderBean bean = order3.get(j);
+
                         ImageView imageView = new ImageView(context);
                         DisplayMetrics metrics = new DisplayMetrics();
                         ((Activity)context).getWindowManager().getDefaultDisplay().getMetrics(metrics);
                         LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(UiUtils.dip2px(28),UiUtils.dip2px(28));
                         params.setMargins(UiUtils.dip2px(4),0,UiUtils.dip2px(4),0);
                         imageView.setLayoutParams(params);
-                        if(Util.isOnMainThread())
-                            Glide.with(context).load(list.get(i).getOrder().get(j).toString()).transform(new GlideRoundTransform(context)).into(imageView); //图片资源
+                        if(Util.isOnMainThread()&&bean.getArtimg()!=null)
+                            Glide.with(context).load(bean.getArtimg()).transform(new GlideRoundTransform(context)).into(imageView); //图片资源
+                        imageView.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View view) {
+                                if(bean.getBid()!=null&&!bean.getBid().equals("")){
+                                    Intent intent = new Intent(context, BrandActivity.class);
+                                    intent.putExtra("index",bean.getBid());
+                                    context.startActivity(intent);
+                                }
+                            }
+                        });
                         vh3.ll.addView(imageView);
                     }
-                if(list.get(i).getOrder()==null||list.get(i).getOrder().size()==0){
+                if(order3==null||order3.size()==0){
                     vh3.tv_reducible_brands.setVisibility(View.GONE);
                 }else{
                     vh3.tv_reducible_brands.setVisibility(View.VISIBLE);

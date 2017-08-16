@@ -15,6 +15,7 @@ import android.widget.TextView;
 
 import com.can.bimuprojects.R;
 import com.can.bimuprojects.utils.AppUtils;
+import com.can.bimuprojects.utils.GlideUtil;
 
 /**
  * Created by can on 2017/4/12.
@@ -26,6 +27,7 @@ public class SearchView extends LinearLayout implements View.OnClickListener {
     private ImageView ivDelete;
     private Context mContext;
     private SearchViewListener mListener;
+    private ImageView iv_search;
     public void setSearchViewListener(SearchViewListener listener) {
         mListener = listener;
     }
@@ -38,6 +40,8 @@ public class SearchView extends LinearLayout implements View.OnClickListener {
     }
 
     private void initViews() {
+        iv_search = (ImageView) findViewById(R.id.iv_search_layout);
+        GlideUtil.loadDrawableImg(mContext,R.drawable.img_search_home,iv_search);
         etInput = (EditText) findViewById(R.id.et_search);
         ivDelete = (ImageView) findViewById(R.id.search_iv_delete);
         ivDelete.setOnClickListener(this);

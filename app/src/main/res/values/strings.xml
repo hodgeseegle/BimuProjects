@@ -5,6 +5,15 @@
     <string name="bargin">心愿单</string>
     <string name="mine">我的</string>
     <string name="discovery">行业</string>
+    <string name="project">项目库</string>
+
+    <!--版本号和版本名称-->
+    <integer name="version_code">3</integer>
+    <string name="version_name">1.2</string>
+    <string name="version">v-3.8</string>
+
+    <!--登录比目app-->
+    <string name="login_bimu">登录创业项目大全</string>
 
     <string name="register">手机快速注册</string>
     <string name="registe">注册</string>
@@ -88,8 +97,7 @@
 
     <!--城市选择-->
     <string name="city_select">城市选择</string>
-    <string name="prompt">提示</string>
-    
+
     <!--比目推荐-->
     <string name="bimu_recommend">比目推荐</string>
     <string name="no_brand">没有符合您条件的品牌，请重新输入条件</string>
@@ -130,13 +138,14 @@
     <string name="recommend">推荐</string>
     <string name="join_process">加盟流程</string>
     <string name="get_openshop_plan">获取开店方案</string>
-    <string name="fee_get_open_shop">确定下令接驾</string>
-    <string name="brand_connect_you">品牌官方将及时回复你！</string>
-    <string name="this_brand_you">发现更多合适品牌！</string>
-    <string name="can_select_zixun">同步获取最新报价</string>
+    <string name="fee_get_open_shop">还差一步</string>
+    <string name="brand_connect_you">点击提交确认咨询，品牌官方将及时回复</string>
+    <string name="this_brand_you">这些品牌也适合你</string>
+    <string name="can_select_zixun">选择同时咨询，开店成功率更高</string>
     <string name="had_notified_brand">已通知品牌接驾</string>
     <string name="notified_brand_content">已将您的咨询需求传达给品牌方，届时品牌方将安排专员为您解答疑问和指定开店计划，请保持电话畅通，谢谢。</string>
     <string name="over_this_you_can">在此之前，您可以</string>
+    <string name="over99">99%的人在将此品牌分享给朋友后\n得到了中肯的建议</string>
     <string name="look_love_list">查看心愿单</string>
     <string name="look_brand">查看品牌页</string>
     <string name="xiansheng">先生</string>
@@ -150,7 +159,7 @@
     
     <!--文章详情-->
     <string name="related_brand">相关品牌</string>
-    <string name="publish">发表</string>
+    <string name="publish">发帖</string>
     <string name="collection">收藏</string>
     <string name="comment">评论</string>
     <string name="share">分享</string>
@@ -213,22 +222,43 @@
     <string name="my_discount">我的约惠</string>
 
     <!--分享-->
+    <!--分享-->
     <string name="share_exercise_title">我发现一个靠谱的项目,不要加盟费,快给点意见!</string>
     <string name="share_article_title">一般人我不告诉他真实开店分享,我收藏了~</string>
+    <string name="share_brand_content">我找到一个加盟品牌，特别棒，快给点意见！</string>
 
     <!--应用推荐-->
     <string name="app_recommend">应用推荐</string>
     <string name="want_down">我要下载</string>
 
-    <!--版本号和版本名称-->
-    <integer name="version_code">1</integer>
-    <string name="version_name">1.0</string>
-    <string name="version">v-3.5</string>
-
-    <!--登录比目app-->
-    <string name="login_bimu">登录创业项目大全</string>
     <!--退出当前账号-->
     <string name="exit_current_uid">退出当前账号</string>
     <!--手机账号登录-->
     <string name="login_phone">手机账号登录</string>
+
+    <!--android-->
+    <string name="android" >android</string>
+    <string name="account_login">账号密码登录</string>
+    <!--微信-->
+    <string name="wx_friends">微信好友</string>
+    <string name="wx_circle">朋友圈</string>
+    <string name="look_more">查看更多</string>
+
+    <string name="no_content">暂无内容</string>
+    <string name="read">阅读</string>
+
+    <!--开店方案 弹窗 提示内容-->
+    <string name="pormat_content">货比三家，开店成功率更高哦！大全已为您推荐了三个同类型品牌，您可查看并同时获取开店方案。</string>
+    <string name="prompt">温馨提示</string>
+    <!--我知道-->
+    <string name="I_know">我知道了</string>
+    <string name="look_detail">查看详情</string>
+    
+    <!--首页头部菜单-->
+    <string name="all_brand">全部品牌</string>
+    <string name="trade_raiders">行业攻略</string>
+    <string name="time_ranking">实时排行</string>
+    <string name="choice_recommend">精选推荐</string>
+    <string name="time_hot_ranking">实时热度排行</string>
+
 </resources>

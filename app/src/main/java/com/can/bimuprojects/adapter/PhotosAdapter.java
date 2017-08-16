@@ -27,12 +27,16 @@ public class PhotosAdapter extends BaseAdapter {
     private Context context;
     private String bid;
     private boolean consult;
+    private String str_logo;
+    private String name;
 
-    public PhotosAdapter(Context context,String bid,boolean consult ,ArrayList<String> list){
+    public PhotosAdapter(Context context,String bid,boolean consult ,ArrayList<String> list,String str_logo,String name){
         this.list = list;
         this.context = context;
         this.bid = bid;
         this.consult = consult;
+        this.str_logo = str_logo;
+        this.name = name;
     }
 
     @Override
@@ -63,7 +67,7 @@ public class PhotosAdapter extends BaseAdapter {
         }
         String string = list.get(i);
         if(string!=null&& Util.isOnMainThread()){
-            Glide.with(context).load(string).into(vh.iv);
+            Glide.with(context).load(string).placeholder(R.drawable.loading).error(R.drawable.loading).dontAnimate().into(vh.iv);
             vh.iv.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
@@ -73,6 +77,8 @@ public class PhotosAdapter extends BaseAdapter {
                     intent.putExtra("brand",true);
                     intent.putExtra("bid",bid);
                     intent.putExtra("consult",consult);
+                    intent.putExtra("logo",str_logo);
+                    intent.putExtra("name",name);
                     context.startActivity(intent);
                     ((Activity)context).overridePendingTransition(0, android.R.anim.fade_out);
                 }

@@ -23,6 +23,7 @@
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
             android:layout_marginLeft="20dp"
+            android:textSize="@dimen/text_size_14"
             android:textColor="@color/color_big_text"
             android:text="修改头像"/>
 
@@ -54,6 +55,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
+            android:textSize="@dimen/text_size_14"
             android:layout_marginLeft="20dp"
             android:textColor="@color/color_big_text"
             android:text="修改用户名"/>
@@ -81,6 +83,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
+            android:textSize="@dimen/text_size_14"
             android:layout_marginLeft="20dp"
             android:textColor="@color/color_big_text"
             android:text="修改个性签名"/>
@@ -110,6 +113,7 @@
             android:layout_centerVertical="true"
             android:textColor="@color/color_big_text"
             android:layout_marginLeft="20dp"
+            android:textSize="@dimen/text_size_14"
             android:text="修改密码"/>
 
         <ImageView
@@ -134,6 +138,7 @@
         android:layout_width="match_parent"
         android:layout_height="45dp"
         android:gravity="center"
+        android:textSize="@dimen/text_size_14"
         android:textColor="@color/color_big_text"
         android:text="清除缓存"/>
 
@@ -160,6 +165,7 @@
         android:layout_width="match_parent"
         android:layout_height="45dp"
         android:gravity="center"
+        android:textSize="@dimen/text_size_14"
         android:visibility="gone"
         android:textColor="@color/color_big_text"
         android:text="检查更新"/>
@@ -170,13 +176,15 @@
         android:background="@color/color_gray"
         >
 
-    <Button
+    <TextView
         android:id="@+id/setting_btn_exit"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_margin="40dp"
-        android:background="@drawable/shape_find_project_btn"
-        android:textColor="@color/colorWhite"/>
+        android:layout_height="45dp"
+        android:gravity="center"
+        android:textSize="@dimen/text_size_14"
+        android:text="@string/exit_current_uid"
+        android:background="@color/color_white"
+        android:textColor="@color/color_app_bg"/>
 
     </LinearLayout>
 

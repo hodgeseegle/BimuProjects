@@ -60,7 +60,7 @@ public class SearchResultAdapter extends BaseAdapter {
         }
         final SearchResultResponse.DataBean bean = getItem(position);
         if(Util.isOnMainThread())
-        Glide.with(context).load(bean.getBrand_background()).dontAnimate().into(viewHolder.iv);
+        Glide.with(context).load(bean.getBrand_background()).dontAnimate().placeholder(R.drawable.loading).into(viewHolder.iv);
         if(Util.isOnMainThread())
         Glide.with(context).load(bean.getBrand_logo()).transform(new GlideRoundTransform(context)).into(viewHolder.iv2);
         String string = bean.getBrand_name()+" · 投资 "+bean.getInvest_amount()+" 万 · 总部"+bean.getBrand_location()+" · 适合面积 "+bean.getShop_area();

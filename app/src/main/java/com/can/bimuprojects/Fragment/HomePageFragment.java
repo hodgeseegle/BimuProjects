@@ -1,6 +1,5 @@
 package com.can.bimuprojects.Fragment;
 
-import android.app.Activity;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
@@ -12,8 +11,6 @@ import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v7.widget.LinearLayoutCompat;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.util.DisplayMetrics;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -24,6 +21,7 @@ import android.view.ViewTreeObserver;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.AdapterView;
+import android.widget.HorizontalScrollView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
@@ -33,8 +31,16 @@ import android.widget.TextView;
 import com.android.volley.VolleyError;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.util.Util;
-import com.can.bimuprojects.adapter.HomeBrandAdapter;
+import com.can.bimuprojects.activity.ChoiceRecommendActivity;
+import com.can.bimuprojects.activity.MainActivity;
+import com.can.bimuprojects.activity.RankingActivity;
+import com.can.bimuprojects.adapter.HomeHotBrandAdapter;
+import com.can.bimuprojects.adapter.InspectionAdapter;
+import com.can.bimuprojects.utils.GlideUtil;
 import com.can.bimuprojects.utils.PrefUtils;
+import com.can.bimuprojects.utils.ViewUtil;
+import com.can.bimuprojects.view.BrandGridView;
+import com.can.bimuprojects.view.NoScrollListView;
 import com.umeng.analytics.MobclickAgent;
 import com.can.bimuprojects.Constant.MethodConstant;
 import com.can.bimuprojects.Module.Request.FindProjectTotalRequest;
@@ -51,7 +57,6 @@ import com.can.bimuprojects.activity.FindProjectResultActivity;
 import com.can.bimuprojects.activity.SearchActivity;
 import com.can.bimuprojects.activity.SpecialActivity;
 import com.can.bimuprojects.activity.SpecialArticleActivity;
-import com.can.bimuprojects.adapter.HomeInterestAdapter;
 import com.can.bimuprojects.adapter.HomeSpecialAdapter;
 import com.can.bimuprojects.adapter.ViewPagerAdapter_Home;
 import com.can.bimuprojects.application.BimuApplication;
@@ -73,13 +78,13 @@ import java.util.List;
 import java.util.Map;
 import java.util.regex.Pattern;
 
-
 /**
  * Created by can on 2017/4/8.
  * 首页fragment
  */
 
-public class HomePageFragment extends Fragment implements View.OnClickListener, SeekBar.OnSeekBarChangeListener, RefreshListView.OnRefreshListener, ViewPager.OnPageChangeListener,  HomeInterestAdapter.ItemClickListener, AdapterView.OnItemClickListener, HomeSpecialAdapter.onItemClickListener, View.OnTouchListener,  ViewTreeObserver.OnScrollChangedListener {
+public class HomePageFragment extends Fragment implements View.OnClickListener, SeekBar.OnSeekBarChangeListener, RefreshListView.OnRefreshListener, ViewPager.OnPageChangeListener,  AdapterView.OnItemClickListener, View.OnTouchListener,  ViewTreeObserver.OnScrollChangedListener {
+
 
     public static final int TYPE_REFRESH = 0x111; //刷新
     public static final int TYPE_LOADING = 0x222; //加载
@@ -105,19 +110,21 @@ public class HomePageFragment extends Fragment implements View.OnClickListener, 
     private SeekBarRelativeLayout sb_single;//单向滑动
     private TextView tv_no_shop;//显示：无铺面
 
-    private TextView btn_find_project;//按钮：找项目
+    private ImageView iv_find_project;//按钮：找项目
+    private TextView tv_find_project ; //找项目的显示数量
 
     private TextView tv_lookall_special ; //查看全部：专题
-    private RecyclerView lv_special ; //专题的横向listview
+    private BrandGridView lv_special ; //专题的横向listview
     private List<HomePagerResponse.ListBean> list_special ; //专题的数据集合
     private HomeSpecialAdapter adapter_special ; //专题的适配器
 
-    private RecyclerView lv_interest ; //猜你感兴趣的listview
-    private List<HomePagerResponse.BrandlistBean> list_interest ; //猜你感兴趣的数据集合
-    private HomeInterestAdapter adapter_interest; //猜你感兴趣的数据集合
+    private NoScrollListView lv_interest ; //猜你感兴趣的listview->热门品牌
+    private List<HomePagerResponse.BrandlistBean.DataBean> list_interest ; //猜你感兴趣的数据集合
+    private List<HomePagerResponse.BrandlistBean> list_guess ; //猜你感兴趣总数据
+    private HomeHotBrandAdapter adapter_interest; //猜你感兴趣的数据集合
 
     private List<HomePagerResponse.InspectionlogBean> list_inspection ; //精选考察攻略的数据集合
-    private HomeBrandAdapter adapter_inspecition; //精选考察攻略的适配器
+    private InspectionAdapter adapter_inspecition; //精选考察攻略的适配器
 
     private int page =0; //精选考察攻略的请求页数
     private boolean hasMore =false ; //是否有更多的数据
@@ -125,6 +132,7 @@ public class HomePageFragment extends Fragment implements View.OnClickListener, 
     private TextView tv_select_raiders ; //精选考察攻略隐藏控件
     private TextView tv_choose_area_sure ; //确认选择面积
 
+    private ImageView iv_search ; //搜索图标
 
     private Handler handler = new Handler(new Handler.Callback() { //主线程
         @Override
@@ -217,7 +225,6 @@ public class HomePageFragment extends Fragment implements View.OnClickListener, 
         }
     }
 
-
     /**
      * 初始化控件
      */
@@ -225,6 +232,8 @@ public class HomePageFragment extends Fragment implements View.OnClickListener, 
         rlv = (RefreshListView) view.findViewById(R.id.rlv_home_pager);
         tv_select_raiders = (TextView) view.findViewById(R.id.tv_home_select_raiders);
         ll_search = (LinearLayout) view.findViewById(R.id.ll_home_head_search_click);
+        iv_search = (ImageView) view.findViewById(R.id.iv_search);
+        GlideUtil.loadDrawableImg(getContext(),R.drawable.img_search_home,iv_search);
     }
 
     /**
@@ -233,19 +242,15 @@ public class HomePageFragment extends Fragment implements View.OnClickListener, 
     private void initData() {
         list_head = new ArrayList<>();
         list_inspection = new ArrayList<>();
-        adapter_inspecition = new HomeBrandAdapter(getContext(),list_interest);
+        adapter_inspecition = new InspectionAdapter(getContext(),list_inspection);
         rlv.setAdapter(adapter_inspecition);
-
-        View view_foot =  LayoutInflater.from(getContext()).inflate(R.layout.item_tv_foot,null);
-        view_foot.findViewById(R.id.tv_item_tv_foot).setOnClickListener(this);
-        rlv.addFooterView(view_foot);
-
         sb_single.initSeekBar();
         handler.post(switchTask); //打开自动轮播
         requestITdata(page,false);
     }
 
-    private RelativeLayout rl_home ; //找项目
+    private LinearLayout ll_item1,ll_item2,ll_item3,ll_item4; //全部品牌，行业攻略，实时排行，精选推荐
+    private ImageView iv_item1,iv_item2,iv_item3,iv_item4 ; //同上
     /**
      * 初始化头部view
      */
@@ -253,9 +258,21 @@ public class HomePageFragment extends Fragment implements View.OnClickListener, 
         View view = LayoutInflater.from(getContext()).inflate(R.layout.headview_homepager, null);
         rlv.addHeaderView(view);
 
+        ll_item1 = (LinearLayout) view.findViewById(R.id.ll_item1);
+        ll_item2 = (LinearLayout) view.findViewById(R.id.ll_item2);
+        ll_item3 = (LinearLayout) view.findViewById(R.id.ll_item3);
+        ll_item4 = (LinearLayout) view.findViewById(R.id.ll_item4);
+        iv_item1 = (ImageView) view.findViewById(R.id.iv_item1);
+        iv_item2 = (ImageView) view.findViewById(R.id.iv_item2);
+        iv_item3 = (ImageView) view.findViewById(R.id.iv_item3);
+        iv_item4 = (ImageView) view.findViewById(R.id.iv_item4);
+        GlideUtil.loadDrawableImg(getContext(),R.drawable.img_all_brand,iv_item1);
+        GlideUtil.loadDrawableImg(getContext(),R.drawable.img_trade,iv_item2);
+        GlideUtil.loadDrawableImg(getContext(),R.drawable.img_time_ranking,iv_item3);
+        GlideUtil.loadDrawableImg(getContext(),R.drawable.img_hot_recommend,iv_item4);
+
         ll_home_container = (LinearLayout)view.findViewById(R.id.ll_home_container);
         ll_3_tag = (LinearLayout) view.findViewById(R.id.ll_home_head_three);
-        rl_home = (RelativeLayout) view.findViewById(R.id.rl_home);
         vp_home = (ViewPager) view.findViewById(R.id.vp_home_pager);
         rl_money = (RelativeLayout) view.findViewById(R.id.rl_home_find_project_money);
         rl_area = (RelativeLayout) view.findViewById(R.id.rl_find_project_area);
@@ -267,7 +284,8 @@ public class HomePageFragment extends Fragment implements View.OnClickListener, 
         tv_choose_area_sure = (TextView) view.findViewById(R.id.tv_home_find_project_sure_shop);
         tv_no_shop = (TextView) view.findViewById(R.id.tv_home_find_project_no_shop);
         sb_single = (SeekBarRelativeLayout) view.findViewById(R.id.sb_single);
-        btn_find_project = (TextView) view.findViewById(R.id.btn_home_find_project);
+        iv_find_project = (ImageView) view.findViewById(R.id.iv_home_find_project);
+        tv_find_project = (TextView) view.findViewById(R.id.tv_home_find_project);
         ImageView iv_home_money = (ImageView) view.findViewById(R.id.iv_home_money);
         ImageView iv_home_area = (ImageView) view.findViewById(R.id.iv_home_area);
         ImageView iv_home_interest = (ImageView) view.findViewById(R.id.iv_home_interest);
@@ -275,49 +293,49 @@ public class HomePageFragment extends Fragment implements View.OnClickListener, 
             Glide.with(getContext()).load(R.drawable.money).into(iv_home_money);
             Glide.with(getContext()).load(R.drawable.shop).into(iv_home_area);
             Glide.with(getContext()).load(R.drawable.interest).into(iv_home_interest);
+            Glide.with(getContext()).load(R.drawable.img_home_btn_bg).into(iv_find_project);
         }
-
         //头部大图
         DisplayMetrics metrics = new DisplayMetrics();
         getActivity().getWindowManager().getDefaultDisplay().getMetrics(metrics);
-        RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(metrics.widthPixels, (int) (metrics.widthPixels*0.487));
+        RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(metrics.widthPixels, (int) (metrics.widthPixels*1.067));
         vp_home.setLayoutParams(params);
-
-        //头部下控件
-        RelativeLayout.LayoutParams params1 = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-        params1.setMargins(0, (int) (metrics.widthPixels*0.28),0,0);
-        rl_home.setLayoutParams(params1);
-
         initSpecialView();
     }
 
+    /**
+     * 添加footview
+     */
+    private void addFootView(){
+        View view_foot =  LayoutInflater.from(getContext()).inflate(R.layout.item_tv_foot,null);
+        view_foot.findViewById(R.id.tv_item_tv_foot).setOnClickListener(this);
+        rlv.addFooterView(view_foot);
+    }
+
     private LinearLayout ll_head_specail,ll_head_interest;//专题和猜你感兴趣
+    private LinearLayout ll_special_tags ; //猜你感兴趣标签
+    private HorizontalScrollView hl_special;
     /**
      * 初始化专题和猜你感兴趣view
      */
     private void initSpecialView() {
         list_special = new ArrayList<>();
         list_interest = new ArrayList<>();
+        list_guess = new ArrayList<>();
         View view = LayoutInflater.from(getContext()).inflate(R.layout.headview_special,null);
+        hl_special = (HorizontalScrollView) view.findViewById(R.id.hl_special);
+        ll_special_tags = (LinearLayout) view.findViewById(R.id.ll_guess_interest);
         ll_head_interest = (LinearLayout) view.findViewById(R.id.ll_home_head_interest);
         ll_head_specail = (LinearLayout) view.findViewById(R.id.ll_home_head_special);
         tv_lookall_special = (TextView) view.findViewById(R.id.tv_look_all_special);
-
-        LinearLayoutManager manager = new LinearLayoutManager(getContext());
-        manager.setOrientation(LinearLayoutManager.HORIZONTAL);
-        lv_special = (RecyclerView) view.findViewById(R.id.lv_home_special);
-        lv_special.setLayoutManager(manager);
+        lv_special = (BrandGridView) view.findViewById(R.id.lv_home_special);
         adapter_special = new HomeSpecialAdapter(getContext(),list_special);
-
         lv_special.setAdapter(adapter_special);
-
-        LinearLayoutManager manager2 = new LinearLayoutManager(getContext());
-        manager2.setOrientation(LinearLayoutManager.HORIZONTAL);
-        lv_interest = (RecyclerView) view.findViewById(R.id.lv_home_guess_interest);
-        lv_interest.setLayoutManager(manager2);
-        adapter_interest = new HomeInterestAdapter(getContext(),list_interest);
+        lv_interest = (NoScrollListView) view.findViewById(R.id.lv_home_guess_interest);
+        adapter_interest = new HomeHotBrandAdapter(getContext(),list_interest);
         lv_interest.setAdapter(adapter_interest);
-
+        rlv.addHeaderView(view);
+        addFootView();
         initSelectRaidersView();
     }
 
@@ -327,7 +345,7 @@ public class HomePageFragment extends Fragment implements View.OnClickListener, 
      */
     private void initSelectRaidersView() {
         view_selectRaiders = LayoutInflater.from(getContext()).inflate(R.layout.headview_selectraiders,null);
-        rlv.addHeaderView(view_selectRaiders);
+       // rlv.addHeaderView(view_selectRaiders);
     }
 
     /**
@@ -340,17 +358,69 @@ public class HomePageFragment extends Fragment implements View.OnClickListener, 
         rl_find_project_choose_area.setOnClickListener(this);
         tv_no_shop.setOnClickListener(this);
         sb_single.setOnSeekBarChangeListener(this);
-        btn_find_project.setOnClickListener(this);
+        iv_find_project.setOnClickListener(this);
         rlv.setOnRefreshListener(this);
         vp_home.addOnPageChangeListener(this);
         tv_lookall_special.setOnClickListener(this);
         tv_choose_area_sure.setOnClickListener(this);
         rlv.getViewTreeObserver().addOnScrollChangedListener(this);
-        adapter_interest.setOnItemClickListener(this);
         rlv.setOnItemClickListener(this);
-        adapter_special.setOnItemClickListener(this);
         ll_search.setOnClickListener(this);
-        vp_home.setOnTouchListener(this);
+        lv_special.setOnItemClickListener(this);
+        lv_interest.setOnItemClickListener(this);
+        ll_item1.setOnClickListener(this);
+        ll_item2.setOnClickListener(this);
+        ll_item3.setOnClickListener(this);
+        ll_item4.setOnClickListener(this);
+
+        vp_home.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View view, MotionEvent motionEvent) {
+                switch (motionEvent.getAction()){
+                    case MotionEvent.ACTION_DOWN:
+                        x1 = motionEvent.getX();
+                        y1= motionEvent.getY();
+                        break;
+                    case MotionEvent.ACTION_MOVE:
+                        x2 = motionEvent.getX();
+                        y2 = motionEvent.getY();
+                        break;
+                    case  MotionEvent.ACTION_UP :
+                        x2 = motionEvent.getX();
+                        y2 = motionEvent.getY();
+                        if(Math.abs(x1-x2)<=10&&Math.abs(y1-y2)<=10){
+                            int item = vp_home.getCurrentItem();
+                            int position = item%list_head.size();
+                            int type = list_head.get(item%list_head.size()).getType();
+                            if(type==4){ //活动
+                                Intent intent = new Intent(getContext(),ExerciseActivity.class);
+                                intent.putExtra("id",list_head.get(position).getId());
+                                startActivity(intent);
+                            }else if(type==3){ //文章
+                                Intent intent = new Intent(getContext(),ArticleDetailActivity.class);
+                                intent.putExtra("id",list_head.get(position).getId());
+                                startActivity(intent);
+                            }else if(type==5){ //品牌
+                                Intent intent = new Intent(getContext(),BrandActivity.class);
+                                intent.putExtra("index",list_head.get(position).getId());
+                                startActivity(intent);
+                            }else if(type==100){ //网页链接
+                                Intent intent = new Intent();
+                                intent.setAction("android.intent.action.VIEW");
+                                String url = list_head.get(position).getId();
+                                Uri uri = Uri.parse(url);
+                                intent.setData(uri);
+                                Pattern pattern = Pattern
+                                        .compile("^([hH][tT]{2}[pP]://|[hH][tT]{2}[pP][sS]://)(([A-Za-z0-9-~]+).)+([A-Za-z0-9-~\\/])+$");
+                                if(pattern.matcher(url).matches())
+                                    startActivity(intent);
+                            }
+                        }
+                        break ;
+                }
+                return false;
+            }
+        });
     }
 
     @Override
@@ -400,10 +470,10 @@ public class HomePageFragment extends Fragment implements View.OnClickListener, 
                 rl_find_project_choose_area.setVisibility(View.GONE);
                 setTotalProject();
                 break;
-            case R.id.btn_home_find_project://点击：找项目
+            case R.id.iv_home_find_project://点击：找项目
                 MobclickAgent.onEvent(getContext(),"btn_home_find_project");
                 if(hasProject)
-                findProject();
+                    findProject();
                 break;
             case R.id.ll_home_head_search_click: //点击：搜索栏
                 MobclickAgent.onEvent(getContext(), "ll_home_head_search_click");
@@ -421,8 +491,24 @@ public class HomePageFragment extends Fragment implements View.OnClickListener, 
                 intent.putExtra("cid","");
                 intent.putExtra("area","");
                 intent.putExtra("interest","");
-                intent.putExtra("flag",true);
+                intent.putExtra("isFind",true);
                 startActivity(intent);
+                break;
+            case R.id.ll_item1: //全部品牌:跳转到项目
+                Intent intent_find = new Intent(getContext(), MainActivity.class);
+                intent_find.putExtra("find",true);
+                startActivity(intent_find);
+                break;
+            case R.id.ll_item2: //行业攻略
+                Intent intent_trade = new Intent(getContext(),ActivityInterest.class);
+                intent_trade.putExtra(ActivityInterest.TRADE,true);
+                startActivity(intent_trade);
+                break;
+            case R.id.ll_item3: //实时排行
+                startActivity(new Intent(getContext(), RankingActivity.class));
+                break;
+            case R.id.ll_item4: //精选推荐
+                startActivity(new Intent(getContext(), ChoiceRecommendActivity.class));
                 break;
         }
     }
@@ -439,6 +525,9 @@ public class HomePageFragment extends Fragment implements View.OnClickListener, 
             }
             if(amount.equals("不限")) {
                 amount = "0-1000";
+            }
+            if(amount.equals("100")){
+                amount = "100-10000";
             }
         }
         String area = tv_area.getText().toString();
@@ -459,12 +548,10 @@ public class HomePageFragment extends Fragment implements View.OnClickListener, 
                     String total = reponse.getTotal();
                     if(!total.equals("0")){
                         hasProject = true;
-                        btn_find_project.setText("发现"+total+"个好项目");
-                        btn_find_project.setBackgroundResource(R.drawable.shape_login);
+                        tv_find_project.setText("发现"+total+"个好项目");
                     }else{
                         hasProject = false;
-                        btn_find_project.setText("搜索");
-                        btn_find_project.setBackgroundResource(R.drawable.shape_find_project_btn_no);
+                        tv_find_project.setText("搜索");
                     }
                 }
             }
@@ -506,7 +593,6 @@ public class HomePageFragment extends Fragment implements View.OnClickListener, 
         return builder;
     }
 
-
     /**
      * 请求网络数据
      */
@@ -526,13 +612,14 @@ public class HomePageFragment extends Fragment implements View.OnClickListener, 
                         list_head.clear();
                         ll_home_container.removeAllViews();
                         ll_3_tag.removeAllViews();
+                        ll_special_tags.removeAllViews();
+                        hl_special.fullScroll(View.FOCUS_LEFT);
+                        list_guess.clear();
                     }
                     if(!loadMore){
-                        if(response.getSliding_img().size()!=0){ //添加头部view
+                        if(response.getSliding_img()!=null&&response.getSliding_img().size()!=0){ //添加头部view
                             list_head.addAll(response.getSliding_img());
                             ArrayList<ImageView> img_list = new ArrayList<>();
-                            DisplayMetrics metrics = new DisplayMetrics();
-                            ((Activity)getContext()).getWindowManager().getDefaultDisplay().getMetrics(metrics);
                             for (int i = 0; i < response.getSliding_img().size(); i++) {
                                 //添加圆点
                                 ImageView dot = new ImageView(context);
@@ -546,11 +633,10 @@ public class HomePageFragment extends Fragment implements View.OnClickListener, 
                                 ll_home_container.addView(dot);//将圆点添加到容器中
                                 //添加viewpager图片
                                 ImageView iv = new ImageView(getContext());
-                                iv.setScaleType(ImageView.ScaleType.FIT_XY);
-
-                                if(Util.isOnMainThread())
-                                Glide.with(getContext()).load(response.getSliding_img().get(i).getImg_url()).centerCrop().placeholder(R.drawable.loading).dontAnimate().into(iv);
-                                img_list.add(iv);
+                                if(Util.isOnMainThread()){
+                                    Glide.with(getContext()).load(response.getSliding_img().get(i).getImg_url()).centerCrop().dontAnimate().into(iv);
+                                    img_list.add(iv);
+                                }
                             }
                             vp_adapter = new ViewPagerAdapter_Home(getContext(), img_list);
                             vp_home.setAdapter(vp_adapter);
@@ -558,10 +644,10 @@ public class HomePageFragment extends Fragment implements View.OnClickListener, 
                                 vp_home.setCurrentItem(4998);
                                 for (int i = 0; i < response.getSliding_img().size(); i++) {
                                     ImageView iv = new ImageView(getContext());
-                                    iv.setScaleType(ImageView.ScaleType.FIT_XY);
-                                    if(Util.isOnMainThread())
-                                    Glide.with(getContext()).load(response.getSliding_img().get(i).getImg_url()).centerCrop().placeholder(R.drawable.loading).dontAnimate().into(iv);
-                                    img_list.add(iv);
+                                    if(Util.isOnMainThread()){
+                                        Glide.with(getContext()).load(response.getSliding_img().get(i).getImg_url()).centerCrop().dontAnimate().into(iv);
+                                        img_list.add(iv);
+                                    }
                                 }
                                 vp_adapter.notifyDataSetChanged();
                             }
@@ -572,25 +658,30 @@ public class HomePageFragment extends Fragment implements View.OnClickListener, 
 
                         if(response.getList()!=null&&response.getList().size()!=0){ //添加专题数据
                             list_special.addAll(response.getList());
-                            list_special.add(list_special.get(list_special.size()-1));
                             adapter_special.notifyDataSetChanged();
                             ll_head_specail.setVisibility(View.VISIBLE);
                         }
                         if(response.getBrandlist()!=null&&response.getBrandlist().size()!=0){ //设置猜你感兴趣数据
-                            list_interest.addAll(response.getBrandlist());
+                            list_interest.addAll(response.getBrandlist().get(0).getData());
+                            list_guess.addAll(response.getBrandlist());
                             adapter_interest.notifyDataSetChanged();
                             ll_head_interest.setVisibility(View.VISIBLE);
+                            for(int i =0;i<response.getBrandlist().size();i++){
+                                if(i==0)
+                                    ll_special_tags.addView(addTagView(response.getBrandlist().get(i).getName(),i,true));
+                                else
+                                    ll_special_tags.addView(addTagView(response.getBrandlist().get(i).getName(),i,false));
+                            }
                         }
                     }
-//                        if (response.getBrandlist()!=null&&response.getBrandlist().size() >= 10)
-//                            hasMore = true;
-//                        else
-//                            hasMore = false;
-//                        if (response.getInspectionlog()!=null&&response.getInspectionlog().size() != 0) { //设置精选考察攻略数据
-//                            tv_select_raiders2.setVisibility(View.VISIBLE);
-//                          //  list_inspection.addAll(response.getInspectionlog());
-//                            //adapter_inspecition.notifyDataSetChanged();
-//                        }
+//                    if (response.getInspectionlog()!=null&&response.getInspectionlog().size() >= 5)
+//                        hasMore = true;
+//                    else
+//                        hasMore = false;
+//                    if (response.getInspectionlog()!=null&&response.getInspectionlog().size() != 0) { //设置精选考察攻略数据
+//                        list_inspection.addAll(response.getInspectionlog());
+//                        adapter_inspecition.notifyDataSetChanged();
+//                    }
 
                 }
             }
@@ -607,6 +698,51 @@ public class HomePageFragment extends Fragment implements View.OnClickListener, 
         if(like.size()==3)
         for(int i =0;i<like.size();i++){
             ll_3_tag.addView(getTV(like.get(i).getType(),like.get(i).getTname(),like.get(i).getTid()));
+        }
+    }
+
+    /**
+     * 添加猜你感兴趣标签
+     */
+    private View addTagView(String content, final int index,boolean flag){
+        View  view = LayoutInflater.from(getContext()).inflate(R.layout.item_guess_interest_tag,null);
+        TextView tv = (TextView) view.findViewById(R.id.tv_item_guess_interest);
+        ImageView iv = (ImageView) view.findViewById(R.id.iv_item_guess_interest);
+        LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(LinearLayoutCompat.LayoutParams.WRAP_CONTENT,LinearLayoutCompat.LayoutParams.WRAP_CONTENT);
+        params.setMargins(0,0,20,0);
+        view.setLayoutParams(params);
+        tv.setText(content);
+        if(flag){
+            tv.setTextColor(ContextCompat.getColor(getContext(),R.color.color_white));
+            Glide.with(getContext()).load(R.drawable.img_home_btn_bg).centerCrop().into(iv);
+        }else{
+            tv.setTextColor(ContextCompat.getColor(getContext(),R.color.color_black));
+            Glide.with(getContext()).load(R.drawable.img_bg_mine).centerCrop().into(iv);
+        }
+        tv.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                changeGuessInterest(index);
+            }
+        });
+        return  view;
+    }
+
+    /**
+     * 更换猜你感兴趣数据
+     * @param index 下标
+     */
+    private void changeGuessInterest(int index) {
+        list_interest.clear();
+        list_interest.addAll(list_guess.get(index).getData());
+        adapter_interest.notifyDataSetChanged();
+
+        ll_special_tags.removeAllViews();
+        for(int i = 0 ; i<list_guess.size();i++){
+            if(i==index)
+                ll_special_tags.addView(addTagView(list_guess.get(i).getName(),i,true));
+            else
+                ll_special_tags.addView(addTagView(list_guess.get(i).getName(),i,false));
         }
     }
 
@@ -756,53 +892,57 @@ public class HomePageFragment extends Fragment implements View.OnClickListener, 
 
     }
 
-
     /**
-     * 猜你感兴趣点击事件
-     */
-    @Override
-    public void onItemClick(View view, int position) {
-        MobclickAgent.onEvent(getContext(),"lv_home_guess_interest");
-        Intent intent = new Intent(getContext(), BrandActivity.class);
-        intent.putExtra("index",list_interest.get(position).getBrand_id());
-        startActivity(intent);
-    }
-
-    /**
-     * 热门品牌点击事件
+     * item点击事件
      */
     @Override
     public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-        if(i>=3&&i-3<list_interest.size()) {
-            MobclickAgent.onEvent(getContext(),"rlv_home_pager");
-            if(list_interest.get(i-3)!=null){
-                String bid = list_interest.get(i-3).getBrand_id();
-                Intent intent = new Intent(getContext(), BrandActivity.class);
-                intent.putExtra("index",bid);
-                startActivity(intent);
-            }
-        }
-    }
+        switch (adapterView.getId()){
+            case R.id.lv_home_special://点击专题
+                int type_sp = list_special.get(i).getType();
+                MobclickAgent.onEvent(getContext(),"lv_home_special");
+                if(type_sp==3){
+                    Intent intent = new Intent(getContext(), ArticleDetailActivity.class);
+                    intent.putExtra("id",list_special.get(i).getId());
+                    startActivity(intent);
+                }else if(type_sp==1){
+                    Intent intent = new Intent(getContext(), SpecialArticleActivity.class);
+                    intent.putExtra("id",list_special.get(i).getId());
+                    startActivity(intent);
+                }
+                break;
 
-    /**
-     * 专题点击事件
-     */
-    @Override
-    public void onItemClickListener(View view, int i) {
-        if(i==list_special.size()-1){
+            case R.id.lv_home_guess_interest://点击热门品牌
+                MobclickAgent.onEvent(getContext(),"lv_home_guess_interest");
+                Intent intent_hot = new Intent(getContext(), BrandActivity.class);
+                intent_hot.putExtra("index",list_interest.get(i).getBrand_id());
+                startActivity(intent_hot);
+                break;
 
-        }else{
-            int type = list_special.get(i).getType();
-            MobclickAgent.onEvent(getContext(),"lv_home_special");
-            if(type==3){
-                Intent intent = new Intent(getContext(), ArticleDetailActivity.class);
-                intent.putExtra("id",list_special.get(i).getId());
-                startActivity(intent);
-            }else if(type==1){
-                Intent intent = new Intent(getContext(), SpecialArticleActivity.class);
-                intent.putExtra("id",list_special.get(i).getId());
-                startActivity(intent);
-            }
+            case R.id.rlv_home_pager: //点击考察攻略
+                if(i>=4&&i-4<list_inspection.size()) {
+                    MobclickAgent.onEvent(getContext(),"rlv_home_pager");
+                    String type = list_inspection.get(i-4).getType();
+                    if(type!=null&&type.equals("1")){ //文章列表
+                        Intent intent = new Intent(getContext(),SpecialArticleActivity.class);
+                        intent.putExtra("id", list_inspection.get(i - 4).getArticle_id());
+                        startActivity(intent);
+                    }else if(type!=null&&type.equals("3")){ //文章详情(图文)
+                        Intent intent = new Intent(getContext(), ArticleDetailActivity.class);
+                        intent.putExtra("id", list_inspection.get(i - 4).getArticle_id());
+                        startActivity(intent);
+                    }else if(type!=null&&type.equals("4")){ //文章详情(大图)
+                        Intent intent = new Intent(getContext(), ArticleDetailActivity.class);
+                        intent.putExtra("id", list_inspection.get(i - 4).getArticle_id());
+                        startActivity(intent);
+                    }else if(type!=null&&type.equals("2")){ //文章详情(客户端的发帖)
+                        Intent intent = new Intent(getContext(), ArticleDetailActivity.class);
+                        intent.putExtra("id", list_inspection.get(i - 4).getArticle_id());
+                        intent.putExtra("title",false);
+                        startActivity(intent);
+                    }
+                }
+                break;
         }
     }
 
@@ -845,7 +985,7 @@ public class HomePageFragment extends Fragment implements View.OnClickListener, 
                             Pattern pattern = Pattern
                                     .compile("^([hH][tT]{2}[pP]://|[hH][tT]{2}[pP][sS]://)(([A-Za-z0-9-~]+).)+([A-Za-z0-9-~\\/])+$");
                             if(pattern.matcher(url).matches())
-                            startActivity(intent);
+                                startActivity(intent);
                         }
                     }
                     break ;
@@ -856,12 +996,10 @@ public class HomePageFragment extends Fragment implements View.OnClickListener, 
 
     @Override
     public void onScrollChanged() {
-        if (rlv.getFirstVisiblePosition()==2){//显示控件
-            tv_select_raiders.setVisibility(View.VISIBLE);
-            view_selectRaiders.setVisibility(View.GONE);
-        }else if(rlv.getFirstVisiblePosition()==1){//隐藏控件
-            tv_select_raiders.setVisibility(View.GONE);
-            view_selectRaiders.setVisibility(View.VISIBLE);
+        if (rlv.getFirstVisiblePosition()==3){//显示控件
+           // tv_select_raiders.setVisibility(View.VISIBLE);
+        }else if(rlv.getFirstVisiblePosition()==2){//隐藏控件
+          //  tv_select_raiders.setVisibility(View.GONE);
         }
     }
 
@@ -869,8 +1007,8 @@ public class HomePageFragment extends Fragment implements View.OnClickListener, 
      * 双击返回顶部
      */
     public  void setListView2Top(){
-        rlv.setSelection(0);
+        ViewUtil.stopListView(rlv,0);
         tv_select_raiders.setVisibility(View.GONE);
-        view_selectRaiders.setVisibility(View.VISIBLE);
     }
+
 }

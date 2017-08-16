@@ -63,7 +63,6 @@
             android:scaleType="centerCrop"
             android:layout_weight="1"
             android:layout_height="100dp"
-            android:background="@drawable/loading"
             />
         <ImageView
             android:id="@+id/iv_person_iv2"
@@ -72,7 +71,6 @@
             android:layout_marginLeft="10dp"
             android:layout_weight="1"
             android:layout_height="100dp"
-            android:background="@drawable/loading"
             />
         <ImageView
             android:layout_marginLeft="10dp"
@@ -82,7 +80,6 @@
             android:layout_weight="1"
             android:layout_height="100dp"
             android:layout_marginRight="10dp"
-            android:background="@drawable/loading"
             />
 
     </LinearLayout>

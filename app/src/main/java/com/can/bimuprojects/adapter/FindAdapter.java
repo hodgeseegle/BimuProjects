@@ -61,7 +61,7 @@ public class FindAdapter extends BaseAdapter {
         if(type!=null&&type.equals("3"))
             return 1;
         else if(type!=null&&type.equals("1"))
-         return 2;
+            return 2;
         return 1;
     }
 
@@ -77,9 +77,8 @@ public class FindAdapter extends BaseAdapter {
                     view = LayoutInflater.from(context).inflate(R.layout.item_fragment_find,null);
                     vh.tv_title = (TextView) view.findViewById(R.id.tv_find_title);
                     vh.tv_content = (TextView) view.findViewById(R.id.tv_find_content);
-                    vh.tv_look = (TextView) view.findViewById(R.id.tv_find_look);
-                    vh.tv_love = (TextView) view.findViewById(R.id.tv_find_love);
-                    vh.tv_comment = (TextView) view.findViewById(R.id.tv_find_comment);
+                    vh.tv_look = (TextView) view.findViewById(R.id.tv_item_inspection_look);
+                    vh.tv_comment = (TextView) view.findViewById(R.id.tv_item_inspection_comment);
                     vh.iv1 = (ImageView) view.findViewById(R.id.iv_find_iv1);
                     vh.iv2 = (ImageView) view.findViewById(R.id.iv_find_iv2);
                     vh.iv3 = (ImageView) view.findViewById(R.id.iv_find_iv3);
@@ -89,12 +88,10 @@ public class FindAdapter extends BaseAdapter {
                     vh2 = new VH2();
                     view = LayoutInflater.from(context).inflate(R.layout.item_fragment_find2,null);
                     vh2.tv_name = (TextView) view.findViewById(R.id.tv_item_brand_assess_name);
-                    vh2.tv_date = (TextView) view.findViewById(R.id.tv_item_brand_assess_date);
                     vh2.tv_content = (TextView) view.findViewById(R.id.tv_item_brand_assess_content);
                     vh2.iv_logo = (ImageView) view.findViewById(R.id.iv_item_brand_assess_logo);
-                    vh2.tv_look = (TextView) view.findViewById(R.id.tv_find2_look);
-                    vh2.tv_love = (TextView) view.findViewById(R.id.tv_find2_love);
-                    vh2.tv_comment = (TextView) view.findViewById(R.id.tv_find2_comment);
+                    vh2.tv_look = (TextView) view.findViewById(R.id.tv_item_inspection_look);
+                    vh2.tv_comment = (TextView) view.findViewById(R.id.tv_item_inspection_comment);
                     vh2.iv1 = (ImageView) view.findViewById(R.id.iv_find2_iv1);
                     vh2.iv2 = (ImageView) view.findViewById(R.id.iv_find2_iv2);
                     vh2.iv3 = (ImageView) view.findViewById(R.id.iv_find2_iv3);
@@ -118,31 +115,29 @@ public class FindAdapter extends BaseAdapter {
                     break;
                 final List<String> logo_list1 = data.getArticle();
                 if(data.getArticle_summary()!=null)
-                vh.tv_title.setText(data.getArticle_summary());
+                    vh.tv_title.setText(data.getArticle_summary());
                 if(data.getArticle_html()!=null)
-                vh.tv_content.setText(data.getArticle_html());
+                    vh.tv_content.setText(data.getArticle_html());
                 if(data.getLook_time()!=null)
-                vh.tv_look.setText(data.getLook_time());
-                if(data.getArticle_thumbs()!=null)
-                vh.tv_love.setText(data.getArticle_thumbs());
+                    vh.tv_look.setText(data.getLook_time());
                 if(data.getArticle_comment_number()!=null)
-                vh.tv_comment.setText(data.getArticle_comment_number());
+                    vh.tv_comment.setText(data.getArticle_comment_number());
                 if(logo_list1!=null){
                     if(data.getArticle().size()>=3&&(Util.isOnMainThread())){
-                        Glide.with(context).load(data.getArticle().get(0)).dontAnimate().into(vh.iv1);
-                        Glide.with(context).load(data.getArticle().get(1)).dontAnimate().into(vh.iv2);
-                        Glide.with(context).load(data.getArticle().get(2)).dontAnimate().into(vh.iv3);
+                        Glide.with(context).load(data.getArticle().get(0)).placeholder(R.drawable.loading).dontAnimate().into(vh.iv1);
+                        Glide.with(context).load(data.getArticle().get(1)).placeholder(R.drawable.loading).dontAnimate().into(vh.iv2);
+                        Glide.with(context).load(data.getArticle().get(2)).placeholder(R.drawable.loading).dontAnimate().into(vh.iv3);
                         vh.iv1.setVisibility(View.VISIBLE);
                         vh.iv2.setVisibility(View.VISIBLE);
                         vh.iv3.setVisibility(View.VISIBLE);
                     }else if(data.getArticle().size()==2&&(Util.isOnMainThread())){
-                        Glide.with(context).load(data.getArticle().get(0)).dontAnimate().into(vh.iv1);
-                        Glide.with(context).load(data.getArticle().get(1)).dontAnimate().into(vh.iv2);
+                        Glide.with(context).load(data.getArticle().get(0)).placeholder(R.drawable.loading).dontAnimate().into(vh.iv1);
+                        Glide.with(context).load(data.getArticle().get(1)).placeholder(R.drawable.loading).dontAnimate().into(vh.iv2);
                         vh.iv1.setVisibility(View.VISIBLE);
                         vh.iv2.setVisibility(View.VISIBLE);
                         vh.iv3.setVisibility(View.INVISIBLE);
                     }else if(data.getArticle().size()==1&&(Util.isOnMainThread())){
-                        Glide.with(context).load(data.getArticle().get(0)).dontAnimate().into(vh.iv1);
+                        Glide.with(context).load(data.getArticle().get(0)).placeholder(R.drawable.loading).dontAnimate().into(vh.iv1);
                         vh.iv1.setVisibility(View.VISIBLE);
                         vh.iv2.setVisibility(View.INVISIBLE);
                         vh.iv3.setVisibility(View.INVISIBLE);
@@ -192,26 +187,24 @@ public class FindAdapter extends BaseAdapter {
                     vh2.tv_content.setText(data2.getArticle_html());
                 if(data2.getLook_time()!=null)
                     vh2.tv_look.setText(data2.getLook_time());
-                if(data2.getArticle_thumbs()!=null)
-                    vh2.tv_love.setText(data2.getArticle_thumbs());
                 if(data2.getArticle_comment_number()!=null)
                     vh2.tv_comment.setText(data2.getArticle_comment_number());
                 if(logo_list!=null){
                     if(data2.getArticle().size()>=3&&(Util.isOnMainThread())){
-                        Glide.with(context).load(data2.getArticle().get(0)).dontAnimate().into(vh2.iv1);
-                        Glide.with(context).load(data2.getArticle().get(1)).dontAnimate().into(vh2.iv2);
-                        Glide.with(context).load(data2.getArticle().get(2)).dontAnimate().into(vh2.iv3);
+                        Glide.with(context).load(data2.getArticle().get(0)).placeholder(R.drawable.loading).dontAnimate().into(vh2.iv1);
+                        Glide.with(context).load(data2.getArticle().get(1)).placeholder(R.drawable.loading).dontAnimate().into(vh2.iv2);
+                        Glide.with(context).load(data2.getArticle().get(2)).placeholder(R.drawable.loading).dontAnimate().into(vh2.iv3);
                         vh2.iv1.setVisibility(View.VISIBLE);
                         vh2.iv2.setVisibility(View.VISIBLE);
                         vh2.iv3.setVisibility(View.VISIBLE);
                     }else if(data2.getArticle().size()==2&&(Util.isOnMainThread())){
-                        Glide.with(context).load(data2.getArticle().get(0)).dontAnimate().into(vh2.iv1);
-                        Glide.with(context).load(data2.getArticle().get(1)).dontAnimate().into(vh2.iv2);
+                        Glide.with(context).load(data2.getArticle().get(0)).placeholder(R.drawable.loading).dontAnimate().into(vh2.iv1);
+                        Glide.with(context).load(data2.getArticle().get(1)).placeholder(R.drawable.loading).dontAnimate().into(vh2.iv2);
                         vh2.iv1.setVisibility(View.VISIBLE);
                         vh2.iv2.setVisibility(View.VISIBLE);
                         vh2.iv3.setVisibility(View.INVISIBLE);
                     }else if(data2.getArticle().size()==1&&(Util.isOnMainThread())){
-                        Glide.with(context).load(data2.getArticle().get(0)).dontAnimate().into(vh2.iv1);
+                        Glide.with(context).load(data2.getArticle().get(0)).placeholder(R.drawable.loading).dontAnimate().into(vh2.iv1);
                         vh2.iv1.setVisibility(View.VISIBLE);
                         vh2.iv2.setVisibility(View.INVISIBLE);
                         vh2.iv3.setVisibility(View.INVISIBLE);
@@ -262,16 +255,14 @@ public class FindAdapter extends BaseAdapter {
         TextView tv_title;
         TextView tv_content;
         TextView tv_look;
-        TextView tv_love;
         TextView tv_comment;
         ImageView iv1,iv2,iv3;
     }
 
     static class VH2{
-        TextView tv_name,tv_date,tv_content;
+        TextView tv_name,tv_content;
         ImageView iv_logo;
         TextView tv_look;
-        TextView tv_love;
         TextView tv_comment;
         ImageView iv1,iv2,iv3;
     }

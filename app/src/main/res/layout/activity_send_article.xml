@@ -7,45 +7,8 @@
     android:fitsSystemWindows="true"
     >
 
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:background="@color/color_app_bg"
-        android:layout_height="50dp">
 
-        <TextView
-            android:id="@+id/cancelSendArticle"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerVertical="true"
-            android:background="@null"
-            android:textSize="16sp"
-            android:textColor="@color/color_white"
-            android:layout_marginLeft="20dp"
-            android:text="取消" />
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerInParent="true"
-            android:text="发帖"
-            android:textColor="@color/color_white"
-            android:textSize="18sp" />
-
-        <TextView
-            android:id="@+id/tvPublish"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
-            android:layout_centerVertical="true"
-            android:layout_marginRight="20dp"
-            android:textSize="16sp"
-            android:textColor="@color/color_white"
-            android:text="发布"
-             />
-    </RelativeLayout>
-
-
-
+    <include layout="@layout/item_app_title4"/>
     <EditText
         android:id="@+id/et_edit_article"
         android:background="@null"

@@ -16,6 +16,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.android.volley.VolleyError;
+import com.can.bimuprojects.adapter.SearchResultArticleAdapter;
 import com.umeng.analytics.MobclickAgent;
 import com.can.bimuprojects.Constant.MethodConstant;
 import com.can.bimuprojects.Module.Request.SearchResultRequest;
@@ -69,6 +70,7 @@ public class SearchBrandResultActivity extends BaseActivity implements View.OnCl
         vp = (ViewPager) findViewById(R.id.vp_photos);
         lv_article = new LoadMoreListView(this);
         lv_brand = new LoadMoreListView(this);
+        lv_brand.setDividerHeight(0);
         lv_trade = new LoadMoreListView(this);
     }
 
@@ -78,6 +80,16 @@ public class SearchBrandResultActivity extends BaseActivity implements View.OnCl
         lv_article.setOnItemClickListener(this);
         lv_brand.setOnItemClickListener(this);
         lv_trade.setOnItemClickListener(this);
+
+        lv_article.setOnRefreshListener(new LoadMoreListView.OnRefreshListener() {
+            @Override
+            public void onLoadingMore() {
+                if(hasMore_article)
+                    handler.sendEmptyMessageDelayed(1,500);
+                else
+                    lv_article.completeRefresh();
+            }
+        });
 
         lv_brand.setOnRefreshListener(new LoadMoreListView.OnRefreshListener() {
             @Override
@@ -110,11 +122,14 @@ public class SearchBrandResultActivity extends BaseActivity implements View.OnCl
                 return  false;
             }
             switch (message.what){
-                case 1: //文章
-
+                case 1: //品牌
+                    tag = 1;
+                    lv_article.completeRefresh();
+                    page_article++;
+                    requestITData(page_article);
                     break;
 
-                case 2://品牌
+                case 2://文章
                     tag = 2;
                     lv_brand.completeRefresh();
                     page_brand++;
@@ -158,26 +173,35 @@ public class SearchBrandResultActivity extends BaseActivity implements View.OnCl
     private int page_trade = 0; //行业页码
     private boolean hasMore_trade = false ; //是否有更多行业
 
+    private SearchResultArticleAdapter adapter_article ; //文章适配器
+    private List<SearchResultResponse.ArticleBean> list_article =new ArrayList<>(); //文章数据集合
+    private int page_article = 0 ; //文章页码
+    private boolean hasMore_article = false ; //是否有更多文章
+
     //初始化数据
     private void initData() {
+        content = getIntent().getStringExtra("content");
+
         adapter_brand=new SearchResultAdapter(this,list_brand);
         lv_brand.setAdapter(adapter_brand);
+
         adapter_trade = new TradeAdapter(this,list_trade);
         lv_trade.setAdapter(adapter_trade);
+
+        adapter_article = new SearchResultArticleAdapter(this,list_article,content);
+        lv_article.setAdapter(adapter_article);
 
         lv_article.setTag(1);
         lv_brand.setTag(2);
         lv_trade.setTag(3);
         viewsList = new ArrayList<>();
 
-        content = getIntent().getStringExtra("content");
-
         tv_title.setText(content);
         strings = getResources().getStringArray(R.array.search_brand_result);
         setTabLayout();
 
-        viewsList.add(lv_article);
         viewsList.add(lv_brand);
+        viewsList.add(lv_article);
         viewsList.add(lv_trade);
 
         ViewAdapter adapter = new ViewAdapter(viewsList);
@@ -200,6 +224,21 @@ public class SearchBrandResultActivity extends BaseActivity implements View.OnCl
             public void deal(Context context, JsonReceive receive) {
                 SearchResultResponse response = (SearchResultResponse) receive.getResponse();
                 if(response!=null){
+                    if(tag==0||tag==1){ //文章数据
+                        List<SearchResultResponse.ArticleBean> data_article = response.getArticle();
+                        if(data_article!=null){
+                            if(data_article.size()>=20)
+                                hasMore_article = true;
+                            else
+                                hasMore_article = false;
+                            list_article.addAll(data_article);
+                            adapter_article.notifyDataSetChanged();
+                        }else{
+                            hasMore_article = false;
+                        }
+                    }
+
+
                     if(tag==0||tag==2){ //品牌数据
                         List<SearchResultResponse.DataBean> data_brand = response.getData();
                         if(data_brand!=null){ //品牌数据
@@ -209,6 +248,8 @@ public class SearchBrandResultActivity extends BaseActivity implements View.OnCl
                                 hasMore_brand = false;
                             list_brand.addAll(data_brand);
                             adapter_brand.notifyDataSetChanged();
+                        }else{
+                            hasMore_brand = false;
                         }
                     }
 
@@ -221,9 +262,10 @@ public class SearchBrandResultActivity extends BaseActivity implements View.OnCl
                                 hasMore_trade = false;
                             list_trade.addAll(data_trade);
                             adapter_trade.notifyDataSetChanged();
+                        }else{
+                            hasMore_trade = false;
                         }
                     }
-
                 }
             }
         }, new ErrorHook() {
@@ -237,7 +279,7 @@ public class SearchBrandResultActivity extends BaseActivity implements View.OnCl
 
     //设置滚动标题样式
     private void setTabLayout() {
-        tl.setSelectedTabIndicatorColor(ContextCompat.getColor(this,R.color.color_red));
+        tl.setSelectedTabIndicatorColor(ContextCompat.getColor(this,R.color.color_app_text_yes));
         tl.setSelectedTabIndicatorHeight(UiUtils.dip2px(1));
     }
 
@@ -246,11 +288,15 @@ public class SearchBrandResultActivity extends BaseActivity implements View.OnCl
         int tag = (int) adapterView.getTag();
         switch (tag){
             case 1://文章
-
+                if(i<list_article.size()&&list_article.get(i)!=null){
+                    Intent intent = new Intent(this, ArticleDetailActivity.class);
+                    intent.putExtra("id", list_article.get(i).getArticle_id());
+                    startActivity(intent);
+                }
                 break;
 
             case 2://品牌
-                if(list_brand.get(i)!=null) {
+                if(i<list_brand.size()&&list_brand.get(i)!=null) {
                     MobclickAgent.onEvent(this, "lv_search_results");
                     Intent intent = new Intent(this, BrandActivity.class);
                     intent.putExtra("index", list_brand.get(i).getBrand_id());
@@ -259,7 +305,7 @@ public class SearchBrandResultActivity extends BaseActivity implements View.OnCl
                 break;
 
             case 3://行业
-                if(list_trade.get(i)!=null){
+                if(i<list_trade.size()&&list_trade.get(i)!=null){
                     MobclickAgent.onEvent(this,"vp_search_result");
                     Intent intent = new Intent(this,ChooseTypeActivity.class);
                     intent.putExtra("notFind",true);

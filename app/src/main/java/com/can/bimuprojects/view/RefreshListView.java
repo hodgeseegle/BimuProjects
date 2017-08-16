@@ -118,6 +118,8 @@ public class RefreshListView extends ListView implements OnScrollListener{
 				xDistance = yDistance = 0f;
 				xLast = ev.getX();
 				yLast = ev.getY();
+
+				downY = (int) ev.getY();
 				break;
 			case MotionEvent.ACTION_MOVE:
 				final float curX = ev.getX();

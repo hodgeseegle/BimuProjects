@@ -65,7 +65,7 @@ InterestGVAdapter extends BaseAdapter {
             vh.tv.setText(text);
         }
         if(Util.isOnMainThread())
-        Glide.with(context).load(data.get(i).getImg_url()).centerCrop().into(vh.iv);
+        Glide.with(context).load(data.get(i).getImg_url()).placeholder(R.drawable.loading).dontAnimate().centerCrop().into(vh.iv);
         boolean flag = ActivityInterest.list_boolean.get(ActivityInterest.lv_position).get(i);
         if(flag)
         vh.iv_select.setVisibility(View.VISIBLE);
