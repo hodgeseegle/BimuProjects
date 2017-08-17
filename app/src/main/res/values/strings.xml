@@ -261,4 +261,9 @@
     <string name="choice_recommend">精选推荐</string>
     <string name="time_hot_ranking">实时热度排行</string>
 
+    <!--项目库-->
+    <string name="amount_of_money">金额</string>
+    <string name="trade">行业</string>
+    <string name="sort">排序</string>
+
 </resources>

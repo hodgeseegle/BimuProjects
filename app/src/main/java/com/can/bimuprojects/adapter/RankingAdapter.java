@@ -55,6 +55,7 @@ public class RankingAdapter extends BaseAdapter{
         if(view==null){
             vh = new VH();
             view = LayoutInflater.from(context).inflate(R.layout.item_ranking,null);
+            vh.tv_no = (TextView) view.findViewById(R.id.tv_no);
             vh.iv = (ImageView) view.findViewById(R.id.iv_brand_open_shop);
             vh.tv_title = (TextView) view.findViewById(R.id.tv_brand_open_shop_title);
             vh.tv_content = (TextView) view.findViewById(R.id.tv_brand_open_shop_content);
@@ -64,7 +65,9 @@ public class RankingAdapter extends BaseAdapter{
             vh = (VH) view.getTag();
         }
         RankingResponse.BrandIndustryBean.DataBean bean = list.get(i);
+        vh.tv_no.setText(i+1+"");
         String background = bean.getBrand_logo();
+        vh.ll.removeAllViews();
         if(bean.getTag()!=null&&bean.getTag().size()>=0){
             String str_autof = bean.getTag().get(0);
             if(str_autof!=null&&!str_autof.equals("")){
@@ -84,8 +87,6 @@ public class RankingAdapter extends BaseAdapter{
         Glide.with(context).load(background).placeholder(R.drawable.loading).dontAnimate().into(vh.iv);
         if(name!=null)
         vh.tv_title.setText(name);
-        vh.ll.removeAllViews();
-
 
         if(money!=null)
             vh.tv_content.setText("投资 "+money+" 万");
@@ -97,6 +98,7 @@ public class RankingAdapter extends BaseAdapter{
         TextView tv_title;
         TextView tv_content;
         LinearLayout ll;
+        TextView tv_no;
 
     }
 

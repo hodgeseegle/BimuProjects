@@ -130,4 +130,26 @@ public class NumberUtils {
         return string;
     }
 
+
+    /**
+     * 获取请求金额的字符串
+     */
+    public static String getMoneyString(String amount){
+        String str_money = amount.replaceAll("¥","");
+        str_money = str_money.replaceAll("¥","");
+        if(str_money!=null){
+            str_money = amount.trim().replace("万","").replaceAll("以上","").replaceAll("以下","");
+            if(str_money.equals("10")) {
+                str_money = "0-10";
+            }
+            if(str_money.equals("不限")) {
+                str_money = "0-1000";
+            }
+            if(str_money.equals("100")){
+                str_money = "100-10000";
+            }
+        }
+        return str_money;
+    }
+
 }

@@ -30,4 +30,7 @@
     <!--头部搜索控件margin-->
     <dimen name="home_head_margin">8dp</dimen>
 
+    <!--项目库头部向下按钮宽高-->
+    <dimen name="project_head_size">15dp</dimen>
+
 </resources>

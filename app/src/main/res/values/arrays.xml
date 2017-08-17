@@ -36,6 +36,29 @@
 
     </string-array>
 
+    <!--金额集合-->
+    <string-array name="money_lists2">
+        <item>不限</item>
+        <item>10万以下</item>
+        <item>10-20万</item>
+        <item>20-30万</item>
+        <item>30-40万</item>
+        <item>40-50万</item>
+        <item>50-80万</item>
+        <item>80-100万</item>
+        <item>100万以上</item>
+
+    </string-array>
+
+    <!--排序集合-->
+    <string-array name="sort_lists">
+        <item>推荐排序</item>
+        <item>金额最高</item>
+        <item>金额最低</item>
+        <item>最受关注</item>
+
+    </string-array>
+
 
 
 </resources>

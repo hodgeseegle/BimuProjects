@@ -116,5 +116,7 @@
     <!--标题颜色-->
     <color name="color_app_title" >#ffffff</color>
     <color name="color_money_text" >#ff0000</color>
+    <!--项目库透明颜色-->
+    <color name="color_project_transparent">#77555555</color>
 
 </resources>

@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/color_white">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+
+    <LinearLayout
+        android:id="@+id/ll_item1"
+        android:layout_width="0dp"
+        android:layout_weight="1"
+        android:layout_height="wrap_content"
+        android:padding="10dp"
+        android:gravity="center"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/trade"
+            android:textSize="@dimen/text_size_15"
+            android:textColor="@color/color_small_text"
+            />
+
+        <ImageView
+            android:id="@+id/iv_item1"
+            android:layout_width="@dimen/project_head_size"
+            android:layout_height="@dimen/project_head_size"
+            android:scaleType="centerCrop"
+            android:layout_marginLeft="5dp"
+            />
+
+    </LinearLayout>
+
+    <LinearLayout
+    android:id="@+id/ll_item2"
+    android:layout_width="0dp"
+    android:layout_weight="1"
+    android:layout_height="wrap_content"
+    android:padding="10dp"
+    android:gravity="center"
+    android:orientation="horizontal">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/amount_of_money"
+        android:textSize="@dimen/text_size_15"
+        android:textColor="@color/color_small_text"
+        />
+
+    <ImageView
+        android:id="@+id/iv_item2"
+        android:layout_width="@dimen/project_head_size"
+        android:layout_height="@dimen/project_head_size"
+        android:scaleType="centerCrop"
+        android:layout_marginLeft="5dp"
+        />
+
+</LinearLayout>
+
+    <LinearLayout
+    android:id="@+id/ll_item3"
+    android:layout_width="0dp"
+    android:layout_weight="1"
+    android:layout_height="wrap_content"
+    android:padding="10dp"
+    android:gravity="center"
+    android:orientation="horizontal">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/sort"
+        android:textSize="@dimen/text_size_15"
+        android:textColor="@color/color_small_text"
+        />
+
+    <ImageView
+        android:id="@+id/iv_item3"
+        android:layout_width="@dimen/project_head_size"
+        android:layout_height="@dimen/project_head_size"
+        android:scaleType="centerCrop"
+        android:layout_marginLeft="5dp"
+        />
+
+</LinearLayout>
+
+    </LinearLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/color_divi_line"
+        />
+
+</LinearLayout>

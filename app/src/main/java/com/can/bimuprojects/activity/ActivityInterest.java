@@ -42,7 +42,7 @@ public class ActivityInterest extends BaseActivity implements View.OnClickListen
     public static final String TRADE = "trade";
     public static final String CHANGE = "change";
     public static final int REQUEST_CODE = 0x111;
-    public static final int RESPONSE_CODE = 0x222;
+    public static final int RESPONSE_CODE = 1;
 
     public static int lv_position ; //点击的listview下标
     public static List<List<Boolean>> list_boolean  ; //多选的选择集合
@@ -259,10 +259,10 @@ public class ActivityInterest extends BaseActivity implements View.OnClickListen
                         select_total--;
                     else
                         select_total++;
-                    if(select_total==9){
+                    if(select_total==6){
                         if(!this.isFinishing())
-                        showDialog("最多选择8个");
-                        select_total=8;
+                        showDialog("最多选择5个");
+                        select_total=5;
                         break;
                     }
                     list_boolean.get(lv_position).set(i,!flag);

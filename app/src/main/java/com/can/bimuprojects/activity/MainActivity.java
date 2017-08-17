@@ -269,7 +269,7 @@ public class MainActivity extends BaseActivity implements IUmengInAppMsgCloseCal
                 } else {
                     long currentClickTime = System.currentTimeMillis();
                     if (currentClickTime - long_find < 1000) {
-                        ((FindFragment)(fragments[fragmentIndex])).setListView2Top();
+                        ((ProjectFragment)(fragments[fragmentIndex])).setListView2Top();
                     } else {
                         long_find = currentClickTime;
                     }
