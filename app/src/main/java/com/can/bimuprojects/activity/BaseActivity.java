@@ -44,7 +44,8 @@ public class BaseActivity extends AppCompatActivity {
             FrameLayout.LayoutParams params = new FrameLayout.LayoutParams(FrameLayout.LayoutParams.MATCH_PARENT, statusBarHeight);
             params.gravity = Gravity.TOP;
             statusBarView.setLayoutParams(params);
-            statusBarView.setBackgroundColor(ContextCompat.getColor(this,R.color.color_app_bg));
+            //statusBarView.setBackgroundColor(ContextCompat.getColor(this,R.color.color_app_bg));
+            statusBarView.setBackgroundResource(R.drawable.img_title_bg);
             decorViewGroup.addView(statusBarView);
         }
         if (application == null) {

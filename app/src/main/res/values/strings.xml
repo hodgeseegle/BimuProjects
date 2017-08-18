@@ -265,5 +265,6 @@
     <string name="amount_of_money">金额</string>
     <string name="trade">行业</string>
     <string name="sort">排序</string>
+    <string name="unlimited">不限</string>
 
 </resources>

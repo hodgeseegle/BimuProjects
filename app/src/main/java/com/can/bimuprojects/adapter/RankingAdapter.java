@@ -15,6 +15,7 @@ import com.can.bimuprojects.Module.Response.HomePagerResponse;
 import com.can.bimuprojects.Module.Response.OpenShopResponse;
 import com.can.bimuprojects.Module.Response.RankingResponse;
 import com.can.bimuprojects.R;
+import com.can.bimuprojects.utils.GlideRoundTransform;
 import com.can.bimuprojects.utils.UiUtils;
 
 import java.util.List;
@@ -84,7 +85,7 @@ public class RankingAdapter extends BaseAdapter{
         String money = bean.getInvest_amount();
 
         if(Util.isOnMainThread()&&background!=null)
-        Glide.with(context).load(background).placeholder(R.drawable.loading).dontAnimate().into(vh.iv);
+        Glide.with(context).load(background).placeholder(R.drawable.loading).transform(new GlideRoundTransform(context)).dontAnimate().into(vh.iv);
         if(name!=null)
         vh.tv_title.setText(name);
 

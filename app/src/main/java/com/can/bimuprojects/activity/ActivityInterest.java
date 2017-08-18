@@ -102,7 +102,7 @@ public class ActivityInterest extends BaseActivity implements View.OnClickListen
                 finish();
                 break;
             case R.id.tv_right: //确定
-                if(list2String()==null||list2String().equals("")){
+                if(list2String()==null){//||list2String().equals("")
                     ToastUtils.showShort(this,"请至少选择一项");
                     return;
                 }

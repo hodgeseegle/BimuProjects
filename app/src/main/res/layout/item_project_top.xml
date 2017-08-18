@@ -14,8 +14,8 @@
         android:id="@+id/ll_item1"
         android:layout_width="0dp"
         android:layout_weight="1"
-        android:layout_height="wrap_content"
         android:padding="10dp"
+        android:layout_height="wrap_content"
         android:gravity="center"
         android:orientation="horizontal">
 
@@ -25,6 +25,10 @@
             android:text="@string/trade"
             android:textSize="@dimen/text_size_15"
             android:textColor="@color/color_small_text"
+            android:id="@+id/tv_item1"
+            android:singleLine="true"
+            android:maxEms="4"
+            android:ellipsize="end"
             />
 
         <ImageView
@@ -41,12 +45,16 @@
     android:id="@+id/ll_item2"
     android:layout_width="0dp"
     android:layout_weight="1"
+        android:padding="10dp"
     android:layout_height="wrap_content"
-    android:padding="10dp"
     android:gravity="center"
     android:orientation="horizontal">
 
     <TextView
+        android:id="@+id/tv_item2"
+        android:singleLine="true"
+        android:maxLines="1"
+        android:ellipsize="end"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/amount_of_money"
@@ -65,15 +73,19 @@
 </LinearLayout>
 
     <LinearLayout
+        android:padding="10dp"
     android:id="@+id/ll_item3"
     android:layout_width="0dp"
     android:layout_weight="1"
     android:layout_height="wrap_content"
-    android:padding="10dp"
     android:gravity="center"
     android:orientation="horizontal">
 
     <TextView
+        android:id="@+id/tv_item3"
+        android:singleLine="true"
+        android:maxLines="1"
+        android:ellipsize="end"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/sort"

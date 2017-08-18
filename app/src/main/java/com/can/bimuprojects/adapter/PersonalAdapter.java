@@ -58,11 +58,9 @@ public class PersonalAdapter extends BaseAdapter {
             vh.iv3 = (ImageView) convertView.findViewById(R.id.iv_person_iv3);
             vh.tv_date = (TextView) convertView.findViewById(R.id.tv_person_date);
             vh.tv_title = (TextView) convertView.findViewById(R.id.tv_person_title);
-            vh.tv_look = (TextView) convertView.findViewById(R.id.tv_person_look);
-            vh.tv_like = (TextView) convertView.findViewById(R.id.tv_person_like);
-            vh.tv_comment = (TextView) convertView.findViewById(R.id.tv_person_comment);
+            vh.tv_look = (TextView) convertView.findViewById(R.id.tv_item_inspection_look);
+            vh.tv_comment = (TextView) convertView.findViewById(R.id.tv_item_inspection_comment);
             vh.ll = (LinearLayout) convertView.findViewById(R.id.ll_person_imgs);
-            vh.iv_like = (ImageView) convertView.findViewById(R.id.iv_person_like);
             vh.iv_circle = (ImageView) convertView.findViewById(R.id.iv_item_person_circle);
             convertView.setTag(vh);
         }else{
@@ -73,15 +71,7 @@ public class PersonalAdapter extends BaseAdapter {
             vh.tv_date.setText(DateUtils.timestampToString(data.getTimestamp()));
         vh.tv_title.setText(data.getText()+"");
         vh.tv_look.setText(data.getRead_num()+"");
-        vh.tv_like.setText(data.getLike_count()+"");
         vh.tv_comment.setText(data.getComment_count()+"");
-        if(data.getHas_praised().equals("1")){
-            vh.tv_like.setTextColor(ContextCompat.getColor(context,R.color.color_app_text_yes));
-            vh.iv_like.setImageResource(R.drawable.icon_like_detail);
-        }else{
-            vh.tv_like.setTextColor(ContextCompat.getColor(context,R.color.color_small_text));
-            vh.iv_like.setImageResource(R.drawable.icon_unlike_detail);
-        }
         if(Util.isOnMainThread())
             Glide.with(context).load(R.drawable.img_person_circle).into(vh.iv_circle);
         List<String> list = data.getArticle_image_urls();
@@ -134,9 +124,9 @@ public class PersonalAdapter extends BaseAdapter {
     class VH{
         TextView tv_date;
         TextView tv_title;
-        TextView tv_look,tv_like,tv_comment;
         LinearLayout ll;
-        ImageView iv_like;
+        TextView tv_look;
+        TextView tv_comment;
         ImageView iv1,iv2,iv3;
         ImageView iv_circle;
     }

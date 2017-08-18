@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.support.v4.app.Fragment;
+import android.support.v4.content.ContextCompat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -65,6 +66,7 @@ public class ProjectFragment extends Fragment implements View.OnClickListener, R
     private LinearLayout ll_money  ; //金额
     private LinearLayout ll_sort ; //排序
     private ImageView iv_item1,iv_item2,iv_item3 ;
+    private TextView tv_trade,tv_money,tv_sort;//行业、金额、排序
     /**
      * 初始化view
      */
@@ -77,6 +79,9 @@ public class ProjectFragment extends Fragment implements View.OnClickListener, R
         iv_item1 = (ImageView) view.findViewById(R.id.iv_item1);
         iv_item2 = (ImageView) view.findViewById(R.id.iv_item2);
         iv_item3 = (ImageView) view.findViewById(R.id.iv_item3);
+        tv_trade = (TextView) view.findViewById(R.id.tv_item1);
+        tv_money = (TextView) view.findViewById(R.id.tv_item2);
+        tv_sort = (TextView) view.findViewById(R.id.tv_item3);
         GlideUtil.loadDrawableImg(getContext(),R.drawable.img_arrow_down,iv_item1);
         GlideUtil.loadDrawableImg(getContext(),R.drawable.img_arrow_down,iv_item2);
         GlideUtil.loadDrawableImg(getContext(),R.drawable.img_arrow_down,iv_item3);
@@ -134,6 +139,7 @@ public class ProjectFragment extends Fragment implements View.OnClickListener, R
         adapter_sort = new ProjectMoneyAdapter(getContext(),strs_sort);
         gv_sort.setAdapter(adapter_sort);
 
+
         requestITData();
     }
 
@@ -183,6 +189,14 @@ public class ProjectFragment extends Fragment implements View.OnClickListener, R
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         if(requestCode==ActivityInterest.REQUEST_CODE&&resultCode==ActivityInterest.RESPONSE_CODE){
             classX = data.getStringExtra("class");
+            String str = data.getStringExtra("string");
+            if(str==null||str.equals("")){
+                tv_trade.setText(getString(R.string.trade));
+                tv_trade.setTextColor(ContextCompat.getColor(getContext(),R.color.color_small_text));
+            }else{
+                tv_trade.setText(str+"");
+                tv_trade.setTextColor(ContextCompat.getColor(getContext(),R.color.color_blue));
+            }
             page = 0;
             requestITData();
         }
@@ -294,6 +308,14 @@ public class ProjectFragment extends Fragment implements View.OnClickListener, R
                 adapter_money.setSeclection(i);
                 adapter_money.notifyDataSetChanged();
                 amount = NumberUtils.getMoneyString(strs_money[i]);
+                String str = strs_money[i];
+                if(str.equals(getString(R.string.unlimited))){
+                    tv_money.setText(getString(R.string.amount_of_money));
+                    tv_money.setTextColor(ContextCompat.getColor(getContext(),R.color.color_small_text));
+                }else{
+                    tv_money.setText(str+"");
+                    tv_money.setTextColor(ContextCompat.getColor(getContext(),R.color.color_blue));
+                }
                 page = 0;
                 requestITData();
                 dialog_money.dismiss();
@@ -302,6 +324,9 @@ public class ProjectFragment extends Fragment implements View.OnClickListener, R
                 adapter_sort.setSeclection(i);
                 adapter_sort.notifyDataSetChanged();
                 sort = i+"";
+                String str1 = strs_sort[i];
+                tv_sort.setText(str1+"");
+                tv_sort.setTextColor(ContextCompat.getColor(getContext(),R.color.color_blue));
                 page = 0;
                 requestITData();
                 dialog_sort.dismiss();
